@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 from pathlib import Path
 
@@ -85,10 +86,127 @@ def update_generated_gallery(image_map: dict[str, str]) -> None:
     (OUT / "generated-gallery.js").write_text(text, encoding="utf-8")
 
 
+def minify_css(text: str) -> str:
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"\s*([{}:;,>+~=\[\]\(\)])\s*", r"\1", text)
+    text = text.replace(";}", "}")
+    return text.strip()
+
+
+def minify_html(text: str) -> str:
+    text = re.sub(r"<!--(?!\[if).*?-->", "", text, flags=re.S)
+    text = re.sub(r">\s+<", "><", text)
+    text = re.sub(r"\s{2,}", " ", text)
+    return text.strip()
+
+
+def strip_js_comments(text: str) -> str:
+    output: list[str] = []
+    i = 0
+    state = "normal"
+    quote = ""
+
+    while i < len(text):
+        char = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if state == "normal":
+            if char in {"'", '"', "`"}:
+                state = "string"
+                quote = char
+                output.append(char)
+            elif char == "/" and nxt == "/":
+                i += 2
+                while i < len(text) and text[i] not in "\r\n":
+                    i += 1
+                output.append("\n")
+                continue
+            elif char == "/" and nxt == "*":
+                i += 2
+                while i + 1 < len(text) and not (text[i] == "*" and text[i + 1] == "/"):
+                    i += 1
+                i += 2
+                output.append(" ")
+                continue
+            else:
+                output.append(char)
+        else:
+            output.append(char)
+            if char == "\\":
+                if i + 1 < len(text):
+                    i += 1
+                    output.append(text[i])
+            elif char == quote:
+                state = "normal"
+                quote = ""
+        i += 1
+
+    return "".join(output)
+
+
+def minify_js(text: str) -> str:
+    text = strip_js_comments(text)
+    output: list[str] = []
+    i = 0
+    state = "normal"
+    quote = ""
+
+    def is_word_char(value: str) -> bool:
+        return bool(value) and (value.isalnum() or value in {"_", "$"})
+
+    while i < len(text):
+        char = text[i]
+
+        if state == "normal":
+            if char in {"'", '"', "`"}:
+                state = "string"
+                quote = char
+                output.append(char)
+            elif char.isspace():
+                prev = output[-1] if output else ""
+                j = i + 1
+                while j < len(text) and text[j].isspace():
+                    j += 1
+                nxt = text[j] if j < len(text) else ""
+                if is_word_char(prev) and is_word_char(nxt):
+                    output.append(" ")
+                i = j - 1
+            else:
+                output.append(char)
+        else:
+            output.append(char)
+            if char == "\\":
+                if i + 1 < len(text):
+                    i += 1
+                    output.append(text[i])
+            elif char == quote:
+                state = "normal"
+                quote = ""
+        i += 1
+
+    return "".join(output).strip()
+
+
+def minify_public_files() -> None:
+    for path in OUT.rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in {".html", ".css", ".js"}:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if path.suffix.lower() == ".html":
+            minified = minify_html(text)
+        elif path.suffix.lower() == ".css":
+            minified = minify_css(text)
+        else:
+            minified = minify_js(text)
+        path.write_text(minified + "\n", encoding="utf-8")
+
+
 def main() -> None:
     ensure_clean_out()
     image_map = build_image_map()
     update_generated_gallery(image_map)
+    minify_public_files()
 
     total = sum(path.stat().st_size for path in OUT.rglob("*") if path.is_file())
     print(f"Built: {OUT}")
