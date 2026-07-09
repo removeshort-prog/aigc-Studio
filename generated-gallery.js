@@ -322,6 +322,102 @@ window.GENERATED_GALLERY = {
         "orientation": "portrait"
       },
       {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000000.webp",
+        "width": 644,
+        "height": 946,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000001.webp",
+        "width": 499,
+        "height": 1196,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000002.webp",
+        "width": 546,
+        "height": 1097,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000003.webp",
+        "width": 598,
+        "height": 1045,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000004.webp",
+        "width": 598,
+        "height": 1045,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000005.webp",
+        "width": 1045,
+        "height": 598,
+        "orientation": "landscape"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000006.webp",
+        "width": 946,
+        "height": 644,
+        "orientation": "landscape"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000007.webp",
+        "width": 644,
+        "height": 946,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000008.webp",
+        "width": 644,
+        "height": 946,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000009.webp",
+        "width": 598,
+        "height": 1045,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000010.webp",
+        "width": 598,
+        "height": 1045,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000011.webp",
+        "width": 644,
+        "height": 946,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000012.webp",
+        "width": 499,
+        "height": 1248,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000013.webp",
+        "width": 546,
+        "height": 1097,
+        "orientation": "portrait"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000014.webp",
+        "width": 1045,
+        "height": 598,
+        "orientation": "landscape"
+      },
+      {
+        "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000015.webp",
+        "width": 598,
+        "height": 1045,
+        "orientation": "portrait"
+      },
+      {
         "src": "https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main/assets/images/style-showcase/UP%E6%88%91%E6%80%9D%E6%95%85%E6%B1%9D%E6%B0%B8%E5%AD%98000019.webp",
         "width": 992,
         "height": 1456,
