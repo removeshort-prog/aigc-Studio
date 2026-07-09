@@ -1,0 +1,49 @@
+name: Sync Gallery Data
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "assets/images/**"
+      - "assets/profile/**"
+      - "portfolio-data.js"
+      - "scripts/generate-gallery.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-gallery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate Gallery Data
+        run: node scripts/generate-gallery.js
+
+      - name: Commit Gallery Data
+        run: |
+          if git diff --quiet -- generated-gallery.js; then
+            echo "generated-gallery.js is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated-gallery.js
+          git commit -m "Sync generated gallery data"
+          git push

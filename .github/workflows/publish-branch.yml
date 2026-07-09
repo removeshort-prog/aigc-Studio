@@ -1,0 +1,73 @@
+name: Backup Publish Branch
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backup-publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pillow
+
+      - name: Generate Gallery Data
+        run: node scripts/generate-gallery.js
+
+      - name: Build Optimized Site
+        run: python scripts/build-publish.py
+
+      - name: Publish _site to gh-pages
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -rf ../gh-pages-worktree
+          git fetch origin gh-pages || true
+
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git worktree add ../gh-pages-worktree origin/gh-pages
+          else
+            git worktree add --detach ../gh-pages-worktree
+            git -C ../gh-pages-worktree checkout --orphan gh-pages
+            git -C ../gh-pages-worktree rm -rf . || true
+          fi
+
+          find ../gh-pages-worktree -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a _site/. ../gh-pages-worktree/
+          touch ../gh-pages-worktree/.nojekyll
+
+          git -C ../gh-pages-worktree add -A
+
+          if git -C ../gh-pages-worktree diff --cached --quiet; then
+            echo "gh-pages is already up to date."
+            exit 0
+          fi
+
+          git -C ../gh-pages-worktree commit -m "Publish optimized site"
+          git -C ../gh-pages-worktree push origin HEAD:gh-pages --force-with-lease
