@@ -12,6 +12,10 @@ concurrency:
   group: huggingface-space-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  HF_SPACE: removeshort/removeshort-AIGC-Studio
+  HF_PUBLIC_BASE_URL: https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,11 +36,40 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --upgrade pillow
 
+      - name: Clone Hugging Face Assets
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${HF_TOKEN:-}" ]; then
+            git clone "https://oauth2:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" ../hf-assets
+          else
+            git clone "https://huggingface.co/spaces/${HF_SPACE}" ../hf-assets
+          fi
+
+          git -C ../hf-assets lfs install --local || true
+          git -C ../hf-assets lfs pull || true
+
       - name: Generate Gallery Data
-        run: node scripts/generate-gallery.js
+        run: |
+          set -euo pipefail
+          if find ../hf-assets/assets/images -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' \) 2>/dev/null | grep -q .; then
+            echo "Using Hugging Face assets."
+            GALLERY_ASSET_ROOT=../hf-assets GALLERY_PUBLIC_BASE_URL="${HF_PUBLIC_BASE_URL}" node scripts/generate-gallery.js
+          else
+            echo "Hugging Face assets not found; using local assets."
+            node scripts/generate-gallery.js
+          fi
 
       - name: Build Optimized Site
-        run: python scripts/build-publish.py
+        run: |
+          set -euo pipefail
+          if grep -q 'huggingface.co/spaces' generated-gallery.js; then
+            SKIP_LOCAL_GALLERY_ASSETS=1 python scripts/build-publish.py
+          else
+            python scripts/build-publish.py
+          fi
 
       - name: Add Hugging Face Space Metadata
         run: |
@@ -59,7 +92,6 @@ jobs:
       - name: Push Static Site to Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_SPACE: removeshort/removeshort-AIGC-Studio
         run: |
           set -euo pipefail
 
@@ -71,9 +103,29 @@ jobs:
 
           rm -rf ../hf-space
           git clone "https://oauth2:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" ../hf-space
+          git -C ../hf-space lfs install --local || true
+          git -C ../hf-space lfs pull || true
+
+          rm -rf ../hf-preserve
+          mkdir -p ../hf-preserve/assets
+          if [ -d ../hf-space/assets/images ]; then
+            mv ../hf-space/assets/images ../hf-preserve/assets/images
+          fi
+          if [ -d ../hf-space/assets/videos ]; then
+            mv ../hf-space/assets/videos ../hf-preserve/assets/videos
+          fi
 
           find ../hf-space -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
           cp -a _site/. ../hf-space/
+          mkdir -p ../hf-space/assets
+          if [ -d ../hf-preserve/assets/images ]; then
+            rm -rf ../hf-space/assets/images
+            mv ../hf-preserve/assets/images ../hf-space/assets/images
+          fi
+          if [ -d ../hf-preserve/assets/videos ]; then
+            rm -rf ../hf-space/assets/videos
+            mv ../hf-preserve/assets/videos ../hf-space/assets/videos
+          fi
 
           git -C ../hf-space config user.name "github-actions[bot]"
           git -C ../hf-space config user.email "41898282+github-actions[bot]@users.noreply.github.com"

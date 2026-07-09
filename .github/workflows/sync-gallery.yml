@@ -8,6 +8,8 @@ on:
       - "assets/profile/**"
       - "portfolio-data.js"
       - "scripts/generate-gallery.js"
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -17,9 +19,13 @@ concurrency:
   group: sync-gallery-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  HF_SPACE: removeshort/removeshort-AIGC-Studio
+  HF_PUBLIC_BASE_URL: https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main
+
 jobs:
   sync:
-    if: github.actor != 'github-actions[bot]' || github.event_name == 'workflow_dispatch'
+    if: github.actor != 'github-actions[bot]' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,8 +38,24 @@ jobs:
         with:
           node-version: 22
 
+      - name: Clone Hugging Face Assets
+        run: |
+          set -euo pipefail
+          rm -rf ../hf-assets
+          git clone "https://huggingface.co/spaces/${HF_SPACE}" ../hf-assets
+          git -C ../hf-assets lfs install --local || true
+          git -C ../hf-assets lfs pull || true
+
       - name: Generate Gallery Data
-        run: node scripts/generate-gallery.js
+        run: |
+          set -euo pipefail
+          if find ../hf-assets/assets/images -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' \) 2>/dev/null | grep -q .; then
+            echo "Using Hugging Face assets."
+            GALLERY_ASSET_ROOT=../hf-assets GALLERY_PUBLIC_BASE_URL="${HF_PUBLIC_BASE_URL}" node scripts/generate-gallery.js
+          else
+            echo "Hugging Face assets not found; using local assets."
+            node scripts/generate-gallery.js
+          fi
 
       - name: Commit Gallery Data
         run: |

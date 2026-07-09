@@ -2,7 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const imageRoot = path.join(root, "assets", "images");
+const assetRoot = path.resolve(process.env.GALLERY_ASSET_ROOT || root);
+const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
+const imageRoot = path.join(assetRoot, "assets", "images");
 const rebuildRoot = path.join(imageRoot, "reconstruction");
 const outputFile = path.join(root, "generated-gallery.js");
 const groups = [
@@ -16,8 +18,17 @@ function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
+function encodeWebPath(webPath) {
+  return webPath
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+}
+
 function toWebPath(filePath) {
-  return `./${path.relative(root, filePath).split(path.sep).join("/")}`;
+  const base = publicBaseUrl ? assetRoot : root;
+  const webPath = path.relative(base, filePath).split(path.sep).join("/");
+  return publicBaseUrl ? `${publicBaseUrl}/${encodeWebPath(webPath)}` : `./${webPath}`;
 }
 
 function getImageSize(filePath) {
@@ -175,6 +186,8 @@ const output = `window.GENERATED_GALLERY = ${JSON.stringify(gallery, null, 2)};\
 fs.writeFileSync(outputFile, output, "utf8");
 
 console.log("Generated gallery:");
+console.log(`- asset root: ${assetRoot}`);
+if (publicBaseUrl) console.log(`- public base: ${publicBaseUrl}`);
 for (const group of groups) {
   const count = gallery[group.id].samples.length + (gallery[group.id].cover ? 1 : 0);
   console.log(`- ${group.id}: ${count} files`);

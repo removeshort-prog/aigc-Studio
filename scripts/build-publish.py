@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 from pathlib import Path
 
@@ -12,6 +13,7 @@ OUT = ROOT / "_site"
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}
 COPY_EXTS = {".html", ".css", ".js", ".md", ".json", ".txt", ".nojekyll"}
+SKIP_LOCAL_GALLERY_ASSETS = os.environ.get("SKIP_LOCAL_GALLERY_ASSETS") == "1"
 
 
 def rel(path: Path) -> str:
@@ -56,8 +58,11 @@ def build_image_map() -> dict[str, str]:
     for src in ROOT.rglob("*"):
         if not src.is_file():
             continue
-        top_level = src.relative_to(ROOT).parts[0]
+        relative_parts = src.relative_to(ROOT).parts
+        top_level = relative_parts[0]
         if top_level in {"scripts", "_site", ".git", ".github"}:
+            continue
+        if SKIP_LOCAL_GALLERY_ASSETS and relative_parts[:2] == ("assets", "images"):
             continue
         if src.suffix.lower() in IMAGE_EXTS:
             target = convert_image(src)
