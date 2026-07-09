@@ -1,0 +1,94 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: huggingface-space-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pillow
+
+      - name: Generate Gallery Data
+        run: node scripts/generate-gallery.js
+
+      - name: Build Optimized Site
+        run: python scripts/build-publish.py
+
+      - name: Add Hugging Face Space Metadata
+        run: |
+          cat > _site/README.md <<'EOF'
+          ---
+          title: AIGC Studio
+          colorFrom: blue
+          colorTo: indigo
+          sdk: static
+          app_file: index.html
+          pinned: false
+          license: mit
+          ---
+
+          # AIGC Studio
+
+          Personal AIGC visual portfolio built from the optimized static site output.
+          EOF
+
+      - name: Push Static Site to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "Missing GitHub secret: HF_TOKEN"
+            echo "Create a Hugging Face write token, then add it in GitHub Settings > Secrets and variables > Actions > Repository secrets."
+            exit 1
+          fi
+
+          if [ -z "${HF_SPACE:-}" ]; then
+            echo "Missing GitHub variable: HF_SPACE"
+            echo "Set it in GitHub Settings > Secrets and variables > Actions > Variables, for example: your-hf-name/aigc-Studio"
+            exit 1
+          fi
+
+          rm -rf ../hf-space
+          git clone "https://oauth2:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" ../hf-space
+
+          find ../hf-space -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a _site/. ../hf-space/
+
+          git -C ../hf-space config user.name "github-actions[bot]"
+          git -C ../hf-space config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C ../hf-space add -A
+
+          if git -C ../hf-space diff --cached --quiet; then
+            echo "Hugging Face Space is already up to date."
+            exit 0
+          fi
+
+          git -C ../hf-space commit -m "Deploy optimized static site"
+          git -C ../hf-space push
