@@ -1,8 +1,6 @@
 name: Deploy to Hugging Face Space
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -96,9 +94,9 @@ jobs:
           set -euo pipefail
 
           if [ -z "${HF_TOKEN:-}" ]; then
-            echo "Missing GitHub secret: HF_TOKEN"
-            echo "Create a Hugging Face write token, then add it in GitHub Settings > Secrets and variables > Actions > Repository secrets."
-            exit 1
+            echo "::notice::Missing GitHub secret: HF_TOKEN. Skipping Hugging Face Space deploy."
+            echo "Add HF_TOKEN in GitHub Settings > Secrets and variables > Actions > Repository secrets if you want to deploy the static site to Hugging Face automatically."
+            exit 0
           fi
 
           rm -rf ../hf-space
