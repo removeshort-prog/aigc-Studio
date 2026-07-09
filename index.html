@@ -3,83 +3,258 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AIGC Visual Portfolio</title>
+    <title>removeshort AIGC Studio</title>
     <meta
       name="description"
-      content="AIGC visual portfolio for anime game direct generation, image reconstruction, and production tools."
+      content="removeshort AIGC studio for anime visual works, style references, image reconstruction, videos, and production tools."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260629-project-cards" />
+    <link rel="stylesheet" href="./styles.css?v=20260709-studio-home" />
   </head>
   <body>
+    <aside class="side-nav" aria-label="左侧导航">
+      <a class="side-back" href="#top">
+        <span>←</span>
+        <strong>返回主站</strong>
+      </a>
+      <a class="side-link is-active" href="#top">
+        <span class="side-icon icon-home"></span>
+        <strong>首页</strong>
+      </a>
+      <div class="side-group">
+        <p>图片类</p>
+        <a class="side-link" href="#direct" data-gallery-filter="anime">
+          <span class="side-icon icon-image"></span>
+          <strong>二次元类</strong>
+        </a>
+        <a class="side-link" href="#direct" data-gallery-filter="digital-art">
+          <span class="side-icon icon-spark"></span>
+          <strong>数字艺术类</strong>
+        </a>
+        <a class="side-link" href="#direct" data-gallery-filter="style-showcase">
+          <span class="side-icon icon-grid"></span>
+          <strong>画风展示</strong>
+        </a>
+        <a class="side-link" href="#rebuild">
+          <span class="side-icon icon-spark"></span>
+          <strong>重构整理</strong>
+        </a>
+      </div>
+      <div class="side-group">
+        <p>视频类</p>
+        <a class="side-link" href="#videos" data-video-filter="puppet">
+          <span class="side-icon icon-video"></span>
+          <strong>木偶动画</strong>
+        </a>
+        <a class="side-link" href="#videos" data-video-filter="long">
+          <span class="side-icon icon-video"></span>
+          <strong>长视频</strong>
+        </a>
+      </div>
+      <div class="side-group">
+        <p>制作工具展示</p>
+        <a class="side-link" href="#production" data-production-filter="base">
+          <span class="side-icon icon-cube"></span>
+          <strong>底模</strong>
+        </a>
+        <a class="side-link" href="#production" data-production-filter="lora">
+          <span class="side-icon icon-cube"></span>
+          <strong>Lora / LyCORIS</strong>
+        </a>
+        <a class="side-link" href="#production" data-production-filter="platform">
+          <span class="side-icon icon-grid"></span>
+          <strong>平台：Comfy / Forge</strong>
+        </a>
+      </div>
+      <div class="side-group">
+        <p>其他</p>
+        <a class="side-link" href="#sponsor">
+          <span class="side-icon icon-image"></span>
+          <strong>赞助原图</strong>
+        </a>
+        <a class="side-link" href="#custom">
+          <span class="side-icon icon-home"></span>
+          <strong>定制 / 教学</strong>
+        </a>
+      </div>
+    </aside>
+
     <header class="topbar">
       <a class="brand" href="#top" aria-label="回到顶部">
-        <span class="brand-mark"></span>
-        <span>AI Visual Portfolio</span>
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy">
+          <strong>removeshort</strong>
+          <small>AIGC Studio</small>
+        </span>
       </a>
-      <nav class="nav" aria-label="作品集导航">
-        <a href="#direct">直出</a>
-        <a href="#rebuild">重构</a>
-        <a href="#tools">工具</a>
+
+      <nav class="nav" aria-label="站点导航">
+        <a href="#direct">图片类</a>
+        <a href="#videos">视频类</a>
+        <a href="#production">制作工具</a>
+        <a href="#sponsor">赞助原图</a>
+        <a href="#custom">定制教学</a>
       </nav>
+
+      <div class="top-actions">
+        <button class="icon-btn search-toggle" id="focusPrompt" type="button" aria-label="定位灵感输入">
+          <span class="search-glyph"></span>
+        </button>
+        <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切换亮暗色主题">
+          <span class="theme-orb" aria-hidden="true">
+            <span class="theme-sun"></span>
+            <span class="theme-moon"></span>
+          </span>
+        </button>
+        <button class="lang-pill" type="button" aria-label="语言">CN</button>
+      </div>
     </header>
 
     <main id="top">
       <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow" id="profileTarget">AIGC Visual Design Intern</p>
-          <h1 id="profileName">你的姓名 / AIGC 视觉作品集</h1>
-          <p class="lead" id="profileSummary">
-            面向二次元游戏视觉内容，展示直出稳定性、Image2 / Banana2 重构、Prompt 画面控制和自研辅助工具。
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#direct">查看直出样本</a>
-            <a class="button" href="#rebuild">查看重构对比</a>
+        <div class="millennium-stage" id="millenniumStage" aria-label="千禧七大难题可视化预览">
+          <canvas id="millenniumCanvas"></canvas>
+          <span class="millennium-hint" aria-hidden="true"></span>
+          <div class="millennium-hud" aria-hidden="true">
+            <span>Millennium Problems</span>
+            <strong id="millenniumTitle">千禧七大难题</strong>
+            <small id="millenniumFormula">触碰粒子云，坍缩为全息示意</small>
           </div>
         </div>
-        <div class="hero-panel" aria-label="账号与能力概览">
-          <div class="social-card-list" id="socialLinks"></div>
+
+        <div class="hero-copy">
+          <div class="hero-avatar-wrap">
+            <span class="avatar-frame hero-avatar">
+              <img id="avatarHero" alt="" hidden />
+            </span>
+            <div>
+              <p class="eyebrow" id="profileTarget">AIGC Visual Playground</p>
+              <p class="hero-nickname glitch-text" id="profileNickname" data-text="我思故汝永存">我思故汝永存</p>
+              <h1 id="profileName">removeshort AIGC Studio</h1>
+            </div>
+          </div>
+          <p class="lead" id="profileSummary">
+            这里整理我的二次元 AIGC 作品、可选画风、重构案例、视频样本和自研小工具。
+          </p>
+        </div>
+
+        <div class="platform-strip" id="platformLinks" aria-label="平台链接"></div>
+
+        <div class="feature-grid" aria-label="站点功能入口">
+          <a class="feature-card" href="#direct">
+            <strong>图片类</strong>
+            <small>二次元类 / 数字艺术类 / 画风展示 / 重构整理</small>
+          </a>
+          <a class="feature-card" href="#videos">
+            <strong>视频类</strong>
+            <small>木偶动画 / 长视频 / 动态镜头</small>
+          </a>
+          <a class="feature-card" href="#production">
+            <strong>制作工具展示</strong>
+            <small>底模 / Lora-LyCORIS / Comfy-Forge</small>
+          </a>
+          <a class="feature-card" href="#sponsor">
+            <strong>赞助原图</strong>
+            <small>B 站小店 / 原图同步更新</small>
+          </a>
+          <a class="feature-card" href="#custom">
+            <strong>定制 / 教学</strong>
+            <small>私定说明 / 可订内容 / 预算沟通</small>
+          </a>
         </div>
       </section>
 
       <section class="section section-tight" id="direct">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Direct Generation</p>
-            <h2>直出样本库</h2>
+            <p class="eyebrow">Gallery</p>
+            <h2>图片类</h2>
           </div>
           <p class="section-note">
-            按难度分组展示。每组先看精选封面，再看样本墙，避免大量图片直接平铺。
+            二次元类、数字艺术类和画风展示会自动读取文件夹，按原图比例进入瀑布流。
           </p>
         </div>
-        <div class="gallery-stack" id="directGallery"></div>
+        <div class="gallery-toolbar" id="galleryFilters"></div>
+        <div class="masonry-gallery" id="directGallery"></div>
       </section>
 
       <section class="section" id="rebuild">
         <div class="section-head">
           <div>
             <p class="eyebrow">Reconstruction</p>
-            <h2>SD 初稿到 Image2 / Banana2 重构</h2>
+            <h2>重构整理</h2>
           </div>
           <p class="section-note">
-            重点展示背景重构、主体保留、光影统一、镜头强化和宣发完成度。
+            对背景、角色排版、光影和镜头层次进行二次整理，让可用图接近发布完成度。
           </p>
         </div>
         <div class="compare-grid" id="rebuildGrid"></div>
       </section>
 
-      <section class="section" id="tools">
+      <section class="section" id="videos">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Tools</p>
-            <h2>自研辅助工具</h2>
+            <p class="eyebrow">Video Works</p>
+            <h2>视频类</h2>
           </div>
           <p class="section-note">
-            一些自制的小工具
+            木偶动画和长视频会分开整理，后续把 mp4/webm 或外链补进数据即可同步展示。
           </p>
         </div>
-        <div class="tool-grid" id="toolGrid"></div>
+        <div class="category-strip" id="videoCategories"></div>
+        <div class="video-grid" id="videoGrid"></div>
       </section>
 
+      <section class="section" id="production">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Production Stack</p>
+            <h2>制作工具展示</h2>
+          </div>
+          <p class="section-note">
+            记录底模、Lora / LyCORIS 和 Comfy / Forge 等本地生产环境。
+          </p>
+        </div>
+        <div class="category-strip" id="productionFilters"></div>
+        <div class="tool-grid model-grid" id="productionGrid"></div>
+      </section>
+
+      <section class="section" id="sponsor">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Original Files</p>
+            <h2>赞助原图</h2>
+          </div>
+          <p class="section-note">
+            原图和赞助内容会同步更新，点击入口跳转到 B 站小店。
+          </p>
+        </div>
+        <a class="shop-card" id="shopCard" href="https://b23.tv/f1rIVkT" target="_blank" rel="noreferrer">
+          <span class="shop-badge">B 站小店</span>
+          <strong>赞助原图 / 原尺寸内容</strong>
+          <small>https://b23.tv/f1rIVkT</small>
+        </a>
+      </section>
+
+      <section class="section custom-section" id="custom">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Commission & Tutorial</p>
+            <h2>关于定制和教学</h2>
+          </div>
+          <p class="section-note">
+            定制为私定内容，价格按预算、用途、难度和修复工作量沟通。
+          </p>
+        </div>
+        <div class="custom-grid" id="customGrid"></div>
+      </section>
+
+      <section class="about-section" id="about">
+        <p class="eyebrow">About</p>
+        <h2>这是一个持续更新的个人 AIGC 视觉站。</h2>
+        <p>
+          作品集中的图像主要作为风格、构图和完成度参考。定制前可以先选择接近目标的画风，再沟通角色数量、画面比例、服装材质、背景复杂度和情绪氛围。
+        </p>
+      </section>
     </main>
 
     <dialog class="work-dialog" id="workDialog">
@@ -87,8 +262,14 @@
       <div class="dialog-body" id="dialogBody"></div>
     </dialog>
 
-    <script src="./portfolio-data.js?v=20260629-project-cards"></script>
-    <script src="./generated-gallery.js?v=20260629-project-cards"></script>
-    <script src="./app.js?v=20260629-project-cards"></script>
+    <dialog class="info-dialog" id="infoDialog">
+      <button class="info-close" id="infoDialogClose" type="button" aria-label="关闭">×</button>
+      <div class="info-dialog-body" id="infoDialogBody"></div>
+    </dialog>
+
+    <script src="./portfolio-data.js?v=20260709-studio-home"></script>
+    <script src="./generated-gallery.js?v=20260709-studio-home"></script>
+    <script src="./app.js?v=20260709-studio-home"></script>
+    <script src="./millennium.js?v=20260709-studio-home"></script>
   </body>
 </html>

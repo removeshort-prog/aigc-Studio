@@ -2,10 +2,14 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const directRoot = path.join(root, "assets", "works", "direct");
-const rebuildRoot = path.join(root, "assets", "works", "rebuild");
+const imageRoot = path.join(root, "assets", "images");
+const rebuildRoot = path.join(imageRoot, "reconstruction");
 const outputFile = path.join(root, "generated-gallery.js");
-const groups = ["group", "single", "styles"];
+const groups = [
+  { id: "anime", folder: "anime" },
+  { id: "digital-art", folder: "digital-art" },
+  { id: "style-showcase", folder: "style-showcase" },
+];
 const extensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 
 function ensureDir(dir) {
@@ -76,7 +80,7 @@ function imageEntry(filePath) {
 }
 
 function scanGroup(group) {
-  const dir = path.join(directRoot, group);
+  const dir = path.join(imageRoot, group.folder);
   ensureDir(dir);
 
   const files = fs
@@ -113,6 +117,20 @@ function findNamedImage(files, names) {
   });
 }
 
+function readCaseMeta(dir) {
+  const metaFile = ["meta.json", "case.json", "info.json"]
+    .map((name) => path.join(dir, name))
+    .find((filePath) => fs.existsSync(filePath));
+  if (!metaFile) return {};
+
+  try {
+    return JSON.parse(fs.readFileSync(metaFile, "utf8"));
+  } catch (error) {
+    console.warn(`Failed to read ${metaFile}: ${error.message}`);
+    return {};
+  }
+}
+
 function scanRebuilds() {
   ensureDir(rebuildRoot);
   const dirs = fs
@@ -135,20 +153,22 @@ function scanRebuilds() {
       if (!before || !after) return null;
 
       const folderName = path.basename(dir);
+      const meta = readCaseMeta(dir);
       return {
-        title: titleFromFolder(folderName) || `重构案例 ${index + 1}`,
+        title: meta.title || titleFromFolder(folderName) || `重构案例 ${index + 1}`,
         before: imageEntry(before),
         after: imageEntry(after),
         beforeFallback: "Before",
         afterFallback: "After",
-        summary: "展示从初稿到重构后的画面完成度提升。",
-        tags: ["Before", "After", "重构"],
+        summary: meta.summary || "展示从初稿到重构后的画面完成度提升。",
+        tags: Array.isArray(meta.tags) ? meta.tags : ["Before", "After", "重构"],
+        label: meta.label || "",
       };
     })
     .filter(Boolean);
 }
 
-const gallery = Object.fromEntries(groups.map((group) => [group, scanGroup(group)]));
+const gallery = Object.fromEntries(groups.map((group) => [group.id, scanGroup(group)]));
 const rebuilds = scanRebuilds();
 const output = `window.GENERATED_GALLERY = ${JSON.stringify(gallery, null, 2)};\nwindow.GENERATED_REBUILDS = ${JSON.stringify(rebuilds, null, 2)};\n`;
 
@@ -156,7 +176,7 @@ fs.writeFileSync(outputFile, output, "utf8");
 
 console.log("Generated gallery:");
 for (const group of groups) {
-  const count = gallery[group].samples.length + (gallery[group].cover ? 1 : 0);
-  console.log(`- ${group}: ${count} files`);
+  const count = gallery[group.id].samples.length + (gallery[group.id].cover ? 1 : 0);
+  console.log(`- ${group.id}: ${count} files`);
 }
 console.log(`- rebuild cases: ${rebuilds.length}`);

@@ -10,6 +10,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
+VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}
 COPY_EXTS = {".html", ".css", ".js", ".md", ".json", ".txt", ".nojekyll"}
 
 
@@ -61,6 +62,8 @@ def build_image_map() -> dict[str, str]:
         if src.suffix.lower() in IMAGE_EXTS:
             target = convert_image(src)
             image_map["./" + rel(src)] = "./" + target.relative_to(OUT).as_posix()
+        elif src.suffix.lower() in VIDEO_EXTS:
+            copy_regular_file(src)
         elif src.name == ".nojekyll" or src.suffix.lower() in COPY_EXTS:
             if src.name != "generated-gallery.js":
                 copy_regular_file(src)
