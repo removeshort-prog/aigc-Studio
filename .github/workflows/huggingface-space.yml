@@ -59,19 +59,13 @@ jobs:
       - name: Push Static Site to Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_SPACE: ${{ vars.HF_SPACE }}
+          HF_SPACE: removeshort/removeshort-AIGC-Studio
         run: |
           set -euo pipefail
 
           if [ -z "${HF_TOKEN:-}" ]; then
             echo "Missing GitHub secret: HF_TOKEN"
             echo "Create a Hugging Face write token, then add it in GitHub Settings > Secrets and variables > Actions > Repository secrets."
-            exit 1
-          fi
-
-          if [ -z "${HF_SPACE:-}" ]; then
-            echo "Missing GitHub variable: HF_SPACE"
-            echo "Set it in GitHub Settings > Secrets and variables > Actions > Variables, for example: your-hf-name/aigc-Studio"
             exit 1
           fi
 
