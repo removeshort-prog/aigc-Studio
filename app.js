@@ -60,86 +60,6 @@ function renderTags(tags = []) {
   return row;
 }
 
-function showRuntimeNotice(id, title, message) {
-  let stack = qs("#runtimeNotices");
-  if (!stack) {
-    stack = el("div", "runtime-notice-stack");
-    stack.id = "runtimeNotices";
-    stack.setAttribute("aria-live", "polite");
-    document.body.appendChild(stack);
-  }
-  if (stack.querySelector(`[data-notice-id="${id}"]`)) return;
-
-  const card = el("section", "runtime-notice");
-  card.dataset.noticeId = id;
-  card.innerHTML = `<div><strong>${title}</strong><p>${message}</p></div>`;
-  const close = el("button", "runtime-notice-close", "×");
-  close.type = "button";
-  close.setAttribute("aria-label", "关闭提示");
-  close.addEventListener("click", () => card.remove());
-  card.appendChild(close);
-  stack.appendChild(card);
-}
-
-function isMobileClient() {
-  const ua = navigator.userAgent || "";
-  const mobileUA = /Android|iPhone|iPad|iPod|Mobile|HarmonyOS/i.test(ua);
-  const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches;
-  const narrowViewport = Math.min(window.innerWidth, window.innerHeight) < 760;
-  return mobileUA || (coarsePointer && narrowViewport);
-}
-
-function collectHuggingFaceImages() {
-  const entries = [];
-  Object.values(generatedGallery || {}).forEach((group) => {
-    if (Array.isArray(group)) {
-      entries.push(...group);
-      return;
-    }
-    if (group?.cover) entries.push(group.cover);
-    if (Array.isArray(group?.samples)) entries.push(...group.samples);
-  });
-  (generatedRebuilds || []).forEach((item) => {
-    if (item?.before) entries.push(item.before);
-    if (item?.after) entries.push(item.after);
-  });
-  return entries
-    .map(asEntry)
-    .filter((entry) => entry?.src && entry.src.includes("huggingface.co/"));
-}
-
-function probeImage(url, timeout = 5500) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    const separator = url.includes("?") ? "&" : "?";
-    const timer = window.setTimeout(() => resolve(false), timeout);
-    image.onload = () => {
-      window.clearTimeout(timer);
-      resolve(true);
-    };
-    image.onerror = () => {
-      window.clearTimeout(timer);
-      resolve(false);
-    };
-    image.src = `${url}${separator}probe=${Date.now()}`;
-  });
-}
-
-function initRuntimeNotices() {
-  if (isMobileClient()) {
-    showRuntimeNotice("mobile-client", "移动端提示", "当前页面包含大量高清图与动效，建议使用客户端查看。");
-  }
-
-  const hfImage = collectHuggingFaceImages()[0];
-  if (!hfImage) return;
-  window.setTimeout(async () => {
-    const reachable = await probeImage(hfImage.src);
-    if (!reachable) {
-      showRuntimeNotice("hf-network", "图片资源连接失败", "图片资源托管在 Hugging Face，当前无法连接，请检查网络代理。");
-    }
-  }, 800);
-}
-
 function initProfile() {
   qs("#profileName").textContent = data.profile.name;
   qs("#profileTarget").textContent = data.profile.target;
@@ -707,4 +627,3 @@ renderSponsor();
 renderCustom();
 initInfoDialog();
 initFeatureMotion();
-initRuntimeNotices();
