@@ -6,7 +6,7 @@ window.PORTFOLIO_DATA = {
     subtitle: "画风串站点 / AIGC 视觉仓库",
     avatar: "./assets/profile/avatar.webp",
     summary:
-      "整理二次元 AIGC 作品、可选画风、图像重构、视频样本和自研小工具，作为定制前的风格参考。",
+      "整理二次元 AIGC 作品、可选画风、图像重构、视频样本和小工具，作为定制前的风格参考。",
   },
 
   platformLinks: [
@@ -30,9 +30,9 @@ window.PORTFOLIO_DATA = {
       kind: "x",
       platform: "X",
       title: "X",
-      value: "待补充",
-      url: "",
-      note: "外链位置预留",
+      value: "不常用",
+      url: "https://x.com/Removeshort",
+      note: "不常用",
     },
     {
       kind: "mail",
@@ -91,8 +91,8 @@ window.PORTFOLIO_DATA = {
       title: "背景重构：从可用初稿到宣发完成度",
       before: "./assets/images/reconstruction/01-background/before.png",
       after: "./assets/images/reconstruction/01-background/after.jpg",
-      beforeFallback: "SD 初稿",
-      afterFallback: "Image2 / Banana2 重构后",
+      beforeFallback: "初稿",
+      afterFallback: "重构后",
       summary:
         "保留主体方向，重构背景空间、环境光和镜头层次，减少 AI 味和背景杂乱。",
       tags: ["背景", "光影", "空间"],
@@ -113,13 +113,13 @@ window.PORTFOLIO_DATA = {
     {
       id: "puppet",
       title: "木偶动画",
-      summary: "适合展示角色动作、镜头节奏、表情和轻量剧情片段。",
+      summary: "展示角色动作、镜头节奏、表情和轻量剧情片段。",
       tags: ["木偶动画", "角色动作", "短片"],
     },
     {
       id: "long",
       title: "长视频",
-      summary: "适合展示连续叙事、场景切换、BGM 节奏和完整小剧场。",
+      summary: "展示连续叙事、场景切换、BGM 节奏和完整小剧场。",
       tags: ["长视频", "小剧场", "连续叙事"],
     },
   ],
@@ -150,7 +150,7 @@ window.PORTFOLIO_DATA = {
       label: "Base Model",
       title: "本地二次元模型",
       summary:
-        "本地出图以 noob_v、anima_base_v1 等二次元模型为主，按题材切换模型、VAE、采样器和分辨率策略。",
+        "本地出图以 noob_v、anima_base_v1 等为主，",
       tags: ["底模", "noob_v", "anima_base_v1"],
     },
     {
@@ -158,7 +158,7 @@ window.PORTFOLIO_DATA = {
       label: "Lora / LyCORIS",
       title: "Lora / LyCORIS 训练",
       summary:
-        "以适配 ss 系训练器的改进 GUI 丹炉为基准，关注 dim、alpha、LR、分层学习率、触发词和素材清洗。",
+        "以适配 ss 系训练器的改进 GUI 丹炉为基准",
       tags: ["Lora", "LyCORIS", "dim / LR"],
     },
     {
@@ -166,7 +166,7 @@ window.PORTFOLIO_DATA = {
       label: "Platform",
       title: "Comfy / Forge 平台",
       summary:
-        "长期自建本地图像生产环境，熟悉 ComfyUI、Forge、Forge Neo 的环境配置、模型管理、插件调试和工作流搭建。",
+        "环境配置,工作流搭建。",
       tags: ["ComfyUI", "Forge", "工作流"],
     },
   ],
@@ -181,7 +181,7 @@ window.PORTFOLIO_DATA = {
   siteInfo: {
     title: "关于本站",
     summary:
-      "本站参考阿里魔塔 AIGC 页面做了蓝紫科技感和侧边导航的视觉方向，用来集中展示 removeshort 的 AIGC 图片、视频、制作工具、赞助原图和定制说明。",
+      "本站参考阿里页面做了蓝紫科技感和侧边导航的视觉方向，用来集中展示 removeshort 的 AIGC 图片、视频、制作工具、赞助原图和定制说明。",
     intro:
       "个人长期自建本地图像生产环境，主要做二次元 AIGC 视觉、画风整理、图像重构、Lora / LyCORIS 训练和小剧场内容。本站不是商业平台，只是个人作品、工具记录和定制沟通入口。",
     links: [
@@ -202,7 +202,7 @@ window.PORTFOLIO_DATA = {
       },
     ],
     notes: [
-      "页面视觉参考阿里魔塔 AIGC 风格重新整理，内容和作品为个人站点用途。",
+      "页面视觉参考阿里风格重新整理，内容和作品为个人站点用途。",
       "图片、视频、模型和定制说明会继续更新。",
       "如果页面排版、链接或图片加载有问题，可以通过 B 站私信反馈。",
     ],
@@ -229,7 +229,7 @@ window.PORTFOLIO_DATA = {
       "最终价格双方觉得可以后再开始制作。",
     ],
     teaching: [
-      "可沟通 WebUI / ComfyUI / Forge / Forge Neo 基础环境、工作流整理和 Lora 入门。",
+      "可沟通教学 WebUI / ComfyUI / Forge / Forge Neo 、工作流搭建和训练Lora ",
       "教学内容按你的当前水平、电脑配置和目标效果来定。",
     ],
   },
