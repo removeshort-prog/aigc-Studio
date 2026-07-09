@@ -1768,6 +1768,7 @@ body.is-dark .tag {
 /* 2026-07-09 layout polish */
 body {
   --side-nav-w: 240px;
+  --content-gutter: clamp(20px, 3vw, 48px);
 }
 
 .side-nav {
@@ -1931,14 +1932,16 @@ body.is-dark .side-nav {
 
 main {
   width: auto;
-  max-width: 1280px;
-  margin-right: clamp(20px, 3vw, 48px);
-  margin-left: calc(var(--side-nav-w) + clamp(20px, 3vw, 48px));
+  max-width: min(1280px, calc(100vw - var(--side-nav-w) - var(--content-gutter) - var(--content-gutter)));
+  margin-right: var(--content-gutter);
+  margin-left: calc(var(--side-nav-w) + var(--content-gutter));
 }
 
 h1 {
   max-width: 760px;
-  font-size: clamp(44px, 6.8vw, 92px);
+  font-size: clamp(44px, 5.6vw, 88px);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .hero-copy {
@@ -2130,7 +2133,7 @@ h1 {
 .platform-card strong {
   position: relative;
   z-index: 1;
-  font-size: clamp(25px, 3vw, 38px);
+  font-size: clamp(24px, 2.35vw, 34px);
   line-height: 1;
   font-weight: 950;
 }
@@ -2673,7 +2676,7 @@ body.is-dark .shop-card {
   background: linear-gradient(135deg, rgba(40, 104, 255, 0.12), rgba(53, 214, 223, 0.18));
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1320px) {
   .side-nav {
     display: none;
   }
@@ -2684,6 +2687,28 @@ body.is-dark .shop-card {
 
   main {
     width: min(1280px, calc(100% - 48px));
+    max-width: min(1280px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+
+  h1 {
+    max-width: 720px;
+    font-size: clamp(44px, 6vw, 82px);
+  }
+
+  .hero-copy {
+    max-width: min(880px, 100%);
+  }
+
+  .platform-strip {
+    grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+  }
+}
+
+@media (max-width: 1050px) {
+  main {
+    width: min(1280px, calc(100% - 48px));
+    max-width: min(1280px, calc(100% - 48px));
     margin: 0 auto;
   }
 
