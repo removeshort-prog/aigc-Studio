@@ -230,7 +230,7 @@ window.PORTFOLIO_DATA = {
     ],
     teaching: [
       "可沟通教学 WebUI / ComfyUI / Forge / Forge Neo 、工作流搭建和训练Lora ",
-      "教学内容按你的当前水平、电脑配置和目标效果来定。",
+      "教学内容按你的当前水平、目标效果来定。",
     ],
   },
 
