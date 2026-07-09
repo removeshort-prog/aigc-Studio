@@ -5,7 +5,7 @@
 在线访问：
 
 ```text
-https://removeshort-prog.github.io/aigc-portfolio/
+https://removeshort-prog.github.io/aigc-Studio/#direct
 ```
 
 ## 页面内容
