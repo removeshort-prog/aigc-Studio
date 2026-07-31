@@ -40,7 +40,7 @@ window.PORTFOLIO_DATA = {
       title: "联系方式",
       value: "Email",
       url: "mailto:2651173237@qq.com",
-      note: "定制 / 教学沟通",
+      note: "定制委托沟通",
     },
   ],
 
@@ -209,29 +209,55 @@ window.PORTFOLIO_DATA = {
   },
 
   custom: {
-    notice: [
-      "定制都是私定，不会把定制了的图二次售卖或公开展示。",
-      "如果你希望公开展示，也可以提前说明。",
+    promise: {
+      label: "私定承诺",
+      title: "每一份定制，只为你制作",
+      description: "所有定制均为私定，完成后的产物不会二次售卖。",
+    },
+    pricing: {
+      label: "报价依据",
+      title: "制作难度与最终耗时",
+      description: "预算和需求决定制作范围，不同需求的难度与实际耗时不同。",
+    },
+    steps: [
+      {
+        label: "订前",
+        title: "先说预算和要求",
+        description: "角色、尺寸、画风、用途和细节说得越完整，越容易准确评估。",
+        priority: true,
+      },
+      {
+        label: "评估",
+        title: "说明实际用途",
+        description: "用途会影响尺寸、精修范围与交付形式，也用于估算",
+        emphasis: "制作时间和成本",
+      },
+      {
+        label: "确认",
+        title: "双方确认后开工",
+        description: "方案与最终价格都确认合适后，再开始制作。",
+      },
     ],
-    items: [
-      "手机 / 电脑壁纸类：单角色、多角色合照",
-      "成人向图：按角色与需求沟通",
-      "抱枕：看角色与尺寸，可能需要多版本修改",
-      "痛车：按车身尺寸和展示用途沟通",
-      "其他图像需求：基本都可以先聊",
-      "画风丹 / 角色丹：按素材、目标风格和训练难度沟通",
+    imageOrders: [
+      { title: "简单头像", level: "低", difficulty: 18, timeLevel: "短", time: 20 },
+      { title: "全身壁纸", level: "较高", difficulty: 76, timeLevel: "较长", time: 72 },
+      { title: "成人向图", level: "中", difficulty: 50, timeLevel: "中", time: 52 },
+      { title: "连续剧情", level: "较高", difficulty: 80, timeLevel: "长", time: 94 },
+      { title: "抱枕图", level: "高", difficulty: 94, timeLevel: "长", time: 88 },
+      { title: "机箱贴图", level: "较高", difficulty: 76, timeLevel: "较长", time: 78 },
     ],
-    priceNotes: [
-      "价格根据预算和需求决定，难度不同，制作时间也不同。",
-      "简单头像价格会低一些；全身壁纸、抱枕、复杂多人图通常需要更多修复时间。",
-      "请一定说明预算、用途、角色、尺寸、画风参考和禁忌点。",
-      "如果暂时没有想法，会参考 P 站等热度较高的画作方向来整理方案。",
-      "最终价格双方觉得可以后再开始制作。",
+    imageNote: "以上为单人参考，多人需求会按人数与画面复杂度增加工作量。其他想法也可以先沟通。",
+    loraOrders: [
+      {
+        title: "画风 Lora",
+        requirement: "请自带 50 张以上参考图片",
+      },
+      {
+        title: "角色 Lora",
+        requirement: "请说明装甲、皮肤等具体版本",
+      },
     ],
-    teaching: [
-      "可沟通教学 WebUI / ComfyUI / Forge / Forge Neo 、工作流搭建和训练Lora ",
-      "教学内容按你的当前水平、目标效果来定。",
-    ],
+    ideaNote: "暂时没有明确想法时，会参考 P 站等平台热度较高的画作方向整理方案。",
   },
 
 };

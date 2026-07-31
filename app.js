@@ -533,30 +533,123 @@ function renderCustom() {
   const custom = data.custom;
   if (!grid || !custom) return;
 
-  const notice = el("article", "custom-card");
-  notice.appendChild(el("h3", "", "定制说明"));
-  (custom.notice || []).forEach((line) => notice.appendChild(el("p", "", line)));
+  grid.replaceChildren();
 
-  const items = el("article", "custom-card");
-  items.appendChild(el("h3", "", "可订内容"));
-  const itemList = el("ul", "clean-list");
-  (custom.items || []).forEach((line) => itemList.appendChild(el("li", "", line)));
-  items.appendChild(itemList);
+  const overview = el("div", "custom-overview");
+  const promise = el("article", "custom-promise");
+  promise.appendChild(el("span", "custom-kicker", custom.promise.label));
+  promise.appendChild(el("h3", "", custom.promise.title));
+  promise.appendChild(el("p", "", custom.promise.description));
 
-  const price = el("article", "custom-card custom-card-wide");
-  price.appendChild(el("h3", "", "价格与沟通"));
-  const priceList = el("ul", "clean-list");
-  (custom.priceNotes || []).forEach((line) => priceList.appendChild(el("li", "", line)));
-  price.appendChild(priceList);
+  const pricing = el("div", "custom-pricing");
+  pricing.appendChild(el("span", "", custom.pricing.label));
+  pricing.appendChild(el("strong", "", custom.pricing.title));
+  pricing.appendChild(el("p", "", custom.pricing.description));
+  promise.appendChild(pricing);
 
-  const teaching = el("article", "custom-card custom-card-wide");
-  teaching.appendChild(el("h3", "", "教学方向"));
-  (custom.teaching || []).forEach((line) => teaching.appendChild(el("p", "", line)));
+  const process = el("article", "custom-process");
+  process.appendChild(el("span", "custom-kicker", "开始前请准备"));
+  process.appendChild(el("h3", "", "先把需求说清楚"));
+  const steps = el("ol", "custom-steps");
+  (custom.steps || []).forEach((step, index) => {
+    const item = el("li", "");
+    item.appendChild(el("span", "custom-step-index", String(index + 1).padStart(2, "0")));
+    const copy = el("div", "");
+    copy.appendChild(el("span", "custom-step-label", step.label));
+    copy.appendChild(el("h4", step.priority ? "custom-priority-text" : "", step.title));
+    const description = el("p", "", step.description);
+    if (step.emphasis) {
+      description.append(" ");
+      description.appendChild(el("strong", "custom-step-emphasis", step.emphasis));
+      description.append("。");
+    }
+    copy.appendChild(description);
+    item.appendChild(copy);
+    steps.appendChild(item);
+  });
+  process.appendChild(steps);
+  overview.appendChild(promise);
+  overview.appendChild(process);
 
-  grid.appendChild(notice);
-  grid.appendChild(items);
-  grid.appendChild(price);
-  grid.appendChild(teaching);
+  const catalog = el("div", "custom-catalog");
+  const imageOrders = el("article", "custom-category custom-category-images");
+  const imageHeading = el("div", "custom-category-heading");
+  imageHeading.appendChild(el("span", "custom-kicker", "01 / 图片类"));
+  imageHeading.appendChild(el("h3", "", "常见图片定制"));
+  imageOrders.appendChild(imageHeading);
+  const imageList = el("ul", "custom-order-list");
+  (custom.imageOrders || []).forEach((order) => {
+    const item = el("li", "");
+    item.appendChild(el("strong", "", order.title));
+    const metrics = el("div", "custom-metrics");
+    [
+      { name: "难度", level: order.level, value: order.difficulty },
+      { name: "耗时", level: order.timeLevel, value: order.time },
+    ].forEach((metric) => {
+      const meter = el("div", "custom-meter");
+      meter.setAttribute("role", "meter");
+      meter.setAttribute("aria-label", `${order.title}${metric.name}：${metric.level}`);
+      meter.setAttribute("aria-valuemin", "0");
+      meter.setAttribute("aria-valuemax", "100");
+      meter.setAttribute("aria-valuenow", String(metric.value));
+      meter.appendChild(el("span", "custom-meter-name", metric.name));
+      meter.appendChild(el("span", "custom-meter-label", metric.level));
+      const track = el("span", "custom-meter-track");
+      const marker = el("span", "custom-meter-marker");
+      marker.style.setProperty("--metric-value", `${metric.value}%`);
+      track.appendChild(marker);
+      meter.appendChild(track);
+      metrics.appendChild(meter);
+    });
+    item.appendChild(metrics);
+    imageList.appendChild(item);
+  });
+  imageOrders.appendChild(imageList);
+  imageOrders.appendChild(el("p", "custom-category-note", custom.imageNote));
+
+  const loraOrders = el("article", "custom-category custom-category-lora");
+  const loraHeading = el("div", "custom-category-heading");
+  loraHeading.appendChild(el("span", "custom-kicker", "02 / Lora 类"));
+  loraHeading.appendChild(el("h3", "", "常见 Lora 定制"));
+  loraOrders.appendChild(loraHeading);
+  const loraList = el("ul", "custom-lora-list");
+  (custom.loraOrders || []).forEach((order) => {
+    const item = el("li", "");
+    item.appendChild(el("strong", "", order.title));
+    item.appendChild(el("p", "", order.requirement));
+    loraList.appendChild(item);
+  });
+  loraOrders.appendChild(loraList);
+  loraOrders.appendChild(el("p", "custom-category-note", custom.ideaNote));
+  catalog.appendChild(imageOrders);
+  catalog.appendChild(loraOrders);
+
+  const contact = el("div", "custom-contact");
+  const contactCopy = el("div", "");
+  contactCopy.appendChild(el("span", "custom-kicker", "准备好需求后"));
+  contactCopy.appendChild(el("h3", "", "带上预算和要求来聊"));
+  contactCopy.appendChild(el("p", "", "用途、角色、尺寸和参考越明确，报价与交付时间越准确。"));
+  const contactActions = el("div", "custom-contact-actions");
+  const bilibili = (data.platformLinks || []).find((link) => link.kind === "bilibili");
+  const mail = (data.platformLinks || []).find((link) => link.kind === "mail");
+  if (bilibili) {
+    const link = el("a", "custom-contact-primary", "B 站私信");
+    link.href = bilibili.url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    contactActions.appendChild(link);
+  }
+  if (mail) {
+    const link = el("a", "custom-contact-secondary", "邮件沟通");
+    link.href = mail.url;
+    contactActions.appendChild(link);
+  }
+  contact.appendChild(contactCopy);
+  contact.appendChild(contactActions);
+
+  grid.appendChild(overview);
+  grid.appendChild(catalog);
+  grid.appendChild(contact);
 }
 
 function initInfoDialog() {
