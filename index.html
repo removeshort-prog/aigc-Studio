@@ -6,77 +6,13 @@
     <title>removeshort AIGC Studio</title>
     <meta
       name="description"
-      content="removeshort AIGC studio for anime visual works, style references, image reconstruction, videos, and production tools."
+      content="removeshort AIGC studio for anime visual works, style references, original files, and private commissions."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260801-custom" />
+    <link rel="icon" href="./assets/profile/avatar.webp" type="image/webp" />
+    <link rel="stylesheet" href="./styles.css?v=20260801-cleanup" />
   </head>
   <body>
-    <aside class="side-nav" aria-label="左侧导航">
-      <a class="side-back" href="#top">
-        <span>←</span>
-        <strong>返回主站</strong>
-      </a>
-      <a class="side-link is-active" href="#top">
-        <span class="side-icon icon-home"></span>
-        <strong>首页</strong>
-      </a>
-      <div class="side-group">
-        <p>图片类</p>
-        <a class="side-link" href="#direct" data-gallery-filter="anime">
-          <span class="side-icon icon-image"></span>
-          <strong>二次元类</strong>
-        </a>
-        <a class="side-link" href="#direct" data-gallery-filter="digital-art">
-          <span class="side-icon icon-spark"></span>
-          <strong>数字艺术类</strong>
-        </a>
-        <a class="side-link" href="#direct" data-gallery-filter="style-showcase">
-          <span class="side-icon icon-grid"></span>
-          <strong>画风展示</strong>
-        </a>
-        <a class="side-link" href="#rebuild">
-          <span class="side-icon icon-spark"></span>
-          <strong>重构整理</strong>
-        </a>
-      </div>
-      <div class="side-group">
-        <p>视频类</p>
-        <a class="side-link" href="#videos" data-video-filter="puppet">
-          <span class="side-icon icon-video"></span>
-          <strong>木偶动画</strong>
-        </a>
-        <a class="side-link" href="#videos" data-video-filter="long">
-          <span class="side-icon icon-video"></span>
-          <strong>长视频</strong>
-        </a>
-      </div>
-      <div class="side-group">
-        <p>制作工具展示</p>
-        <a class="side-link" href="#production" data-production-filter="base">
-          <span class="side-icon icon-cube"></span>
-          <strong>底模</strong>
-        </a>
-        <a class="side-link" href="#production" data-production-filter="lora">
-          <span class="side-icon icon-cube"></span>
-          <strong>Lora / LyCORIS</strong>
-        </a>
-        <a class="side-link" href="#production" data-production-filter="platform">
-          <span class="side-icon icon-grid"></span>
-          <strong>平台：Comfy / Forge</strong>
-        </a>
-      </div>
-      <div class="side-group">
-        <p>其他</p>
-        <a class="side-link" href="#sponsor">
-          <span class="side-icon icon-image"></span>
-          <strong>赞助原图</strong>
-        </a>
-        <a class="side-link" href="#custom">
-          <span class="side-icon icon-home"></span>
-          <strong>定制委托</strong>
-        </a>
-      </div>
-    </aside>
+    <div class="layout-rail" aria-hidden="true"></div>
 
     <header class="topbar">
       <a class="brand" href="#top" aria-label="回到顶部">
@@ -89,8 +25,6 @@
 
       <nav class="nav" aria-label="站点导航">
         <a href="#direct">图片类</a>
-        <a href="#videos">视频类</a>
-        <a href="#production">制作工具</a>
         <a href="#sponsor">赞助原图</a>
         <a href="#custom">定制委托</a>
       </nav>
@@ -133,7 +67,7 @@
             </div>
           </div>
           <p class="lead" id="profileSummary">
-            这里整理我的二次元 AIGC 作品、可选画风、重构案例、视频样本和自研小工具。
+            这里整理我的二次元 AIGC 作品与可选画风，也提供原图赞助和私定需求估算。
           </p>
         </div>
 
@@ -142,15 +76,7 @@
         <div class="feature-grid" aria-label="站点功能入口">
           <a class="feature-card" href="#direct">
             <strong>图片类</strong>
-            <small>二次元类 / 数字艺术类 / 画风展示 / 重构整理</small>
-          </a>
-          <a class="feature-card" href="#videos">
-            <strong>视频类</strong>
-            <small>木偶动画 / 长视频 / 动态镜头</small>
-          </a>
-          <a class="feature-card" href="#production">
-            <strong>制作工具展示</strong>
-            <small>底模 / Lora-LyCORIS / Comfy-Forge</small>
+            <small>二次元类 / 数字艺术类 / 画风展示</small>
           </a>
           <a class="feature-card" href="#sponsor">
             <strong>赞助原图</strong>
@@ -177,47 +103,6 @@
         <div class="masonry-gallery" id="directGallery"></div>
       </section>
 
-      <section class="section" id="rebuild">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Reconstruction</p>
-            <h2>重构整理</h2>
-          </div>
-          <p class="section-note">
-            对背景、角色排版、光影和镜头层次进行二次整理，让可用图接近发布完成度。
-          </p>
-        </div>
-        <div class="compare-grid" id="rebuildGrid"></div>
-      </section>
-
-      <section class="section" id="videos">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Video Works</p>
-            <h2>视频类</h2>
-          </div>
-          <p class="section-note">
-            木偶动画和长视频会分开整理，后续把 mp4/webm 或外链补进数据即可同步展示。
-          </p>
-        </div>
-        <div class="category-strip" id="videoCategories"></div>
-        <div class="video-grid" id="videoGrid"></div>
-      </section>
-
-      <section class="section" id="production">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Production Stack</p>
-            <h2>制作工具展示</h2>
-          </div>
-          <p class="section-note">
-            记录底模、Lora / LyCORIS 和 Comfy / Forge 等本地生产环境。
-          </p>
-        </div>
-        <div class="category-strip" id="productionFilters"></div>
-        <div class="tool-grid model-grid" id="productionGrid"></div>
-      </section>
-
       <section class="section" id="sponsor">
         <div class="section-head">
           <div>
@@ -239,10 +124,10 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Private Commission</p>
-            <h2>定制委托</h2>
+            <h2><span>你负责想象，</span><span>我负责绘制。</span></h2>
           </div>
           <p class="section-note">
-            全部私定，不二次售卖；报价以制作难度与最终耗时为准。
+            先用估算表梳理需求，看看难度、耗时和预算档位，再发送定制请求。
           </p>
         </div>
         <div class="custom-grid" id="customGrid"></div>
@@ -267,9 +152,9 @@
       <div class="info-dialog-body" id="infoDialogBody"></div>
     </dialog>
 
-    <script src="./portfolio-data.js?v=20260801-custom"></script>
-    <script src="./generated-gallery.js?v=20260801-custom"></script>
-    <script src="./app.js?v=20260801-custom"></script>
-    <script src="./millennium.js?v=20260801-custom"></script>
+    <script src="./portfolio-data.js?v=20260801-cleanup"></script>
+    <script src="./generated-gallery.js?v=20260801-cleanup"></script>
+    <script src="./app.js?v=20260801-cleanup"></script>
+    <script src="./millennium.js?v=20260801-cleanup"></script>
   </body>
 </html>

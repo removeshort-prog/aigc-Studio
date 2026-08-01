@@ -5,7 +5,6 @@ const root = path.resolve(__dirname, "..");
 const assetRoot = path.resolve(process.env.GALLERY_ASSET_ROOT || root);
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
 const imageRoot = path.join(assetRoot, "assets", "images");
-const rebuildRoot = path.join(imageRoot, "reconstruction");
 const outputFile = path.join(root, "generated-gallery.js");
 const groups = [
   { id: "anime", folder: "anime" },
@@ -113,75 +112,8 @@ function scanGroup(group) {
   };
 }
 
-function titleFromFolder(name) {
-  return name
-    .replace(/[-_]+/g, " ")
-    .replace(/^\d+\s*/, "")
-    .trim() || name;
-}
-
-function findNamedImage(files, names) {
-  const normalizedNames = names.map((name) => name.toLowerCase());
-  return files.find((filePath) => {
-    const base = path.basename(filePath, path.extname(filePath)).toLowerCase();
-    return normalizedNames.includes(base);
-  });
-}
-
-function readCaseMeta(dir) {
-  const metaFile = ["meta.json", "case.json", "info.json"]
-    .map((name) => path.join(dir, name))
-    .find((filePath) => fs.existsSync(filePath));
-  if (!metaFile) return {};
-
-  try {
-    return JSON.parse(fs.readFileSync(metaFile, "utf8"));
-  } catch (error) {
-    console.warn(`Failed to read ${metaFile}: ${error.message}`);
-    return {};
-  }
-}
-
-function scanRebuilds() {
-  ensureDir(rebuildRoot);
-  const dirs = fs
-    .readdirSync(rebuildRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => path.join(rebuildRoot, entry.name))
-    .sort((a, b) => path.basename(a).localeCompare(path.basename(b), "zh-Hans-CN"));
-
-  return dirs
-    .map((dir, index) => {
-      const files = fs
-        .readdirSync(dir, { withFileTypes: true })
-        .filter((entry) => entry.isFile())
-        .map((entry) => path.join(dir, entry.name))
-        .filter((filePath) => extensions.has(path.extname(filePath).toLowerCase()))
-        .sort((a, b) => path.basename(a).localeCompare(path.basename(b), "zh-Hans-CN"));
-
-      const before = findNamedImage(files, ["before", "原图", "初稿"]) || files[0];
-      const after = findNamedImage(files, ["after", "重构", "成品"]) || files.find((filePath) => filePath !== before);
-      if (!before || !after) return null;
-
-      const folderName = path.basename(dir);
-      const meta = readCaseMeta(dir);
-      return {
-        title: meta.title || titleFromFolder(folderName) || `重构案例 ${index + 1}`,
-        before: imageEntry(before),
-        after: imageEntry(after),
-        beforeFallback: "Before",
-        afterFallback: "After",
-        summary: meta.summary || "展示从初稿到重构后的画面完成度提升。",
-        tags: Array.isArray(meta.tags) ? meta.tags : ["Before", "After", "重构"],
-        label: meta.label || "",
-      };
-    })
-    .filter(Boolean);
-}
-
 const gallery = Object.fromEntries(groups.map((group) => [group.id, scanGroup(group)]));
-const rebuilds = scanRebuilds();
-const output = `window.GENERATED_GALLERY = ${JSON.stringify(gallery, null, 2)};\nwindow.GENERATED_REBUILDS = ${JSON.stringify(rebuilds, null, 2)};\n`;
+const output = `window.GENERATED_GALLERY = ${JSON.stringify(gallery, null, 2)};\n`;
 
 fs.writeFileSync(outputFile, output, "utf8");
 
@@ -192,4 +124,3 @@ for (const group of groups) {
   const count = gallery[group.id].samples.length + (gallery[group.id].cover ? 1 : 0);
   console.log(`- ${group.id}: ${count} files`);
 }
-console.log(`- rebuild cases: ${rebuilds.length}`);

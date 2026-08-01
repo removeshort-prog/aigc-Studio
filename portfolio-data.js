@@ -3,10 +3,9 @@ window.PORTFOLIO_DATA = {
     name: "removeshort AIGC Studio",
     nickname: "我思故汝永存",
     target: "AIGC Visual Playground",
-    subtitle: "画风串站点 / AIGC 视觉仓库",
     avatar: "./assets/profile/avatar.webp",
     summary:
-      "整理二次元 AIGC 作品、可选画风、图像重构、视频样本和小工具，作为定制前的风格参考。",
+      "整理二次元 AIGC 作品与可选画风，作为赞助和定制前的风格参考。",
   },
 
   platformLinks: [
@@ -48,126 +47,19 @@ window.PORTFOLIO_DATA = {
     {
       id: "anime",
       title: "二次元类",
-      difficulty: "难度最高",
-      folderHint: "assets/images/anime",
-      cover: "./assets/images/anime/cover.jpg",
-      fallback: "二次元类封面，命名为 cover.jpg",
-      summary:
-        "用于展示多人站位、角色遮挡、动作差异、手部稳定、服装区分和画面中心控制。",
-      judgePoints: ["多人关系", "站位遮挡", "手部稳定", "主体区分"],
-      tags: ["图片类", "二次元", "高难度"],
       samples: [],
     },
     {
       id: "digital-art",
       title: "数字艺术类",
-      difficulty: "基础完成度",
-      folderHint: "assets/images/digital-art",
-      cover: "./assets/images/digital-art/cover.jpg",
-      fallback: "数字艺术类封面，命名为 cover.jpg",
-      summary:
-        "用于展示面部稳定、角色姿态、服装材质、光影控制和二次元角色审美。",
-      judgePoints: ["面部稳定", "姿态动作", "服装材质", "光影控制"],
-      tags: ["图片类", "数字艺术", "角色"],
+      cover: "./assets/images/digital-art/6aee006b-cd46-4684-b203-b173ad8b6dc7.webp",
       samples: [],
     },
     {
       id: "style-showcase",
       title: "画风展示",
-      difficulty: "风格覆盖",
-      folderHint: "assets/images/style-showcase",
-      cover: "./assets/images/style-showcase/cover.jpg",
-      fallback: "画风展示拼图作为封面，命名为 cover.jpg",
-      summary:
-        "用于展示本地模型画风收集、风格控制、色彩倾向和角色比例差异。",
-      judgePoints: ["画风标签", "色彩倾向", "角色比例", "上色方式"],
-      tags: ["直出", "画风", "集合"],
+      cover: "./assets/images/style-showcase/cover.png",
       samples: [],
-    },
-  ],
-
-  rebuilds: [
-    {
-      title: "背景重构：从可用初稿到宣发完成度",
-      before: "./assets/images/reconstruction/01-background/before.png",
-      after: "./assets/images/reconstruction/01-background/after.jpg",
-      beforeFallback: "初稿",
-      afterFallback: "重构后",
-      summary:
-        "保留主体方向，重构背景空间、环境光和镜头层次，减少 AI 味和背景杂乱。",
-      tags: ["背景", "光影", "空间"],
-    },
-    {
-      title: "主体强化：人物稳定与画面中心",
-      before: "./assets/images/reconstruction/02-subject/before.png",
-      after: "./assets/images/reconstruction/02-subject/after.png",
-      beforeFallback: "原图",
-      afterFallback: "重构后",
-      summary:
-        "针对主体漂移、服饰细节弱、视觉中心不明确的问题进行二次处理。",
-      tags: ["主体", "细节", "构图"],
-    },
-  ],
-
-  videoCategories: [
-    {
-      id: "puppet",
-      title: "木偶动画",
-      summary: "展示角色动作、镜头节奏、表情和轻量剧情片段。",
-      tags: ["木偶动画", "角色动作", "短片"],
-    },
-    {
-      id: "long",
-      title: "长视频",
-      summary: "展示连续叙事、场景切换、BGM 节奏和完整小剧场。",
-      tags: ["长视频", "小剧场", "连续叙事"],
-    },
-  ],
-
-  videos: [
-    /*
-    {
-      title: "Wan2.2 角色动态测试",
-      summary: "展示角色动作、镜头推进、光影连续性和画面节奏。",
-      poster: "./assets/videos/puppet/wan22-demo-cover.webp",
-      src: "./assets/videos/puppet/wan22-demo.mp4",
-      url: "",
-      tags: ["Wan2.2", "视频", "动态镜头"],
-    },
-    {
-      title: "B站视频案例",
-      summary: "外链视频可以只填 url，不上传本地 mp4。",
-      poster: "./assets/videos/long/bilibili-case-cover.webp",
-      url: "https://www.bilibili.com/video/xxxx",
-      tags: ["B站", "视频", "案例"],
-    },
-    */
-  ],
-
-  productionTools: [
-    {
-      id: "base",
-      label: "Base Model",
-      title: "本地二次元模型",
-      summary:
-        "本地出图以 noob_v、anima_base_v1 等为主，",
-      tags: ["底模", "noob_v", "anima_base_v1"],
-    },
-    {
-      id: "lora",
-      label: "Lora / LyCORIS",
-      title: "Lora / LyCORIS 训练",
-      summary:
-        "以适配 ss 系训练器的改进 GUI 丹炉为基准",
-      tags: ["Lora", "LyCORIS", "dim / LR"],
-    },
-    {
-      id: "platform",
-      label: "Platform",
-      title: "Comfy / Forge 平台",
-      summary:
-        "环境配置,工作流搭建。",
-      tags: ["ComfyUI", "Forge", "工作流"],
     },
   ],
 
@@ -181,9 +73,9 @@ window.PORTFOLIO_DATA = {
   siteInfo: {
     title: "关于本站",
     summary:
-      "本站参考阿里页面做了蓝紫科技感和侧边导航的视觉方向，用来集中展示 removeshort 的 AIGC 图片、视频、制作工具、赞助原图和定制说明。",
+      "本站用来集中展示 removeshort 的 AIGC 图片、赞助原图和定制说明。",
     intro:
-      "个人长期自建本地图像生产环境，主要做二次元 AIGC 视觉、画风整理、图像重构、Lora / LyCORIS 训练和小剧场内容。本站不是商业平台，只是个人作品、工具记录和定制沟通入口。",
+      "个人长期自建本地图像生产环境，主要做二次元 AIGC 视觉、画风整理和 Lora / LyCORIS 训练。本站不是商业平台，只是个人作品和定制沟通入口。",
     links: [
       {
         title: "GitHub 仓库",
@@ -203,7 +95,7 @@ window.PORTFOLIO_DATA = {
     ],
     notes: [
       "页面视觉参考阿里风格重新整理，内容和作品为个人站点用途。",
-      "图片、视频、模型和定制说明会继续更新。",
+      "图片和定制说明会继续更新。",
       "如果页面排版、链接或图片加载有问题，可以通过 B 站私信反馈。",
     ],
   },
@@ -211,53 +103,35 @@ window.PORTFOLIO_DATA = {
   custom: {
     promise: {
       label: "私定承诺",
-      title: "每一份定制，只为你制作",
       description: "所有定制均为私定，完成后的产物不会二次售卖。",
     },
     pricing: {
       label: "报价依据",
       title: "制作难度与最终耗时",
-      description: "预算和需求决定制作范围，不同需求的难度与实际耗时不同。",
     },
-    steps: [
-      {
-        label: "订前",
-        title: "先说预算和要求",
-        description: "角色、尺寸、画风、用途和细节说得越完整，越容易准确评估。",
-        priority: true,
-      },
-      {
-        label: "评估",
-        title: "说明实际用途",
-        description: "用途会影响尺寸、精修范围与交付形式，也用于估算",
-        emphasis: "制作时间和成本",
-      },
-      {
-        label: "确认",
-        title: "双方确认后开工",
-        description: "方案与最终价格都确认合适后，再开始制作。",
-      },
-    ],
-    imageOrders: [
-      { title: "简单头像", level: "低", difficulty: 18, timeLevel: "短", time: 20 },
-      { title: "全身壁纸", level: "较高", difficulty: 76, timeLevel: "较长", time: 72 },
-      { title: "成人向图", level: "中", difficulty: 50, timeLevel: "中", time: 52 },
-      { title: "连续剧情", level: "较高", difficulty: 80, timeLevel: "长", time: 94 },
-      { title: "抱枕图", level: "高", difficulty: 94, timeLevel: "长", time: 88 },
-      { title: "机箱贴图", level: "较高", difficulty: 76, timeLevel: "较长", time: 78 },
-    ],
-    imageNote: "以上为单人参考，多人需求会按人数与画面复杂度增加工作量。其他想法也可以先沟通。",
-    loraOrders: [
-      {
-        title: "画风 Lora",
-        requirement: "请自带 50 张以上参考图片",
-      },
-      {
-        title: "角色 Lora",
-        requirement: "请说明装甲、皮肤等具体版本",
-      },
-    ],
-    ideaNote: "暂时没有明确想法时，会参考 P 站等平台热度较高的画作方向整理方案。",
+    estimate: {
+      types: [
+        { value: "avatar", label: "简单头像", difficulty: 1, time: 2 },
+        { value: "wallpaper", label: "全身壁纸", difficulty: 3, time: 4 },
+        { value: "adult", label: "成人向图", difficulty: 4, time: 4 },
+        { value: "story", label: "连续剧情", difficulty: 3, time: 7 },
+        { value: "pillow", label: "抱枕图", difficulty: 3, time: 7 },
+        { value: "case", label: "机箱贴图", difficulty: 7, time: 6 },
+        { value: "other", label: "其他定制需求", difficulty: 3, time: 4 },
+        { value: "style-lora", label: "画风 Lora", difficulty: 7, time: 8, kind: "lora" },
+        { value: "character-lora", label: "角色 Lora", difficulty: 8, time: 9, kind: "lora" },
+      ],
+      popularity: [
+        { value: "common", label: "常见角色", difficulty: 0, time: 0 },
+        { value: "niche", label: "冷门角色", difficulty: 1.2, time: 0.25 },
+      ],
+      requirements: [
+        { value: "action", label: "指定动作", difficulty: 0.8, time: 0.18 },
+        { value: "clothing", label: "指定服饰", difficulty: 0.7, time: 0.16 },
+        { value: "expression", label: "指定表情", difficulty: 0.5, time: 0.1 },
+        { value: "background", label: "指定背景", difficulty: 0.9, time: 0.2 },
+      ],
+    },
   },
 
 };
