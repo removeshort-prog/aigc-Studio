@@ -1,5 +1,6 @@
 const data = window.PORTFOLIO_DATA;
 const generatedGallery = window.GENERATED_GALLERY || {};
+const generatedSocialStats = window.GENERATED_SOCIAL_STATS || {};
 
 const qs = (selector) => document.querySelector(selector);
 const el = (tag, className, text) => {
@@ -195,7 +196,18 @@ function renderPlatformLinks() {
       card.type = "button";
       card.disabled = true;
     }
-    card.innerHTML = `<span>${item.platform}</span><strong>${item.title}</strong><small>${item.value}</small><em>${item.note}</em>`;
+    const followers = Number(generatedSocialStats[item.kind]?.followers);
+    const hasFollowers = Number.isFinite(followers) && followers > 0;
+    const value = hasFollowers
+      ? `<small class="platform-live-count" data-count-target="${followers}" data-count-suffix=" 粉丝">0</small>`
+      : `<small>${item.value}</small>`;
+    const isLive = hasFollowers && generatedSocialStats[item.kind]?.live === true;
+    const note = hasFollowers
+      ? isLive
+        ? `<em><i class="platform-live-dot" aria-hidden="true"></i>实时粉丝数</em>`
+        : `<em class="platform-sync-note">暂用上次数据</em>`
+      : `<em>${item.note}</em>`;
+    card.innerHTML = `<span>${item.platform}</span><strong>${item.title}</strong>${value}${note}`;
     strip.appendChild(card);
   });
 
@@ -205,6 +217,123 @@ function renderPlatformLinks() {
   infoButton.id = "infoDialogOpen";
   infoButton.innerHTML = `<span>Info</span><strong>说明反馈</strong><small>About</small><em>本站说明 / GitHub 仓库</em>`;
   strip.appendChild(infoButton);
+}
+
+function animateMetric(node) {
+  const target = Number(node.dataset.countTarget);
+  if (!Number.isFinite(target)) return;
+
+  const prefix = node.dataset.countPrefix || "";
+  const suffix = node.dataset.countSuffix || "";
+  const format = new Intl.NumberFormat("zh-CN");
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+    node.textContent = `${prefix}${format.format(target)}${suffix}`;
+    return;
+  }
+
+  const duration = 760;
+  const startedAt = performance.now();
+  const tick = (now) => {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = 1 - Math.pow(1 - progress, 4);
+    node.textContent = `${prefix}${format.format(Math.round(target * eased))}${suffix}`;
+    if (progress < 1) window.requestAnimationFrame(tick);
+  };
+  window.requestAnimationFrame(tick);
+}
+
+function animateMetrics(root = document) {
+  root.querySelectorAll?.("[data-count-target]").forEach(animateMetric);
+}
+
+function setGalleryCounts(count) {
+  [qs("#featureGalleryCount"), qs("#galleryCount")].filter(Boolean).forEach((node) => {
+    node.dataset.countTarget = String(count);
+    node.textContent = "0";
+  });
+}
+
+function favoriteKey(source) {
+  let first = 2166136261;
+  let second = 5381;
+  for (let index = 0; index < source.length; index += 1) {
+    const code = source.charCodeAt(index);
+    first = Math.imul(first ^ code, 16777619);
+    second = Math.imul(second ^ code, 33);
+  }
+  return `removeshort-aigc-img-${(first >>> 0).toString(36)}${(second >>> 0).toString(36)}`;
+}
+
+function favoriteStorageKey(key) {
+  return `aigc-image-favorite:${key}`;
+}
+
+function setFavoriteCount(button, value) {
+  const count = button.querySelector("strong");
+  const number = Number(value);
+  if (!count || !Number.isFinite(number)) return;
+  count.textContent = new Intl.NumberFormat("zh-CN").format(number);
+  button.dataset.favoriteCount = String(number);
+}
+
+function loadImageFavorite(button) {
+  const key = button.dataset.favoriteKey;
+  if (!key || button.dataset.favoriteLoaded === "true") return;
+  button.dataset.favoriteLoaded = "true";
+  fetch(`https://countapi.mileshilliard.com/api/v1/get/${encodeURIComponent(key)}`)
+    .then((response) => (response.status === 404 ? { value: 0 } : response.ok ? response.json() : Promise.reject(new Error("Favorite count unavailable"))))
+    .then((payload) => setFavoriteCount(button, payload.value))
+    .catch(() => {
+      const count = button.querySelector("strong");
+      if (count) count.textContent = "--";
+    });
+}
+
+function favoriteImage(button) {
+  const key = button.dataset.favoriteKey;
+  if (!key || button.dataset.favoritePending === "true") return;
+  try {
+    if (localStorage.getItem(favoriteStorageKey(key)) === "true") return;
+  } catch {
+    return;
+  }
+
+  button.dataset.favoritePending = "true";
+  fetch(`https://countapi.mileshilliard.com/api/v1/hit/${encodeURIComponent(key)}`)
+    .then((response) => (response.ok ? response.json() : Promise.reject(new Error("Favorite update unavailable"))))
+    .then((payload) => {
+      localStorage.setItem(favoriteStorageKey(key), "true");
+      button.classList.add("is-favorited");
+      button.classList.remove("is-animating");
+      void button.offsetWidth;
+      button.classList.add("is-animating");
+      button.setAttribute("aria-pressed", "true");
+      button.setAttribute("aria-label", button.getAttribute("aria-label").replace(/^收藏/, "已收藏"));
+      setFavoriteCount(button, payload.value);
+      window.setTimeout(() => button.classList.remove("is-animating"), 520);
+    })
+    .catch(() => {})
+    .finally(() => {
+      delete button.dataset.favoritePending;
+    });
+}
+
+function initImageFavoriteCounters(gallery) {
+  const buttons = [...gallery.querySelectorAll(".masonry-favorite")];
+  if (!("IntersectionObserver" in window)) {
+    buttons.forEach(loadImageFavorite);
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
+        loadImageFavorite(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "420px 0px" }
+  );
+  buttons.forEach((button) => observer.observe(button));
 }
 
 function initTheme() {
@@ -297,7 +426,7 @@ function renderDirectGallery() {
   const entries = [];
 
   gallery.innerHTML = "";
-  filters.innerHTML = "";
+  if (filters) filters.innerHTML = "";
 
   groups.forEach((group) => {
     const generated = normalizeGeneratedGroup(group.id);
@@ -315,22 +444,18 @@ function renderDirectGallery() {
     });
   });
 
-  const filterItems = [
-    { id: "all", label: "全部", count: entries.length },
-    ...groups.map((group) => ({
-      id: group.id,
-      label: group.title,
-      count: entries.filter((item) => item.group.id === group.id).length,
-    })),
-  ];
+  setGalleryCounts(entries.length);
 
-  filterItems.forEach((item, index) => {
-    const button = el("button", `gallery-filter${index === 0 ? " is-active" : ""}`);
-    button.type = "button";
-    button.dataset.filter = item.id;
-    button.innerHTML = `<span>${item.label}</span><strong>${item.count}</strong>`;
-    filters.appendChild(button);
-  });
+  if (filters) {
+    groups.forEach((group, index) => {
+      const count = entries.filter((item) => item.group.id === group.id).length;
+      const button = el("button", `gallery-filter${index === 0 ? " is-active" : ""}`);
+      button.type = "button";
+      button.dataset.filter = group.id;
+      button.innerHTML = `<span>${group.title}</span><strong>${count}</strong>`;
+      filters.appendChild(button);
+    });
+  }
 
   if (!entries.length) {
     gallery.appendChild(el("div", "empty-gallery", "把图片放进 assets/images 对应文件夹后运行生成脚本，这里会显示瀑布流。"));
@@ -338,27 +463,59 @@ function renderDirectGallery() {
   }
 
   entries.forEach(({ entry, group, index, isCover }) => {
-    const card = el("button", `masonry-card is-${entry.orientation || "landscape"}`);
-    card.type = "button";
+    const title = `${group.title} #${index + 1}`;
+    const card = el("article", `masonry-card is-${entry.orientation || "landscape"}`);
     card.dataset.group = group.id;
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `查看 ${title}`);
     card.appendChild(imageFrame(entry, `${group.title} ${index + 1}`, "masonry-frame"));
 
     const meta = el("span", "masonry-meta");
     meta.innerHTML = `<strong>${group.title}</strong><small>${isCover ? "Cover" : String(index).padStart(2, "0")}</small>`;
     card.appendChild(meta);
-    card.addEventListener("click", () => openImage(entry, `${group.title} #${index + 1}`));
+    const favorite = document.createElement("button");
+    const key = favoriteKey(entry.src);
+    favorite.type = "button";
+    favorite.className = "masonry-favorite";
+    favorite.dataset.favoriteKey = key;
+    favorite.setAttribute("aria-label", `收藏 ${title}`);
+    let isFavorited = false;
+    try {
+      isFavorited = localStorage.getItem(favoriteStorageKey(key)) === "true";
+    } catch {}
+    favorite.setAttribute("aria-pressed", String(isFavorited));
+    if (isFavorited) favorite.setAttribute("aria-label", `已收藏 ${title}`);
+    favorite.innerHTML = `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C10.8 19.8 3 15.5 3 9.6C3 6.5 5.25 4.2 8.1 4.2C9.85 4.2 11.2 5.1 12 6.4C12.8 5.1 14.15 4.2 15.9 4.2C18.75 4.2 21 6.5 21 9.6C21 15.5 13.2 19.8 12 21Z"></path></svg><strong>--</strong>`;
+    if (favorite.getAttribute("aria-pressed") === "true") favorite.classList.add("is-favorited");
+    favorite.addEventListener("click", (event) => {
+      event.stopPropagation();
+      favoriteImage(favorite);
+    });
+    card.appendChild(favorite);
+    card.addEventListener("click", () => openImage(entry, title));
+    card.addEventListener("keydown", (event) => {
+      if (event.target !== card || !["Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      openImage(entry, title);
+    });
     gallery.appendChild(card);
   });
-
-  filters.addEventListener("click", (event) => {
+  const initialFilter = groups[0]?.id;
+  if (initialFilter) {
+    gallery.querySelectorAll(".masonry-card").forEach((card) => {
+      card.hidden = card.dataset.group !== initialFilter;
+    });
+  }
+  filters?.addEventListener("click", (event) => {
     const button = event.target.closest(".gallery-filter");
     if (!button) return;
-    const filter = button.dataset.filter;
     filters.querySelectorAll(".gallery-filter").forEach((node) => node.classList.toggle("is-active", node === button));
     gallery.querySelectorAll(".masonry-card").forEach((card) => {
-      card.hidden = filter !== "all" && card.dataset.group !== filter;
+      card.hidden = card.dataset.group !== button.dataset.filter;
     });
   });
+  initImageFavoriteCounters(gallery);
 }
 
 function openImage(input, title) {
@@ -373,6 +530,13 @@ function renderSponsor() {
   const sponsor = data.sponsor;
   const card = qs("#shopCard");
   if (!sponsor || !card) return;
+  const itemCount = Number(generatedSocialStats.bilibiliShop?.items);
+  if (Number.isFinite(itemCount) && itemCount >= 0) {
+    [qs("#featureShopCount"), qs("#shopItemCount")].filter(Boolean).forEach((node) => {
+      node.dataset.countTarget = String(itemCount);
+      node.textContent = "0";
+    });
+  }
   card.href = sponsor.url;
   card.querySelector("strong").textContent = sponsor.title;
   card.querySelector("small").textContent = sponsor.url;
@@ -625,7 +789,7 @@ function renderCustom() {
   actions.appendChild(send);
   actions.appendChild(copy);
   result.appendChild(actions);
-  const resultNote = el("p", "custom-result-note", "估算只用于前期沟通，最终价格和交付时间以需求确认结果为准。复制摘要后，也可以直接粘贴到 B 站私信。 ");
+  const resultNote = el("p", "custom-result-note", "仅为预估参考，请以实际沟通确认结果为准。复制摘要后，也可以直接粘贴到 B 站私信。 ");
   const bilibili = (data.platformLinks || []).find((link) => link.kind === "bilibili");
   if (bilibili) {
     const link = el("a", "custom-result-link", "打开 B 站");
@@ -825,7 +989,6 @@ qs("#workDialog").addEventListener("click", (event) => {
   if (event.target.id === "workDialog") closeWorkDialog();
 });
 
-initEntryGate(renderDirectGallery);
 initProfile();
 initTheme();
 initQuickSearch();
@@ -833,3 +996,7 @@ renderSponsor();
 renderCustom();
 initInfoDialog();
 initFeatureMotion();
+initEntryGate(() => {
+  renderDirectGallery();
+  animateMetrics();
+});
