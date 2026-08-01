@@ -26,14 +26,15 @@ function imageFrame(input, fallback, className) {
   }
 
   const img = new Image();
-  img.src = entry.src;
   img.alt = fallback || "";
   img.decoding = "async";
   img.loading = "lazy";
+  img.referrerPolicy = "no-referrer";
   img.addEventListener("error", () => {
     img.remove();
     frame.appendChild(el("div", "placeholder", fallback || "Image Pending"));
   });
+  img.src = entry.src;
   frame.appendChild(img);
   return frame;
 }
@@ -64,6 +65,118 @@ function initAvatar() {
   img.addEventListener("error", () => {
     img.hidden = true;
     img.removeAttribute("src");
+  });
+}
+
+function getGalleryProbeUrls() {
+  const urls = [];
+  Object.values(generatedGallery).forEach((group) => {
+    const items = Array.isArray(group) ? group : [group?.cover, ...(group?.samples || [])];
+    const entry = items.map(asEntry).find((item) => item?.src?.includes("huggingface.co"));
+    if (entry?.src && !urls.includes(entry.src)) urls.push(entry.src);
+  });
+  return urls.slice(0, 3);
+}
+
+function probeGalleryImage(url, timeout = 7000) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    const timer = window.setTimeout(() => finish(false), timeout);
+    const finish = (loaded) => {
+      window.clearTimeout(timer);
+      image.onload = null;
+      image.onerror = null;
+      resolve(loaded);
+    };
+    image.onload = () => finish(true);
+    image.onerror = () => finish(false);
+    image.referrerPolicy = "no-referrer";
+    image.src = url;
+  });
+}
+
+function initEntryGate(onEnter) {
+  const gate = qs("#entryGate");
+  const button = qs("#entryButton");
+  const progressBar = qs("#entryProgressBar");
+  const progressValue = qs("#entryProgressValue");
+  const statusTitle = qs("#entryStatusTitle");
+  const statusDetail = qs("#entryStatusDetail");
+  if (!gate || !button || !progressBar || !progressValue || !statusTitle || !statusDetail) {
+    document.body.classList.remove("is-entry-locked");
+    onEnter?.();
+    return;
+  }
+
+  const pageNodes = [...document.body.children].filter(
+    (node) => node !== gate && node.tagName !== "SCRIPT"
+  );
+  pageNodes.forEach((node) => { node.inert = true; });
+
+  let exitTimer;
+  const enterSite = () => {
+    if (gate.classList.contains("is-leaving")) return;
+    window.clearTimeout(exitTimer);
+    gate.classList.add("is-leaving");
+    pageNodes.forEach((node) => { node.inert = false; });
+    document.body.classList.remove("is-entry-locked");
+    onEnter?.();
+    window.setTimeout(() => gate.remove(), 620);
+  };
+
+  let progress = 8;
+  const setProgress = (value) => {
+    progress = Math.max(progress, Math.min(100, value));
+    progressBar.style.width = `${progress}%`;
+    progressValue.textContent = `${String(Math.round(progress)).padStart(2, "0")}%`;
+  };
+
+  const startedAt = performance.now();
+  const progressTimer = window.setInterval(() => {
+    if (progress < 76) setProgress(progress + Math.max(1, Math.round((78 - progress) * 0.08)));
+  }, 180);
+
+  const statusTimers = [
+    window.setTimeout(() => {
+      statusTitle.textContent = "正在连接远程图库";
+      statusDetail.textContent = "检查展示图片访问状态";
+      setProgress(34);
+    }, 420),
+    window.setTimeout(() => {
+      statusTitle.textContent = "正在校验展示资源";
+      statusDetail.textContent = "等待图库返回首张作品";
+      setProgress(62);
+    }, 1050),
+  ];
+
+  const finish = (isReachable) => {
+    window.clearInterval(progressTimer);
+    statusTimers.forEach(window.clearTimeout);
+    setProgress(100);
+    gate.dataset.state = isReachable ? "ready" : "offline";
+    gate.setAttribute("aria-busy", "false");
+    statusTitle.textContent = isReachable ? "图库连接完成" : "图库连接受限";
+    statusDetail.textContent = isReachable
+      ? "展示图片已就绪，即将进入"
+      : "请检查网络配置以查看展示图片";
+    button.hidden = false;
+    button.disabled = false;
+    window.setTimeout(() => button.focus({ preventScroll: true }), 180);
+    exitTimer = window.setTimeout(enterSite, isReachable ? 1200 : 3600);
+  };
+
+  const probeUrls = getGalleryProbeUrls();
+  const probePromise = probeUrls.length
+    ? Promise.all(probeUrls.map((url) => probeGalleryImage(url))).then((results) => results.some(Boolean))
+    : Promise.resolve(false);
+
+  probePromise.then((isReachable) => {
+    const remaining = Math.max(0, 1500 - (performance.now() - startedAt));
+    window.setTimeout(() => finish(isReachable), remaining);
+  });
+
+  button.addEventListener("click", () => {
+    if (!button.disabled) enterSite();
   });
 }
 
@@ -712,10 +825,10 @@ qs("#workDialog").addEventListener("click", (event) => {
   if (event.target.id === "workDialog") closeWorkDialog();
 });
 
+initEntryGate(renderDirectGallery);
 initProfile();
 initTheme();
 initQuickSearch();
-renderDirectGallery();
 renderSponsor();
 renderCustom();
 initInfoDialog();

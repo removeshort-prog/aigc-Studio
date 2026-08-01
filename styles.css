@@ -580,6 +580,392 @@ body.is-dark .feature-grid,
 body.is-dark .feature-card {
   background: var(--panel-solid);
 }
+
+body.is-entry-locked {
+  overflow: hidden;
+}
+
+.entry-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #090c1f;
+  color: #f8faff;
+  isolation: isolate;
+  transition: opacity 520ms ease, visibility 520ms ease;
+}
+
+.entry-gate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(110deg, rgba(40, 104, 255, 0.13), transparent 36%),
+    linear-gradient(290deg, rgba(53, 214, 223, 0.08), transparent 32%),
+    #090c1f;
+}
+
+.entry-gate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.035), transparent);
+  transform: translateX(-100%);
+  animation: entryGateScan 2.6s ease-in-out infinite;
+}
+
+.entry-gate-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(116, 143, 218, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(116, 143, 218, 0.12) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+}
+
+.entry-gate-content {
+  display: grid;
+  width: min(620px, calc(100vw - 48px));
+  justify-items: stretch;
+}
+
+.entry-gate-kicker {
+  margin: 0 0 18px;
+  color: #7ee8ee;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.entry-gate h1 {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  color: rgba(240, 244, 255, 0.6);
+  font-size: clamp(24px, 4vw, 42px);
+  line-height: 1.08;
+  font-weight: 680;
+}
+
+.entry-gate h1 span {
+  color: #ffffff;
+  font-size: clamp(46px, 8vw, 86px);
+  font-weight: 900;
+}
+
+.entry-link-map {
+  display: grid;
+  grid-template-columns: 46px 1fr 46px;
+  align-items: center;
+  gap: 12px;
+  margin: clamp(34px, 7vh, 64px) 0 22px;
+}
+
+.entry-link-node {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(194, 209, 255, 0.3);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.entry-link-node-origin {
+  border-color: rgba(128, 101, 255, 0.78);
+  background: rgba(128, 101, 255, 0.16);
+}
+
+.entry-link-node-gallery {
+  border-color: rgba(53, 214, 223, 0.78);
+  background: rgba(53, 214, 223, 0.12);
+}
+
+.entry-link-line {
+  position: relative;
+  height: 1px;
+  overflow: visible;
+  background: rgba(163, 183, 239, 0.22);
+}
+
+.entry-link-line::before,
+.entry-link-line::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(183, 201, 255, 0.58);
+  background: #090c1f;
+  transform: rotate(45deg);
+}
+
+.entry-link-line::before {
+  left: -1px;
+}
+
+.entry-link-line::after {
+  right: -1px;
+}
+
+.entry-link-line i {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 46px;
+  height: 5px;
+  background: #64e8ef;
+  box-shadow: 0 0 18px rgba(53, 214, 223, 0.8);
+  animation: entryLinkPulse 1.3s ease-in-out infinite;
+}
+
+.entry-progress {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.entry-progress-track {
+  height: 3px;
+  overflow: hidden;
+  background: rgba(198, 213, 255, 0.14);
+}
+
+.entry-progress-track i {
+  display: block;
+  width: 8%;
+  height: 100%;
+  background: #64e8ef;
+  box-shadow: 0 0 16px rgba(53, 214, 223, 0.72);
+  transition: width 260ms ease;
+}
+
+.entry-progress strong {
+  min-width: 46px;
+  color: #ffffff;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.entry-status {
+  display: grid;
+  grid-template-columns: 9px 1fr;
+  align-items: start;
+  gap: 13px;
+  margin-top: 20px;
+}
+
+.entry-status-mark {
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+  background: #64e8ef;
+  box-shadow: 0 0 14px rgba(53, 214, 223, 0.84);
+  animation: entryStatusBlink 1s steps(2, end) infinite;
+}
+
+.entry-status > span:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.entry-status strong {
+  font-size: 14px;
+  font-weight: 760;
+}
+
+.entry-status small {
+  color: rgba(207, 218, 250, 0.62);
+  font-size: 12px;
+}
+
+.entry-gate[data-state="ready"] .entry-status-mark {
+  background: #74efbb;
+  box-shadow: 0 0 14px rgba(116, 239, 187, 0.7);
+  animation: none;
+}
+
+.entry-gate[data-state="offline"] .entry-status-mark {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  place-items: center;
+  border: 1px solid #ff5f6d;
+  background: rgba(255, 71, 87, 0.12);
+  color: #ff6b77;
+  box-shadow: 0 0 16px rgba(255, 71, 87, 0.3);
+  animation: none;
+}
+
+.entry-gate[data-state="offline"] .entry-status-mark::before {
+  content: "!";
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.entry-gate[data-state="offline"] .entry-status {
+  grid-template-columns: 20px 1fr;
+  gap: 14px;
+}
+
+.entry-gate[data-state="offline"] .entry-status strong {
+  color: #ff7a84;
+  font-size: 15px;
+}
+
+.entry-gate[data-state="offline"] .entry-status small {
+  color: #ff939b;
+  font-size: 14px;
+  font-weight: 720;
+}
+
+.entry-button {
+  display: flex;
+  width: min(230px, 100%);
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+  padding: 0 18px;
+  border: 1px solid rgba(126, 232, 238, 0.7);
+  border-radius: 2px;
+  background: rgba(53, 214, 223, 0.08);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: entryButtonIn 360ms ease forwards;
+}
+
+.entry-button:hover,
+.entry-button:focus-visible {
+  border-color: #8bf6fa;
+  background: #eafcff;
+  color: #10152f;
+  outline: none;
+}
+
+.entry-button[hidden] {
+  display: none;
+}
+
+.entry-gate-corner {
+  position: absolute;
+  color: rgba(207, 218, 250, 0.42);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.entry-gate-corner-top {
+  top: 30px;
+  left: 34px;
+}
+
+.entry-gate-corner-bottom {
+  right: 34px;
+  bottom: 30px;
+}
+
+.entry-gate-signature {
+  position: absolute;
+  left: 34px;
+  bottom: 25px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.entry-gate.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes entryGateScan {
+  0%, 22% { transform: translateX(-100%); }
+  78%, 100% { transform: translateX(100%); }
+}
+
+@keyframes entryLinkPulse {
+  0% { left: 0; opacity: 0; }
+  18% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { left: calc(100% - 46px); opacity: 0; }
+}
+
+@keyframes entryStatusBlink {
+  50% { opacity: 0.35; }
+}
+
+@keyframes entryButtonIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 620px) {
+  .entry-gate-content {
+    width: calc(100vw - 40px);
+  }
+
+  .entry-gate h1 {
+    font-size: 22px;
+  }
+
+  .entry-gate h1 span {
+    font-size: clamp(44px, 15vw, 66px);
+  }
+
+  .entry-link-map {
+    margin-top: 40px;
+  }
+
+  .entry-gate-corner-top {
+    top: 22px;
+    left: 20px;
+  }
+
+  .entry-gate-corner-bottom {
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .entry-gate-signature {
+    left: 20px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry-gate::after,
+  .entry-link-line i,
+  .entry-status-mark {
+    animation: none;
+  }
+
+  .entry-gate,
+  .entry-progress-track i {
+    transition-duration: 1ms;
+  }
+}
 .dialog-media {
   position: relative;
   overflow: hidden;

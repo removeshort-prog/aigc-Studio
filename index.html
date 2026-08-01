@@ -9,9 +9,54 @@
       content="removeshort AIGC studio for anime visual works, style references, original files, and private commissions."
     />
     <link rel="icon" href="./assets/profile/avatar.webp" type="image/webp" />
-    <link rel="stylesheet" href="./styles.css?v=20260801-live-refresh" />
+    <link rel="stylesheet" href="./styles.css?v=20260801-entry-gate" />
   </head>
-  <body>
+  <body class="is-entry-locked">
+    <div
+      class="entry-gate"
+      id="entryGate"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="entryGateTitle"
+      aria-describedby="entryGateStatus"
+      aria-busy="true"
+    >
+      <div class="entry-gate-grid" aria-hidden="true"></div>
+      <div class="entry-gate-corner entry-gate-corner-top" aria-hidden="true">AIGC / 001</div>
+      <div class="entry-gate-corner entry-gate-corner-bottom" aria-hidden="true">VISUAL ARCHIVE</div>
+
+      <div class="entry-gate-content">
+        <p class="entry-gate-kicker">removeshort AIGC Studio</p>
+        <h1 id="entryGateTitle">正在连接<span>作品图库</span></h1>
+
+        <div class="entry-link-map" aria-hidden="true">
+          <span class="entry-link-node entry-link-node-origin">R</span>
+          <span class="entry-link-line"><i></i></span>
+          <span class="entry-link-node entry-link-node-gallery">HF</span>
+        </div>
+
+        <div class="entry-progress" aria-hidden="true">
+          <span class="entry-progress-track"><i id="entryProgressBar"></i></span>
+          <strong id="entryProgressValue">08%</strong>
+        </div>
+
+        <div class="entry-status" id="entryGateStatus" aria-live="polite">
+          <span class="entry-status-mark" aria-hidden="true"></span>
+          <span>
+            <strong id="entryStatusTitle">正在初始化视觉档案</strong>
+            <small id="entryStatusDetail">准备读取远程作品索引</small>
+          </span>
+        </div>
+
+        <button class="entry-button" id="entryButton" type="button" hidden disabled>
+          <span>进入作品站</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+
+      <p class="entry-gate-signature" aria-hidden="true">我思故汝永存</p>
+    </div>
+
     <div class="layout-rail" aria-hidden="true"></div>
 
     <header class="topbar">
@@ -152,9 +197,9 @@
       <div class="info-dialog-body" id="infoDialogBody"></div>
     </dialog>
 
-    <script src="./portfolio-data.js?v=20260801-live-refresh"></script>
-    <script src="./generated-gallery.js?v=20260801-live-refresh"></script>
-    <script src="./app.js?v=20260801-live-refresh"></script>
-    <script src="./millennium.js?v=20260801-live-refresh"></script>
+    <script src="./portfolio-data.js?v=20260801-entry-gate"></script>
+    <script src="./generated-gallery.js?v=20260801-entry-gate"></script>
+    <script src="./app.js?v=20260801-entry-gate"></script>
+    <script src="./millennium.js?v=20260801-entry-gate"></script>
   </body>
 </html>
