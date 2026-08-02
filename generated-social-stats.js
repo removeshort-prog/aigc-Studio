@@ -8,7 +8,7 @@ window.GENERATED_SOCIAL_STATS = {
     "live": true
   },
   "bilibiliShop": {
-    "items": 31,
+    "items": 32,
     "live": true
   }
 };
