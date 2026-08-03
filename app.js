@@ -593,6 +593,18 @@ function renderCustom() {
     label.appendChild(el("span", "", option.label));
     return label;
   };
+  const makeTextInput = (name, labelText, placeholder) => {
+    const group = el("label", "custom-input-group");
+    group.appendChild(el("span", "", labelText));
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = name;
+    input.className = "custom-text-input";
+    input.placeholder = placeholder;
+    input.autocomplete = "off";
+    group.appendChild(input);
+    return { group, input };
+  };
 
   const typeField = makeField("定制类型", "先选一个最接近的类型，之后仍可在私信里补充。");
   const typeSelect = document.createElement("select");
@@ -612,6 +624,12 @@ function renderCustom() {
   const popularityChoices = el("div", "custom-choice-grid custom-choice-grid-2");
   popularityOptions.forEach((option, index) => popularityChoices.appendChild(makeChoice("popularity", { ...option, checked: index === 0 })));
   popularityField.appendChild(popularityChoices);
+  const characterProfile = el("div", "custom-detail-panel custom-character-profile");
+  const characterNameField = makeTextInput("characterName", "角色名", "例如：初音未来；多人可用顿号分隔");
+  const characterVariantField = makeTextInput("characterVariant", "皮肤 / 装甲", "例如：原版皮肤、终焉装甲");
+  characterProfile.appendChild(characterNameField.group);
+  characterProfile.appendChild(characterVariantField.group);
+  popularityField.appendChild(characterProfile);
   form.appendChild(popularityField);
 
   const characterField = makeField("同一张图片的角色数量？", "角色越多，关系、遮挡和细节检查越复杂。");
@@ -641,17 +659,40 @@ function renderCustom() {
   characterField.appendChild(characterMultiplier);
   form.appendChild(characterField);
 
-  const requirementsField = makeField("需要指定哪些细节？", "可以多选，指定得越多，修复和检查工作越多。");
-  const requirementChoices = el("div", "custom-choice-grid custom-choice-grid-2");
-  requirementOptions.forEach((option) => requirementChoices.appendChild(makeChoice("requirements", option, "checkbox")));
-  requirementsField.appendChild(requirementChoices);
+  const requirementsField = makeField("需要指定哪些细节？", "勾选需要指定的项目，再填写具体要求；指定得越多，修复和检查工作越多。");
+  const requirementList = el("div", "custom-requirement-list");
+  const requirementInputs = new Map();
+  requirementOptions.forEach((option) => {
+    const row = el("div", "custom-requirement-row");
+    const choice = makeChoice("requirements", option, "checkbox");
+    const checkbox = choice.querySelector("input");
+    const detail = document.createElement("input");
+    detail.type = "text";
+    detail.name = `requirement-${option.value}`;
+    detail.className = "custom-text-input";
+    detail.placeholder = `例如：${option.example}`;
+    detail.setAttribute("aria-label", `填写${option.label}`);
+    detail.disabled = true;
+    checkbox.addEventListener("change", () => {
+      detail.disabled = !checkbox.checked;
+      row.classList.toggle("is-active", checkbox.checked);
+      if (checkbox.checked) detail.focus();
+    });
+    row.appendChild(choice);
+    row.appendChild(detail);
+    requirementInputs.set(option.value, { checkbox, detail, row });
+    requirementList.appendChild(row);
+  });
+  requirementsField.appendChild(requirementList);
   form.appendChild(requirementsField);
 
-  const referenceField = makeField("是否有参考？", "有参考可以减少摸索；参考越明确，估算越稳定。");
+  const referenceField = makeField("是否有参考？", "参考可以减少方向摸索；要求的还原程度越高，细节对齐与复核越多，最终估算费用越高。");
   const referenceToggle = makeChoice("hasReference", { value: "yes", label: "有参考，会在请求中一并提供", checked: false }, "checkbox");
   referenceField.appendChild(referenceToggle);
   const referencePanel = el("div", "custom-reference-panel");
   referencePanel.hidden = true;
+  const referenceAspectField = makeTextInput("referenceAspect", "具体参考的是哪个方面？", "例如：画风、构图、服饰、动作或色彩氛围");
+  referencePanel.appendChild(referenceAspectField.group);
   const referenceLabel = el("label", "custom-range-label");
   referenceLabel.appendChild(el("span", "", "参考程度"));
   const referenceValue = el("output", "custom-range-value", "60% · 平衡参考");
@@ -671,7 +712,7 @@ function renderCustom() {
   referenceField.appendChild(referencePanel);
   form.appendChild(referenceField);
 
-  const imageField = makeField("图片数量？", "数量较多时会按批量工作量给出优惠档位。");
+  const imageField = makeField("图片数量？", "图片越多，总工作量和最终估算费用越高。");
   const imageStepper = el("div", "custom-stepper");
   const imageDecrease = document.createElement("button");
   imageDecrease.type = "button";
@@ -755,29 +796,14 @@ function renderCustom() {
   scoreGrid.appendChild(difficultyMeter.block);
   scoreGrid.appendChild(timeMeter.block);
   result.appendChild(scoreGrid);
-  const stats = el("div", "custom-estimate-stats");
-  const budgetStat = el("div", "custom-estimate-stat");
-  budgetStat.appendChild(el("span", "", "预算档位"));
+  const budgetStat = el("div", "custom-final-cost");
+  budgetStat.appendChild(el("span", "", "最终估算费用"));
   const budgetValue = el("strong", "", "--");
   budgetValue.className = "custom-budget-value";
   budgetStat.appendChild(budgetValue);
-  const discountStat = el("div", "custom-estimate-stat");
-  discountStat.appendChild(el("span", "", "数量优惠"));
-  const discountValue = el("strong", "", "--");
-  discountStat.appendChild(discountValue);
-  stats.appendChild(budgetStat);
-  stats.appendChild(discountStat);
-  result.appendChild(stats);
+  result.appendChild(budgetStat);
   const factors = el("ul", "custom-estimate-factors");
   result.appendChild(factors);
-  const formula = document.createElement("details");
-  formula.className = "custom-formula";
-  const formulaSummary = document.createElement("summary");
-  formulaSummary.textContent = "查看估算规则";
-  formula.appendChild(formulaSummary);
-  const formulaCopy = el("p", "", "先取定制类型的基础分；角色不超过 4 名时不增加难度，超过 4 名时难度至少为 6 分。耗时倍率仍按人数翻倍（×1 / ×2 / ×4 / ×8…）。冷门角色和指定细节加分，明确参考与允许作者发挥会减分。多张图片计入总工作量，并按数量显示优惠。");
-  formula.appendChild(formulaCopy);
-  result.appendChild(formula);
   const actions = el("div", "custom-estimate-actions");
   const mail = (data.platformLinks || []).find((link) => link.kind === "mail");
   const send = el("a", "custom-contact-primary", "发送定制请求");
@@ -815,29 +841,35 @@ function renderCustom() {
     const type = typeOptions.find((option) => option.value === typeSelect.value) || typeOptions[0];
     const popularity = popularityOptions.find((option) => option.value === form.querySelector("input[name='popularity']:checked")?.value) || popularityOptions[0];
     const requirements = requirementOptions.filter((option) => form.querySelector(`input[name='requirements'][value='${option.value}']`)?.checked);
+    const requirementDetails = Object.fromEntries(requirementOptions.map((option) => [option.value, requirementInputs.get(option.value)?.detail.value.trim() || ""]));
     const hasReference = form.querySelector("input[name='hasReference']")?.checked;
     const referenceDegree = Number(referenceRange.value);
+    const referenceAspect = referenceAspectField.input.value.trim();
     const freedom = form.querySelector("input[name='authorFreedom']")?.checked;
+    const characterName = characterNameField.input.value.trim();
+    const characterVariant = characterVariantField.input.value.trim();
     const characters = clamp(Number(characterCount.value) || 1, 1, 8);
     const images = clamp(Number(imageCount.value) || 1, 1, 30);
     const trainingImages = clamp(Number(trainingCount.value) || 50, 20, 300);
     characterCount.value = String(characters);
     imageCount.value = String(images);
     trainingCount.value = String(trainingImages);
-    return { type, popularity, requirements, hasReference, referenceDegree, freedom, characters, images, trainingImages };
+    return { type, popularity, requirements, requirementDetails, hasReference, referenceDegree, referenceAspect, freedom, characterName, characterVariant, characters, images, trainingImages };
   };
   const buildEstimate = () => {
     const values = readForm();
     const isLora = values.type.kind === "lora";
     [popularityField, characterField, requirementsField, referenceField, imageField].forEach((field) => { field.hidden = isLora; });
     trainingField.hidden = !isLora;
-    discountStat.hidden = isLora;
-    stats.classList.toggle("is-single", isLora);
+    characterVariantField.group.hidden = values.popularity.value !== "common";
+    requirementInputs.forEach(({ checkbox, detail, row }) => {
+      detail.disabled = !checkbox.checked;
+      row.classList.toggle("is-active", checkbox.checked);
+    });
 
     let difficulty;
     let timeScore;
     let peopleMultiplier = 1;
-    let discount = "不适用";
     let factorLabels;
     if (isLora) {
       const materialPenalty = values.trainingImages < 50 ? 1 : 0;
@@ -846,30 +878,28 @@ function renderCustom() {
       factorLabels = [`${values.trainingImages} 张训练图`, values.trainingImages < 50 ? "素材量偏少" : "按训练图规模估算"];
       resultTitle.textContent = `${values.type.label} · ${values.trainingImages} 张训练图`;
       resultLead.textContent = "耗时评分按训练图的检查、打标和训练规模计算。";
-      formulaCopy.textContent = "Lora 以 50 张训练图为耗时基准，训练图数量增加会提高检查、打标与训练耗时；少于 50 张时，素材覆盖不足会增加制作难度。";
     } else {
       const requirementDifficulty = values.requirements.reduce((total, option) => total + option.difficulty, 0);
       const requirementTimeMultiplier = values.requirements.reduce((total, option) => total * (1 + option.time), 1);
-      const referenceDifficulty = values.hasReference ? -(values.referenceDegree / 100) * 1.4 : 0;
-      const referenceTimeMultiplier = values.hasReference ? 1 - values.referenceDegree / 100 * 0.16 : 1.15;
+      const referenceDifficulty = values.hasReference ? -0.4 + values.referenceDegree / 100 * 2.4 : 0;
+      const referenceTimeMultiplier = values.hasReference ? 0.95 + values.referenceDegree / 100 * 0.55 : 1.15;
       const freedomDifficulty = values.hasReference && values.freedom ? -0.7 : 0;
       const freedomTimeMultiplier = values.hasReference && values.freedom ? 0.88 : 1;
       peopleMultiplier = Math.pow(2, values.characters - 1);
       const calculatedDifficulty = Math.round(values.type.difficulty + values.popularity.difficulty + requirementDifficulty + referenceDifficulty + freedomDifficulty);
       difficulty = clamp(values.characters > 4 ? Math.max(6, calculatedDifficulty) : calculatedDifficulty, 1, 10);
-      const imageWorkMultiplier = values.images * (values.images >= 10 ? 0.78 : values.images >= 6 ? 0.84 : values.images >= 3 ? 0.92 : 1);
+      const imageWorkMultiplier = values.images;
       const totalWorkMultiplier = peopleMultiplier * requirementTimeMultiplier * referenceTimeMultiplier * freedomTimeMultiplier * imageWorkMultiplier;
       timeScore = clamp(Math.round(values.type.time + Math.log2(Math.max(1, totalWorkMultiplier)) * 1.12 + values.popularity.time), 1, 10);
-      discount = values.images >= 10 ? "约 15%" : values.images >= 6 ? "约 10%" : values.images >= 3 ? "约 5%" : "暂无";
       factorLabels = [values.popularity.label, `${values.characters} 个角色`, ...values.requirements.map((item) => item.label)];
       if (values.hasReference) factorLabels.push(`${rangeCopy(values.referenceDegree).split(" · ")[1]}`);
       else factorLabels.push("暂无参考，需先摸索");
       if (values.freedom && values.hasReference) factorLabels.push("允许作者发挥");
       resultTitle.textContent = `${values.type.label} · ${values.images} 张`;
       resultLead.textContent = `基于 ${values.type.label} 的参考分与当前需求计算。`;
-      formulaCopy.textContent = "先取定制类型的基础分；角色不超过 4 名时不增加难度，超过 4 名时难度至少为 6 分。耗时倍率仍按人数翻倍（×1 / ×2 / ×4 / ×8…）。冷门角色和指定细节加分，明确参考与允许作者发挥会减分。多张图片计入总工作量，并按数量显示优惠。";
     }
-    const combinedScore = difficulty * 0.48 + timeScore * 0.52;
+    const referenceCostBoost = !isLora && values.hasReference ? values.referenceDegree / 100 * 1.3 : 0;
+    const combinedScore = difficulty * 0.48 + timeScore * 0.52 + referenceCostBoost;
     const budget = combinedScore < 3.2 ? "基础" : combinedScore < 5.6 ? "中等" : combinedScore < 7.8 ? "较高" : "高";
     const budgetLevel = budget === "基础" ? "basic" : budget === "中等" ? "medium" : budget === "较高" ? "elevated" : "high";
     const updateMeter = (meter, score) => {
@@ -880,30 +910,31 @@ function renderCustom() {
     updateMeter(timeMeter, timeScore);
     budgetValue.textContent = budget;
     budgetValue.dataset.level = budgetLevel;
-    discountValue.textContent = discount;
     characterMultiplier.textContent = `当前多人耗时倍率：×${peopleMultiplier}`;
     factors.replaceChildren();
     factorLabels.forEach((label) => factors.appendChild(el("li", "", label)));
     referencePanel.hidden = !values.hasReference;
     referenceValue.textContent = rangeCopy(values.referenceDegree);
+    const requirementSummary = values.requirements.map((item) => {
+      const detail = values.requirementDetails[item.value];
+      return detail ? `${item.label}：${detail}` : item.label;
+    });
     const requestDetails = isLora ? [
       `训练图数量：${values.trainingImages} 张`,
     ] : [
       `图片数量：${values.images} 张`,
       `角色数量：${values.characters} 个`,
       `角色热度：${values.popularity.label}`,
-      `额外要求：${values.requirements.length ? values.requirements.map((item) => item.label).join("、") : "暂无"}`,
-      `参考：${values.hasReference ? rangeCopy(values.referenceDegree) : "暂无参考"}`,
+      `角色名：${values.characterName || "未填写"}`,
+      ...(values.popularity.value === "common" ? [`皮肤 / 装甲：${values.characterVariant || "未填写"}`] : []),
+      `指定细节：${requirementSummary.length ? requirementSummary.join("；") : "暂无"}`,
+      `参考：${values.hasReference ? `${rangeCopy(values.referenceDegree)}；参考方面：${values.referenceAspect || "未填写"}` : "暂无参考"}`,
       `允许作者发挥：${values.freedom && values.hasReference ? "是" : "否"}`,
     ];
     const summary = [
-      "定制需求估算",
+      "定制需求摘要",
       `类型：${values.type.label}`,
       ...requestDetails,
-      `制作难度：${difficulty}/10`,
-      `耗时评分：${timeScore}/10${isLora ? "" : `（多人倍率 ×${peopleMultiplier}）`}`,
-      `预算档位：${budget}`,
-      ...(isLora ? [] : [`数量优惠：${discount}`]),
     ].join("\n");
     if (mail) send.href = `${mail.url}?subject=${encodeURIComponent("定制请求 · " + values.type.label)}&body=${encodeURIComponent(summary)}`;
     copy.dataset.summary = summary;
