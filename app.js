@@ -3,6 +3,7 @@ const generatedGallery = window.GENERATED_GALLERY || {};
 const generatedSocialStats = window.GENERATED_SOCIAL_STATS || {};
 
 const qs = (selector) => document.querySelector(selector);
+const clampRange = (value, min, max) => Math.min(max, Math.max(min, value));
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -47,12 +48,17 @@ function renderTags(tags = []) {
 }
 
 function initProfile() {
-  qs("#profileName").textContent = data.profile.name;
-  qs("#profileTarget").textContent = data.profile.target;
-  qs("#profileNickname").textContent = data.profile.nickname || "";
-  qs("#profileNickname").dataset.text = data.profile.nickname || "";
-  qs("#profileSummary").textContent = data.profile.summary;
-  initAvatar();
+  const name = qs("#profileName");
+  const target = qs("#profileTarget");
+  const nickname = qs("#profileNickname");
+  const summary = qs("#profileSummary");
+  if (name) name.textContent = data.profile.name;
+  if (target) target.textContent = data.profile.target;
+  if (nickname) {
+    nickname.textContent = data.profile.nickname || "";
+    nickname.dataset.text = data.profile.nickname || "";
+  }
+  if (summary) summary.textContent = data.profile.summary;
   renderPlatformLinks();
 }
 
@@ -185,37 +191,28 @@ function renderPlatformLinks() {
   const strip = qs("#platformLinks");
   if (!strip) return;
   strip.innerHTML = "";
-  (data.platformLinks || []).forEach((item) => {
-    const card = item.url ? document.createElement("a") : document.createElement("button");
-    card.className = `platform-card is-${item.kind || "default"}`;
-    if (item.url) {
-      card.href = item.url;
-      card.target = item.url.startsWith("mailto:") ? "" : "_blank";
-      card.rel = item.url.startsWith("mailto:") ? "" : "noreferrer";
-    } else {
-      card.type = "button";
-      card.disabled = true;
-    }
+  (data.platformLinks || []).filter((item) => ["bilibili", "pixiv"].includes(item.kind)).forEach((item) => {
+    const card = document.createElement("a");
+    card.className = `hero-platform-link is-${item.kind || "default"}`;
+    card.href = item.url;
+    card.target = "_blank";
+    card.rel = "noreferrer";
     const followers = Number(generatedSocialStats[item.kind]?.followers);
     const hasFollowers = Number.isFinite(followers) && followers > 0;
     const value = hasFollowers
-      ? `<small class="platform-live-count" data-count-target="${followers}" data-count-suffix=" 粉丝">0</small>`
-      : `<small>${item.value}</small>`;
+      ? `<strong class="platform-live-count" data-count-target="${followers}" data-count-suffix=" 粉丝">0</strong>`
+      : `<strong>${item.value}</strong>`;
     const isLive = hasFollowers && generatedSocialStats[item.kind]?.live === true;
-    const note = hasFollowers
-      ? isLive
-        ? `<em><i class="platform-live-dot" aria-hidden="true"></i>实时粉丝数</em>`
-        : `<em class="platform-sync-note">暂用上次数据</em>`
-      : `<em>${item.note}</em>`;
-    card.innerHTML = `<span>${item.platform}</span><strong>${item.title}</strong>${value}${note}`;
+    const liveMark = isLive ? `<i class="platform-live-dot" aria-hidden="true"></i>` : "";
+    card.innerHTML = `<span>${liveMark}${item.title}</span>${value}`;
     strip.appendChild(card);
   });
 
   const infoButton = document.createElement("button");
-  infoButton.className = "platform-card is-info";
+  infoButton.className = "hero-platform-link is-info";
   infoButton.type = "button";
   infoButton.id = "infoDialogOpen";
-  infoButton.innerHTML = `<span>Info</span><strong>说明反馈</strong><small>About</small><em>本站说明 / GitHub 仓库</em>`;
+  infoButton.innerHTML = `<span>INFO</span><strong>说明</strong>`;
   strip.appendChild(infoButton);
 }
 
@@ -246,9 +243,15 @@ function animateMetrics(root = document) {
   root.querySelectorAll?.("[data-count-target]").forEach(animateMetric);
 }
 
-function setGalleryCounts(count) {
-  [qs("#featureGalleryCount"), qs("#galleryCount")].filter(Boolean).forEach((node) => {
-    node.dataset.countTarget = String(count);
+function setGalleryCounts(count, groupCounts = {}) {
+  const targets = [
+    [qs("#galleryCount"), count],
+    [qs("#heroVideoCount"), groupCounts.anime || 0],
+    [qs("#heroStyleCount"), groupCounts["style-showcase"] || 0],
+  ];
+  targets.forEach(([node, value]) => {
+    if (!node) return;
+    node.dataset.countTarget = String(value);
     node.textContent = "0";
   });
 }
@@ -361,51 +364,32 @@ function initQuickSearch() {
   });
 }
 
-function initFeatureMotion() {
-  const cards = [...document.querySelectorAll(".feature-card[href^='#']")];
-  if (!cards.length) return;
+function initHeroMarquee() {
+  const hero = qs(".hero-cover");
+  const pin = qs(".hero-cover-pin");
+  const stage = qs(".hero-motion-stage");
+  if (!hero || !pin || !stage || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
-  const setActive = (hash, pulse = false) => {
-    cards.forEach((card) => {
-      const active = card.getAttribute("href") === hash;
-      card.classList.toggle("is-active", active);
-      if (active && pulse) {
-        card.classList.remove("is-pulsing");
-        void card.offsetWidth;
-        card.classList.add("is-pulsing");
-        window.setTimeout(() => card.classList.remove("is-pulsing"), 720);
-      }
-    });
-    document.querySelectorAll(".nav a[href^='#']").forEach((link) => {
-      link.classList.toggle("is-active", link.getAttribute("href") === hash);
-    });
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    const topbarHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 0;
+    const scrollStart = hero.getBoundingClientRect().top + window.scrollY - topbarHeight;
+    const scrollRange = Math.max(hero.offsetHeight - pin.offsetHeight, 1);
+    const progress = clampRange((window.scrollY - scrollStart) / scrollRange, 0, 1);
+    stage.style.setProperty("--hero-works-size", `${(72 - progress * 48).toFixed(2)}%`);
+    stage.style.setProperty("--hero-styles-size", `${(24 + progress * 48).toFixed(2)}%`);
+    stage.style.setProperty("--hero-works-opacity", (0.92 - progress * 0.56).toFixed(3));
+    stage.style.setProperty("--hero-styles-opacity", (0.32 + progress * 0.6).toFixed(3));
+  };
+  const requestUpdate = () => {
+    if (frame) return;
+    frame = window.requestAnimationFrame(update);
   };
 
-  cards.forEach((card) => {
-    card.addEventListener("click", () => {
-      setActive(card.getAttribute("href"), true);
-    });
-  });
-
-  const sections = cards
-    .map((card) => qs(card.getAttribute("href")))
-    .filter(Boolean);
-
-  if (!("IntersectionObserver" in window) || !sections.length) return;
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target?.id) setActive(`#${visible.target.id}`);
-    },
-    {
-      rootMargin: "-35% 0px -45% 0px",
-      threshold: [0.18, 0.32, 0.5],
-    }
-  );
-
-  sections.forEach((section) => observer.observe(section));
+  update();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate, { passive: true });
 }
 
 function normalizeGeneratedGroup(groupId) {
@@ -419,6 +403,65 @@ function normalizeGeneratedGroup(groupId) {
   };
 }
 
+function directGroupEntries(group) {
+  const generated = normalizeGeneratedGroup(group.id);
+  const manualSamples = (group.samples || []).map(asEntry).filter(Boolean);
+  const samples = [...manualSamples, ...generated.samples];
+  const cover = generated.cover || asEntry(group.cover) || samples[0];
+  return cover?.src ? [cover, ...samples] : samples;
+}
+
+function sampleMarqueeEntries(items, count = 6) {
+  if (items.length <= count) return items;
+  return Array.from({ length: count }, (_, index) => {
+    const position = index * (items.length - 1) / (count - 1);
+    return items[Math.round(position)];
+  });
+}
+
+function renderHeroMarquees(entries) {
+  const worksTrack = qs("#heroWorksTrack");
+  const stylesTrack = qs("#heroStylesTrack");
+  if (!worksTrack || !stylesTrack) return;
+
+  const localFallbacks = {
+    works: ["hero-01.webp", "hero-02.webp", "hero-03.webp", "hero-05.webp", "hero-04.webp", "hero-07.webp"],
+    styles: ["hero-08.webp", "hero-06.webp", "hero-05.webp", "hero-01.webp", "hero-04.webp", "hero-03.webp"],
+  };
+  const renderTrack = (track, groupId, kind) => {
+    const selected = sampleMarqueeEntries(entries.filter((item) => item.group.id === groupId));
+    track.replaceChildren();
+    const buildSet = (isDuplicate) => {
+      const set = el("div", "hero-marquee-set");
+      if (isDuplicate) set.setAttribute("aria-hidden", "true");
+      selected.forEach(({ entry }, index) => {
+        const orientation = entry.orientation || (entry.height > entry.width ? "portrait" : "landscape");
+        const variant = kind === "works"
+          ? index === 2 ? "is-focus" : orientation === "landscape" ? (index % 2 ? "is-wide" : "is-landscape") : "is-portrait"
+          : `is-${orientation}`;
+        const figure = el("figure", `${kind === "works" ? "hero-work-card" : "hero-style-card"} ${variant}`);
+        const image = new Image();
+        image.alt = isDuplicate ? "" : `${kind === "works" ? "视频作品" : "画风展示"} ${index + 1}`;
+        image.decoding = "async";
+        image.referrerPolicy = "no-referrer";
+        image.addEventListener("error", () => {
+          if (image.dataset.fallback === "true") return;
+          image.dataset.fallback = "true";
+          image.src = `./assets/images/hero-wall/${localFallbacks[kind][index % localFallbacks[kind].length]}`;
+        });
+        image.src = entry.src;
+        figure.appendChild(image);
+        set.appendChild(figure);
+      });
+      return set;
+    };
+    track.append(buildSet(false), buildSet(true));
+  };
+
+  renderTrack(worksTrack, "anime", "works");
+  renderTrack(stylesTrack, "style-showcase", "styles");
+}
+
 function renderDirectGallery() {
   const gallery = qs("#directGallery");
   const filters = qs("#galleryFilters");
@@ -429,11 +472,8 @@ function renderDirectGallery() {
   if (filters) filters.innerHTML = "";
 
   groups.forEach((group) => {
-    const generated = normalizeGeneratedGroup(group.id);
-    const manualSamples = (group.samples || []).map(asEntry).filter(Boolean);
-    const samples = [...manualSamples, ...generated.samples];
-    const cover = generated.cover || asEntry(group.cover) || samples[0];
-    const galleryEntries = cover?.src ? [cover, ...samples] : samples;
+    const galleryEntries = directGroupEntries(group);
+    const cover = galleryEntries[0];
     galleryEntries.forEach((entry, index) => {
       entries.push({
         entry,
@@ -444,7 +484,12 @@ function renderDirectGallery() {
     });
   });
 
-  setGalleryCounts(entries.length);
+  const groupCounts = Object.fromEntries(groups.map((group) => [
+    group.id,
+    entries.filter((item) => item.group.id === group.id).length,
+  ]));
+  setGalleryCounts(entries.length, groupCounts);
+  renderHeroMarquees(entries);
 
   if (filters) {
     groups.forEach((group, index) => {
@@ -515,6 +560,13 @@ function renderDirectGallery() {
       card.hidden = card.dataset.group !== button.dataset.filter;
     });
   });
+  const styleNavLink = qs("#styleNavLink");
+  if (styleNavLink && filters) {
+    styleNavLink.onclick = () => {
+      const styleFilter = filters.querySelector('[data-filter="style-showcase"]');
+      window.setTimeout(() => styleFilter?.click(), 0);
+    };
+  }
   initImageFavoriteCounters(gallery);
 }
 
@@ -573,8 +625,32 @@ function renderCustom() {
 
   const formHeader = el("div", "custom-form-header");
   formHeader.appendChild(el("span", "custom-kicker", "需求估算表"));
-  formHeader.appendChild(el("h3", "", "把想法拆成可评估的要求"));
+  formHeader.appendChild(el("h3", "", "创作需求工作台"));
+  const formHint = el("p", "", "分四步整理画面，右侧估算会随选择即时更新。");
+  formHeader.appendChild(formHint);
   form.appendChild(formHeader);
+
+  const stepDefinitions = [
+    { number: "01", label: "基础需求" },
+    { number: "02", label: "角色设定" },
+    { number: "03", label: "画面细节" },
+    { number: "04", label: "参考资料" },
+  ];
+  const stepNav = el("div", "custom-step-nav");
+  stepNav.setAttribute("role", "tablist");
+  stepNav.setAttribute("aria-label", "定制需求步骤");
+  const stepButtons = stepDefinitions.map((step, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "custom-step-tab";
+    button.id = `custom-step-tab-${index + 1}`;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", `custom-step-panel-${index + 1}`);
+    button.innerHTML = `<small>${step.number}</small><span>${step.label}</span>`;
+    stepNav.appendChild(button);
+    return button;
+  });
+  form.appendChild(stepNav);
 
   const makeField = (legend, hint) => {
     const field = el("fieldset", "custom-field");
@@ -764,6 +840,37 @@ function renderCustom() {
   trainingField.appendChild(trainingStepper);
   form.appendChild(trainingField);
 
+  const stepStage = el("div", "custom-step-stage");
+  const stepPanels = stepDefinitions.map((step, index) => {
+    const panel = el("section", "custom-step-panel");
+    panel.id = `custom-step-panel-${index + 1}`;
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", `custom-step-tab-${index + 1}`);
+    const heading = el("div", "custom-step-heading");
+    heading.appendChild(el("span", "", step.number));
+    heading.appendChild(el("h4", "", step.label));
+    panel.appendChild(heading);
+    stepStage.appendChild(panel);
+    return panel;
+  });
+  stepPanels[0].append(typeField, imageField, trainingField);
+  stepPanels[1].append(popularityField, characterField);
+  stepPanels[2].append(requirementsField);
+  stepPanels[3].append(referenceField);
+
+  const stepControls = el("div", "custom-step-controls");
+  const previousStep = document.createElement("button");
+  previousStep.type = "button";
+  previousStep.className = "custom-step-control is-previous";
+  previousStep.textContent = "← 上一步";
+  const stepPosition = el("span", "custom-step-position", "1 / 4");
+  const nextStep = document.createElement("button");
+  nextStep.type = "button";
+  nextStep.className = "custom-step-control is-next";
+  nextStep.textContent = "下一步 →";
+  stepControls.append(previousStep, stepPosition, nextStep);
+  form.append(stepStage, stepControls);
+
   const result = el("aside", "custom-estimator-result");
   result.setAttribute("aria-live", "polite");
   result.appendChild(el("span", "custom-kicker", "即时估算"));
@@ -771,6 +878,15 @@ function renderCustom() {
   result.appendChild(resultTitle);
   const resultLead = el("p", "custom-result-lead", "完成左侧表格后，这里会显示当前估算。");
   result.appendChild(resultLead);
+  const recipe = el("p", "custom-recipe", "正在整理画面配方…");
+  recipe.setAttribute("aria-label", "当前画面配方");
+  result.appendChild(recipe);
+  const budgetStat = el("div", "custom-final-cost");
+  budgetStat.appendChild(el("span", "", "最终估算费用"));
+  const budgetValue = el("strong", "", "--");
+  budgetValue.className = "custom-budget-value";
+  budgetStat.appendChild(budgetValue);
+  result.appendChild(budgetStat);
   const makeScoreMeter = (label) => {
     const block = el("div", "custom-score-meter");
     const head = el("div", "custom-score-head");
@@ -796,18 +912,16 @@ function renderCustom() {
   scoreGrid.appendChild(difficultyMeter.block);
   scoreGrid.appendChild(timeMeter.block);
   result.appendChild(scoreGrid);
-  const budgetStat = el("div", "custom-final-cost");
-  budgetStat.appendChild(el("span", "", "最终估算费用"));
-  const budgetValue = el("strong", "", "--");
-  budgetValue.className = "custom-budget-value";
-  budgetStat.appendChild(budgetValue);
-  result.appendChild(budgetStat);
   const factors = el("ul", "custom-estimate-factors");
   result.appendChild(factors);
   const actions = el("div", "custom-estimate-actions");
-  const mail = (data.platformLinks || []).find((link) => link.kind === "mail");
-  const send = el("a", "custom-contact-primary", "发送定制请求");
-  if (mail) send.href = mail.url;
+  const bilibili = (data.platformLinks || []).find((link) => link.kind === "bilibili");
+  const send = el("a", "custom-contact-primary", "B站私信");
+  if (bilibili) {
+    send.href = bilibili.url;
+    send.target = "_blank";
+    send.rel = "noreferrer";
+  }
   const copy = document.createElement("button");
   copy.type = "button";
   copy.className = "custom-contact-secondary";
@@ -815,21 +929,62 @@ function renderCustom() {
   actions.appendChild(send);
   actions.appendChild(copy);
   result.appendChild(actions);
-  const resultNote = el("p", "custom-result-note", "仅为预估参考，请以实际沟通确认结果为准。复制摘要后，也可以直接粘贴到 B 站私信。 ");
-  const bilibili = (data.platformLinks || []).find((link) => link.kind === "bilibili");
-  if (bilibili) {
-    const link = el("a", "custom-result-link", "打开 B 站");
-    link.href = bilibili.url;
-    link.target = "_blank";
-    link.rel = "noreferrer";
-    resultNote.appendChild(link);
-  }
+  const resultNote = el("p", "custom-result-note", "仅为预估参考，请以实际沟通确认结果为准。复制摘要后，可以直接粘贴到 B 站私信。");
   result.appendChild(resultNote);
 
   estimator.appendChild(form);
   estimator.appendChild(result);
   grid.appendChild(privateNote);
   grid.appendChild(estimator);
+
+  let activeStep = 0;
+  const syncSteps = (isLora = false) => {
+    const availableSteps = isLora ? [0] : stepDefinitions.map((_, index) => index);
+    if (!availableSteps.includes(activeStep)) activeStep = 0;
+    form.classList.toggle("is-lora", isLora);
+    formHint.textContent = isLora
+      ? "Lora 仅按训练类型与训练图数量估算，不包含普通画面委托要求。"
+      : "分四步整理画面，右侧估算会随选择即时更新。";
+    const firstStepNumber = stepPanels[0].querySelector(".custom-step-heading span");
+    const firstStepTitle = stepPanels[0].querySelector(".custom-step-heading h4");
+    if (firstStepNumber) firstStepNumber.textContent = isLora ? "LORA" : "01";
+    if (firstStepTitle) firstStepTitle.textContent = isLora ? "训练需求" : "基础需求";
+    stepButtons.forEach((button, index) => {
+      const isAvailable = availableSteps.includes(index);
+      const isActive = index === activeStep;
+      button.hidden = !isAvailable;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+      button.tabIndex = isActive ? 0 : -1;
+      stepPanels[index].hidden = !isActive;
+    });
+    const activePosition = availableSteps.indexOf(activeStep);
+    previousStep.disabled = activePosition <= 0;
+    nextStep.disabled = activePosition >= availableSteps.length - 1;
+    stepPosition.textContent = `${activePosition + 1} / ${availableSteps.length}`;
+    stepNav.classList.toggle("is-lora", isLora);
+    stepControls.classList.toggle("is-lora", isLora);
+  };
+  const moveStep = (direction) => {
+    const isLora = (typeOptions.find((option) => option.value === typeSelect.value) || typeOptions[0])?.kind === "lora";
+    const availableSteps = isLora ? [0] : stepDefinitions.map((_, index) => index);
+    const nextIndex = availableSteps.indexOf(activeStep) + direction;
+    if (nextIndex < 0 || nextIndex >= availableSteps.length) return;
+    activeStep = availableSteps[nextIndex];
+    syncSteps(isLora);
+  };
+  stepButtons.forEach((button, index) => button.addEventListener("click", () => {
+    activeStep = index;
+    syncSteps(false);
+  }));
+  stepNav.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    moveStep(event.key === "ArrowRight" ? 1 : -1);
+    stepButtons[activeStep]?.focus();
+  });
+  previousStep.addEventListener("click", () => moveStep(-1));
+  nextStep.addEventListener("click", () => moveStep(1));
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const rangeCopy = (value) => {
@@ -859,6 +1014,7 @@ function renderCustom() {
   const buildEstimate = () => {
     const values = readForm();
     const isLora = values.type.kind === "lora";
+    syncSteps(isLora);
     [popularityField, characterField, requirementsField, referenceField, imageField].forEach((field) => { field.hidden = isLora; });
     trainingField.hidden = !isLora;
     characterVariantField.group.hidden = values.popularity.value !== "common";
@@ -910,6 +1066,9 @@ function renderCustom() {
     updateMeter(timeMeter, timeScore);
     budgetValue.textContent = budget;
     budgetValue.dataset.level = budgetLevel;
+    recipe.textContent = isLora
+      ? `${values.type.label} · ${values.trainingImages} 张训练图`
+      : `${values.type.label} · ${values.popularity.label} · ${values.characters} 人 · ${values.hasReference ? rangeCopy(values.referenceDegree).split(" · ")[1] : "暂无参考"}`;
     characterMultiplier.textContent = `当前多人耗时倍率：×${peopleMultiplier}`;
     factors.replaceChildren();
     factorLabels.forEach((label) => factors.appendChild(el("li", "", label)));
@@ -936,7 +1095,6 @@ function renderCustom() {
       `类型：${values.type.label}`,
       ...requestDetails,
     ].join("\n");
-    if (mail) send.href = `${mail.url}?subject=${encodeURIComponent("定制请求 · " + values.type.label)}&body=${encodeURIComponent(summary)}`;
     copy.dataset.summary = summary;
   };
   [typeSelect, referenceRange, characterCount, imageCount, trainingCount, form].forEach((control) => control.addEventListener("input", buildEstimate));
@@ -958,7 +1116,7 @@ function renderCustom() {
       copy.textContent = "已复制摘要";
       window.setTimeout(() => { copy.textContent = "复制需求摘要"; }, 1600);
     } catch {
-      copy.textContent = "请手动复制邮件内容";
+      copy.textContent = "请手动复制需求摘要";
     }
   });
   buildEstimate();
@@ -1023,11 +1181,12 @@ qs("#workDialog").addEventListener("click", (event) => {
 initProfile();
 initTheme();
 initQuickSearch();
+initHeroMarquee();
 renderSponsor();
 renderCustom();
 initInfoDialog();
-initFeatureMotion();
 initEntryGate(() => {
+  document.body.classList.add("is-entered");
   renderDirectGallery();
   animateMetrics();
 });

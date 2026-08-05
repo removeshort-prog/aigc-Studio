@@ -4,8 +4,7 @@ window.PORTFOLIO_DATA = {
     nickname: "我思故汝永存",
     target: "AIGC Visual Playground",
     avatar: "./assets/profile/avatar.webp",
-    summary:
-      "整理二次元 AIGC 作品与可选画风，作为赞助和定制前的风格参考。",
+    summary: "二次元视觉创作、画风选择与定制委托。",
   },
 
   platformLinks: [
@@ -25,28 +24,12 @@ window.PORTFOLIO_DATA = {
       url: "https://www.pixiv.net/users/106312931",
       note: "图集与插画展示",
     },
-    {
-      kind: "x",
-      platform: "X",
-      title: "X",
-      value: "不常用",
-      url: "https://x.com/Removeshort",
-      note: "不常用",
-    },
-    {
-      kind: "mail",
-      platform: "Contact",
-      title: "联系方式",
-      value: "Email",
-      url: "mailto:2651173237@qq.com",
-      note: "定制委托沟通",
-    },
   ],
 
   directGroups: [
     {
       id: "anime",
-      title: "二次元类",
+      title: "视频作品",
       samples: [],
     },
     {

@@ -65,7 +65,6 @@ python scripts\build-publish.py
 - `index.html`：页面结构。
 - `styles.css`：页面样式。
 - `app.js`：图集、弹窗、筛选、主题切换等主要交互。
-- `millennium.js`：首页千禧七大难题电子云动画。
 - `portfolio-data.js`：站点文字、链接和定制说明。
 - `generated-gallery.js`：由 `scripts/generate-gallery.js` 自动生成，不建议手改。
 - `scripts/build-publish.py`：生成 `_site/` 并把图片压缩为 WebP。
