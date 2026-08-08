@@ -2,6 +2,27 @@ const data = window.PORTFOLIO_DATA;
 const generatedGallery = window.GENERATED_GALLERY || {};
 const generatedSocialStats = window.GENERATED_SOCIAL_STATS || {};
 
+// Local-only preview: append one masked card without changing gallery data.
+function initNsfwDemo() {
+  if (!new URLSearchParams(window.location.search).has("demo-nsfw")) return;
+  const demo = {
+    src: "./assets/images/hero-wall/hero-01.webp",
+    width: 16,
+    height: 9,
+    orientation: "landscape",
+    rating: "nsfw",
+  };
+  const anime = generatedGallery.anime;
+  if (!anime) return;
+  if (Array.isArray(anime)) {
+    if (!anime.some((entry) => entry?.src === demo.src && entry?.rating === "nsfw")) anime.push(demo);
+    return;
+  }
+  anime.samples = [...(anime.samples || []), demo];
+}
+
+initNsfwDemo();
+
 const qs = (selector) => document.querySelector(selector);
 const clampRange = (value, min, max) => Math.min(max, Math.max(min, value));
 const el = (tag, className, text) => {
@@ -14,9 +35,119 @@ const el = (tag, className, text) => {
 function asEntry(input) {
   if (!input) return null;
   if (typeof input === "string") {
-    return { src: input, width: 1, height: 1, orientation: "landscape" };
+    return { src: input, width: 1, height: 1, orientation: "landscape", rating: "sfw" };
   }
   return input;
+}
+
+function isNsfwEntry(entry) {
+  return asEntry(entry)?.rating === "nsfw";
+}
+
+function hasNsfwWarningAcknowledgement() {
+  try {
+    return sessionStorage.getItem("aigc-nsfw-warning-ack") === "true";
+  } catch {
+    return false;
+  }
+}
+
+function setNsfwWarningAcknowledgement() {
+  try {
+    sessionStorage.setItem("aigc-nsfw-warning-ack", "true");
+  } catch {}
+}
+
+function showNsfwWarning() {
+  const dialog = qs("#nsfwWarningDialog");
+  if (!dialog) return Promise.resolve(false);
+  const confirm = qs("#nsfwWarningConfirm");
+  const cancel = qs("#nsfwWarningCancel");
+  const countdown = qs("#nsfwWarningCountdown");
+  if (!confirm || !cancel || !countdown) return Promise.resolve(false);
+
+  return new Promise((resolve) => {
+    let remaining = 3;
+    let settled = false;
+    let timer = 0;
+    const finish = (accepted) => {
+      if (settled) return;
+      settled = true;
+      window.clearInterval(timer);
+      dialog.removeEventListener("close", onClose);
+      if (accepted) setNsfwWarningAcknowledgement();
+      resolve(accepted);
+    };
+    const onClose = () => finish(dialog.returnValue === "confirm");
+
+    confirm.disabled = true;
+    confirm.textContent = "请等待 3 秒";
+    countdown.textContent = "警告确认将在 3 秒后可用";
+    dialog.addEventListener("close", onClose, { once: false });
+    cancel.onclick = () => {
+      dialog.returnValue = "cancel";
+      dialog.close();
+    };
+    confirm.onclick = () => {
+      if (confirm.disabled) return;
+      dialog.returnValue = "confirm";
+      dialog.close();
+    };
+    timer = window.setInterval(() => {
+      remaining -= 1;
+      if (remaining > 0) {
+        confirm.textContent = `请等待 ${remaining} 秒`;
+        countdown.textContent = `警告确认将在 ${remaining} 秒后可用`;
+        return;
+      }
+      window.clearInterval(timer);
+      confirm.disabled = false;
+      confirm.textContent = "我已了解，继续";
+      countdown.textContent = "可以确认后按住按钮查看";
+    }, 1000);
+    dialog.showModal();
+  });
+}
+
+async function beginNsfwReveal(card, button) {
+  if (!hasNsfwWarningAcknowledgement()) {
+    const accepted = await showNsfwWarning();
+    if (!accepted || button.dataset.nsfwHolding !== "true") return;
+  }
+  card.classList.add("is-nsfw-revealed");
+}
+
+function endNsfwReveal(card) {
+  card.classList.remove("is-nsfw-revealed");
+}
+
+function bindNsfwReveal(card, button) {
+  const start = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    button.dataset.nsfwHolding = "true";
+    if (event.pointerId !== undefined) {
+      try { button.setPointerCapture(event.pointerId); } catch {}
+    }
+    beginNsfwReveal(card, button);
+  };
+  const end = (event) => {
+    event?.stopPropagation();
+    delete button.dataset.nsfwHolding;
+    endNsfwReveal(card);
+  };
+  button.addEventListener("pointerdown", start);
+  ["pointerup", "pointercancel", "pointerleave", "lostpointercapture", "blur"].forEach((name) => {
+    button.addEventListener(name, end);
+  });
+  button.addEventListener("keydown", (event) => {
+    if (!["Enter", " "].includes(event.key) || event.repeat) return;
+    start(event);
+  });
+  button.addEventListener("keyup", (event) => {
+    if (["Enter", " "].includes(event.key)) end(event);
+  });
+  window.addEventListener("blur", () => end());
 }
 
 function imageFrame(input, fallback, className) {
@@ -406,7 +537,11 @@ function normalizeGeneratedGroup(groupId) {
 function directGroupEntries(group) {
   const generated = normalizeGeneratedGroup(group.id);
   const manualSamples = (group.samples || []).map(asEntry).filter(Boolean);
-  const samples = [...manualSamples, ...generated.samples];
+  const samples = [...manualSamples, ...generated.samples].sort((a, b) => {
+    const aNsfw = isNsfwEntry(a) ? 1 : 0;
+    const bNsfw = isNsfwEntry(b) ? 1 : 0;
+    return aNsfw - bNsfw;
+  });
   const cover = generated.cover || asEntry(group.cover) || samples[0];
   return cover?.src ? [cover, ...samples] : samples;
 }
@@ -429,7 +564,9 @@ function renderHeroMarquees(entries) {
     styles: ["hero-08.webp", "hero-06.webp", "hero-05.webp", "hero-01.webp", "hero-04.webp", "hero-03.webp"],
   };
   const renderTrack = (track, groupId, kind) => {
-    const selected = sampleMarqueeEntries(entries.filter((item) => item.group.id === groupId));
+    const selected = sampleMarqueeEntries(
+      entries.filter((item) => item.group.id === groupId && !isNsfwEntry(item.entry))
+    );
     track.replaceChildren();
     const buildSet = (isDuplicate) => {
       const set = el("div", "hero-marquee-set");
@@ -509,12 +646,28 @@ function renderDirectGallery() {
 
   entries.forEach(({ entry, group, index, isCover }) => {
     const title = `${group.title} #${index + 1}`;
-    const card = el("article", `masonry-card is-${entry.orientation || "landscape"}`);
+    const nsfw = isNsfwEntry(entry);
+    const card = el("article", `masonry-card is-${entry.orientation || "landscape"}${nsfw ? " is-nsfw" : ""}`);
     card.dataset.group = group.id;
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", `查看 ${title}`);
-    card.appendChild(imageFrame(entry, `${group.title} ${index + 1}`, "masonry-frame"));
+    const frame = imageFrame(entry, `${group.title} ${index + 1}`, `masonry-frame${nsfw ? " nsfw-frame" : ""}`);
+    if (nsfw) {
+      const shield = el("div", "nsfw-shield");
+      shield.appendChild(el("strong", "nsfw-mark", "!"));
+      const shieldCopy = el("span", "nsfw-shield-copy");
+      shieldCopy.appendChild(el("b", "", "NSFW 内容"));
+      shieldCopy.appendChild(el("small", "", "按住显示，松开隐藏"));
+      shield.appendChild(shieldCopy);
+      const revealButton = el("button", "nsfw-reveal-button", "按住显示");
+      revealButton.type = "button";
+      revealButton.setAttribute("aria-label", `${title}：按住显示成人内容`);
+      bindNsfwReveal(card, revealButton);
+      shield.appendChild(revealButton);
+      frame.appendChild(shield);
+    }
+    card.appendChild(frame);
 
     const meta = el("span", "masonry-meta");
     meta.innerHTML = `<strong>${group.title}</strong><small>${isCover ? "Cover" : String(index).padStart(2, "0")}</small>`;
@@ -538,11 +691,13 @@ function renderDirectGallery() {
       favoriteImage(favorite);
     });
     card.appendChild(favorite);
-    card.addEventListener("click", () => openImage(entry, title));
+    card.addEventListener("click", () => {
+      if (!nsfw) openImage(entry, title);
+    });
     card.addEventListener("keydown", (event) => {
       if (event.target !== card || !["Enter", " "].includes(event.key)) return;
       event.preventDefault();
-      openImage(entry, title);
+      if (!nsfw) openImage(entry, title);
     });
     gallery.appendChild(card);
   });
@@ -571,6 +726,7 @@ function renderDirectGallery() {
 }
 
 function openImage(input, title) {
+  if (isNsfwEntry(input)) return;
   const dialog = qs("#workDialog");
   const body = qs("#dialogBody");
   body.innerHTML = "";

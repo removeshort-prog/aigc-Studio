@@ -79,36 +79,53 @@ function getImageSize(filePath) {
   return { width: 1, height: 1 };
 }
 
-function imageEntry(filePath) {
+function imageEntry(filePath, rating = "sfw") {
   const size = getImageSize(filePath);
   return {
     src: toWebPath(filePath),
     width: size.width,
     height: size.height,
     orientation: size.width >= size.height ? "landscape" : "portrait",
+    rating,
   };
+}
+
+function collectImageFiles(dir, rating = "sfw") {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.name === ".gitkeep" || entry.name.startsWith(".")) return [];
+    const filePath = path.join(dir, entry.name);
+    if (entry.isDirectory()) return collectImageFiles(filePath, rating);
+    return extensions.has(path.extname(entry.name).toLowerCase()) ? [{ filePath, rating }] : [];
+  });
 }
 
 function scanGroup(group) {
   const dir = path.join(imageRoot, group.folder);
   ensureDir(dir);
 
-  const files = fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile())
-    .map((entry) => path.join(dir, entry.name))
-    .filter((filePath) => extensions.has(path.extname(filePath).toLowerCase()))
-    .sort((a, b) => path.basename(a).localeCompare(path.basename(b), "zh-Hans-CN"));
+  // Keep root-level files as SFW while assets are being migrated into subfolders.
+  const rootFiles = collectImageFiles(dir, "sfw").filter(({ filePath }) => {
+    const relative = path.relative(dir, filePath).split(path.sep);
+    return relative.length === 1;
+  });
+  const sfwFiles = collectImageFiles(path.join(dir, "sfw"), "sfw");
+  const nsfwFiles = collectImageFiles(path.join(dir, "nsfw"), "nsfw");
+  const files = [...rootFiles, ...sfwFiles, ...nsfwFiles].sort((a, b) => {
+    if (a.rating !== b.rating) return a.rating === "sfw" ? -1 : 1;
+    return a.filePath.localeCompare(b.filePath, "zh-Hans-CN");
+  });
 
+  const sfwOnly = files.filter(({ rating }) => rating === "sfw");
   const cover =
-    files.find((filePath) => path.basename(filePath, path.extname(filePath)).toLowerCase() === "cover") ||
-    files[0] ||
-    "";
+    sfwOnly.find(({ filePath }) => path.basename(filePath, path.extname(filePath)).toLowerCase() === "cover") ||
+    sfwOnly[0] ||
+    null;
 
-  const samples = files.filter((filePath) => filePath !== cover);
+  const samples = files.filter(({ filePath }) => filePath !== cover?.filePath);
   return {
-    cover: cover ? imageEntry(cover) : null,
-    samples: samples.map(imageEntry),
+    cover: cover ? imageEntry(cover.filePath, cover.rating) : null,
+    samples: samples.map(({ filePath, rating }) => imageEntry(filePath, rating)),
   };
 }
 

@@ -9,7 +9,7 @@
       content="removeshort AIGC studio for anime visual works, style references, original files, and private commissions."
     />
     <link rel="icon" href="./assets/profile/avatar.webp" type="image/webp" />
-    <link rel="stylesheet" href="./styles.css?v=20260806-cleanup" />
+    <link rel="stylesheet" href="./styles.css?v=20260809-nsfw-gate" />
   </head>
   <body class="is-entry-locked">
     <div
@@ -193,9 +193,21 @@
       <div class="info-dialog-body" id="infoDialogBody"></div>
     </dialog>
 
+    <dialog class="nsfw-warning-dialog" id="nsfwWarningDialog" aria-labelledby="nsfwWarningTitle">
+      <div class="nsfw-warning-mark" aria-hidden="true">!</div>
+      <p class="eyebrow">Content notice</p>
+      <h2 id="nsfwWarningTitle">成人内容提醒</h2>
+      <p>即将查看可能包含裸露或性暗示的作品。请确认你已年满 18 岁，并在合适的环境中继续。</p>
+      <p class="nsfw-warning-countdown" id="nsfwWarningCountdown" aria-live="polite">警告确认将在 3 秒后可用</p>
+      <div class="nsfw-warning-actions">
+        <button class="nsfw-warning-cancel" id="nsfwWarningCancel" type="button">取消</button>
+        <button class="nsfw-warning-confirm" id="nsfwWarningConfirm" type="button" disabled>请等待 3 秒</button>
+      </div>
+    </dialog>
+
     <script src="./portfolio-data.js?v=20260806-cleanup"></script>
-    <script src="./generated-gallery.js?v=20260806-cleanup"></script>
+    <script src="./generated-gallery.js?v=20260809-nsfw-gate"></script>
     <script src="./generated-social-stats.js?v=20260806-cleanup"></script>
-    <script src="./app.js?v=20260806-cleanup"></script>
+    <script src="./app.js?v=20260809-nsfw-gate"></script>
   </body>
 </html>

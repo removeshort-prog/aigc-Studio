@@ -498,6 +498,93 @@ h3 {
   height: auto;
 }
 
+.nsfw-frame {
+  isolation: isolate;
+  min-height: 180px;
+}
+
+.nsfw-frame img {
+  filter: blur(28px) saturate(0.45);
+  transform: scale(1.08);
+  transition: filter 180ms ease, transform 180ms ease;
+}
+
+.nsfw-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 22px;
+  background: rgba(18, 22, 35, 0.98);
+  color: #fff;
+  text-align: left;
+  transition: opacity 160ms ease;
+}
+
+.nsfw-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #ff5268;
+  border-radius: 50%;
+  color: #ff5268;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.nsfw-shield-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.nsfw-shield-copy b {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.nsfw-shield-copy small {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 11px;
+}
+
+.nsfw-reveal-button {
+  align-self: center;
+  min-height: 36px;
+  margin-left: auto;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.nsfw-reveal-button:hover,
+.nsfw-reveal-button:focus-visible {
+  border-color: #ff5268;
+  background: rgba(255, 82, 104, 0.16);
+  outline: none;
+}
+
+.masonry-card.is-nsfw-revealed .nsfw-shield {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.masonry-card.is-nsfw-revealed .nsfw-frame img {
+  filter: none;
+  transform: none;
+}
+
 .masonry-meta {
   position: absolute;
   left: 12px;
@@ -1160,6 +1247,110 @@ body.is-dark .tag {
   max-height: calc(100vh - 40px);
   border-radius: 18px;
   object-fit: contain;
+}
+
+.nsfw-warning-dialog {
+  width: min(460px, calc(100vw - 32px));
+  padding: 32px;
+  border: 1px solid rgba(255, 82, 104, 0.42);
+  border-radius: 18px;
+  background: var(--panel-solid);
+  color: var(--ink);
+  box-shadow: 0 30px 100px rgba(12, 16, 34, 0.28);
+}
+
+.nsfw-warning-dialog::backdrop {
+  background: rgba(8, 10, 18, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.nsfw-warning-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 20px;
+  place-items: center;
+  border: 3px solid #ff405c;
+  border-radius: 50%;
+  color: #ff405c;
+  font-size: 34px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.nsfw-warning-dialog h2 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 4vw, 32px);
+}
+
+.nsfw-warning-dialog > p:not(.eyebrow):not(.nsfw-warning-countdown) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.nsfw-warning-countdown {
+  margin: 20px 0 0;
+  color: #d92f49;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.nsfw-warning-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.nsfw-warning-actions button {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.nsfw-warning-cancel {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.nsfw-warning-confirm {
+  border: 1px solid #d92f49;
+  background: #d92f49;
+  color: #fff;
+}
+
+.nsfw-warning-confirm:disabled {
+  cursor: wait;
+  opacity: 0.48;
+}
+
+@media (max-width: 560px) {
+  .nsfw-shield {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .nsfw-mark {
+    width: 34px;
+    height: 34px;
+    font-size: 23px;
+  }
+
+  .nsfw-shield-copy small {
+    display: none;
+  }
+
+  .nsfw-reveal-button {
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 1050px) {
