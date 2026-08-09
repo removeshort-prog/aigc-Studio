@@ -547,8 +547,8 @@ h3 {
 }
 
 .nsfw-frame img {
-  filter: blur(28px) saturate(0.45);
-  transform: scale(1.08);
+  filter: blur(50px);
+  transform: scale(1.28);
   transition: filter 180ms ease, transform 180ms ease;
 }
 
@@ -562,7 +562,7 @@ h3 {
   justify-content: center;
   gap: 14px;
   padding: 22px;
-  background: rgba(18, 22, 35, 0.98);
+  background: transparent;
   color: #fff;
   text-align: left;
   transition: opacity 160ms ease;
