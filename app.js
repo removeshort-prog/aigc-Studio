@@ -659,6 +659,15 @@ function renderDirectGallery() {
     return;
   }
 
+  const sfwGallery = el("div", "masonry-gallery-sfw");
+  const nsfwSection = el("section", "nsfw-gallery-section");
+  const nsfwHeading = el("div", "nsfw-gallery-heading");
+  nsfwHeading.appendChild(el("strong", "", "NSFW 内容"));
+  nsfwHeading.appendChild(el("span", "", "按住显示，松开隐藏"));
+  const nsfwGallery = el("div", "nsfw-gallery-list");
+  nsfwSection.append(nsfwHeading, nsfwGallery);
+  gallery.append(sfwGallery, nsfwSection);
+
   entries.forEach(({ entry, group, index, isCover }) => {
     const title = `${group.title} #${index + 1}`;
     const nsfw = isNsfwEntry(entry);
@@ -714,21 +723,27 @@ function renderDirectGallery() {
       event.preventDefault();
       if (!nsfw) openImage(entry, title);
     });
-    gallery.appendChild(card);
+    (nsfw ? nsfwGallery : sfwGallery).appendChild(card);
   });
+  if (!nsfwGallery.children.length) nsfwSection.remove();
+
+  const applyGalleryFilter = (filterId) => {
+    gallery.querySelectorAll(".masonry-card").forEach((card) => {
+      card.hidden = card.dataset.group !== filterId;
+    });
+    if (nsfwSection.isConnected) {
+      nsfwSection.hidden = ![...nsfwGallery.children].some((card) => !card.hidden);
+    }
+  };
   const initialFilter = groups[0]?.id;
   if (initialFilter) {
-    gallery.querySelectorAll(".masonry-card").forEach((card) => {
-      card.hidden = card.dataset.group !== initialFilter;
-    });
+    applyGalleryFilter(initialFilter);
   }
   filters?.addEventListener("click", (event) => {
     const button = event.target.closest(".gallery-filter");
     if (!button) return;
     filters.querySelectorAll(".gallery-filter").forEach((node) => node.classList.toggle("is-active", node === button));
-    gallery.querySelectorAll(".masonry-card").forEach((card) => {
-      card.hidden = card.dataset.group !== button.dataset.filter;
-    });
+    applyGalleryFilter(button.dataset.filter);
   });
   const styleNavLink = qs("#styleNavLink");
   if (styleNavLink && filters) {
