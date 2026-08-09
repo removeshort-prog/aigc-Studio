@@ -25,8 +25,15 @@ SFW. Keep a `cover` image in the SFW folder if you want it to be the category
 cover. NSFW entries are always generated after SFW entries and never appear in
 the scrolling hero.
 
-GitHub Actions will scan this Space and generate `generated-gallery.js` with
-`https://huggingface.co/spaces/.../resolve/main/...` image URLs.
+GitHub Actions reads only the file index from this Space during each Pages
+build, then generates the gallery's Hugging Face image URLs. Images are not
+copied into GitHub Pages: a visitor's browser loads them directly from Hugging
+Face/Xet.
+
+The entry screen checks the generated SFW covers before allowing the site to
+open. If Hugging Face is blocked or responding slowly, it displays the network
+warning instead. NSFW entries stay after SFW entries in the gallery and remain
+hidden until the existing age warning and press-and-hold interaction is used.
 
 After uploading images to Hugging Face, run:
 
@@ -34,4 +41,4 @@ After uploading images to Hugging Face, run:
 Actions > Sync Gallery Data > Run workflow
 ```
 
-The scheduled job also checks Hugging Face every 30 minutes.
+The scheduled job refreshes the gallery index and Pages build every 30 minutes.

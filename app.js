@@ -209,25 +209,30 @@ function initAvatar() {
 function getGalleryProbeUrls() {
   const urls = [];
   Object.values(generatedGallery).forEach((group) => {
+    // `generate-gallery.js` selects the first SFW image as the logical cover
+    // when no explicitly named cover file exists.
     const items = Array.isArray(group) ? group : [group?.cover, ...(group?.samples || [])];
-    const entry = items.map(asEntry).find((item) => item?.src?.includes("huggingface.co"));
+    const entry = items.map(asEntry).find((item) => item?.src && item?.rating !== "nsfw");
     if (entry?.src && !urls.includes(entry.src)) urls.push(entry.src);
   });
   return urls.slice(0, 3);
 }
 
-function probeGalleryImage(url, timeout = 7000) {
+function probeGalleryImage(url, timeout = 12000) {
   return new Promise((resolve) => {
     const image = new Image();
-    const timer = window.setTimeout(() => finish(false), timeout);
-    const finish = (loaded) => {
+    let settled = false;
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
       window.clearTimeout(timer);
       image.onload = null;
       image.onerror = null;
-      resolve(loaded);
+      resolve(result);
     };
-    image.onload = () => finish(true);
-    image.onerror = () => finish(false);
+    const timer = window.setTimeout(() => finish("slow"), timeout);
+    image.onload = () => finish("loaded");
+    image.onerror = () => finish("failed");
     image.referrerPolicy = "no-referrer";
     image.src = url;
   });
@@ -287,30 +292,40 @@ function initEntryGate(onEnter) {
     }, 1050),
   ];
 
-  const finish = (isReachable) => {
+  const finish = (state) => {
+    const isReachable = state === "ready";
     window.clearInterval(progressTimer);
     statusTimers.forEach(window.clearTimeout);
     setProgress(100);
-    gate.dataset.state = isReachable ? "ready" : "offline";
+    gate.dataset.state = state;
     gate.setAttribute("aria-busy", "false");
-    statusTitle.textContent = isReachable ? "图库连接完成" : "图库连接受限";
+    statusTitle.textContent = isReachable
+      ? "图库连接完成"
+      : state === "slow"
+        ? "图库响应较慢"
+        : "图库链接暂不可用";
     statusDetail.textContent = isReachable
       ? "展示图片已就绪，即将进入"
-      : "请检查网络配置以查看展示图片";
+      : state === "slow"
+        ? "可先进入浏览，展示图片会继续加载"
+        : "请稍后重试，或在图库同步完成后刷新页面";
     button.hidden = false;
     button.disabled = false;
     window.setTimeout(() => button.focus({ preventScroll: true }), 180);
-    exitTimer = window.setTimeout(enterSite, isReachable ? 1200 : 3600);
+    exitTimer = window.setTimeout(enterSite, isReachable ? 1200 : state === "slow" ? 2200 : 3600);
   };
 
   const probeUrls = getGalleryProbeUrls();
   const probePromise = probeUrls.length
-    ? Promise.all(probeUrls.map((url) => probeGalleryImage(url))).then((results) => results.some(Boolean))
-    : Promise.resolve(false);
+    ? Promise.all(probeUrls.map((url) => probeGalleryImage(url))).then((results) => {
+      if (results.includes("loaded")) return "ready";
+      return results.includes("slow") ? "slow" : "offline";
+    })
+    : Promise.resolve("offline");
 
-  probePromise.then((isReachable) => {
+  probePromise.then((state) => {
     const remaining = Math.max(0, 1500 - (performance.now() - startedAt));
-    window.setTimeout(() => finish(isReachable), remaining);
+    window.setTimeout(() => finish(state), remaining);
   });
 
   button.addEventListener("click", () => {

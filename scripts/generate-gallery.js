@@ -4,6 +4,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const assetRoot = path.resolve(process.env.GALLERY_ASSET_ROOT || root);
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
+const sfwOnly = process.env.GALLERY_SFW_ONLY === "1";
 const imageRoot = path.join(assetRoot, "assets", "images");
 const outputFile = path.join(root, "generated-gallery.js");
 const groups = [
@@ -110,16 +111,19 @@ function scanGroup(group) {
     return relative.length === 1;
   });
   const sfwFiles = collectImageFiles(path.join(dir, "sfw"), "sfw");
-  const nsfwFiles = collectImageFiles(path.join(dir, "nsfw"), "nsfw");
-  const files = [...rootFiles, ...sfwFiles, ...nsfwFiles].sort((a, b) => {
+  const nsfwFiles = sfwOnly ? [] : collectImageFiles(path.join(dir, "nsfw"), "nsfw");
+  // Pages builds use only assets mirrored from Hugging Face; local legacy files
+  // remain available for local development before a source folder is created.
+  const legacyFiles = sfwOnly || sfwFiles.length ? [] : rootFiles;
+  const files = [...legacyFiles, ...sfwFiles, ...nsfwFiles].sort((a, b) => {
     if (a.rating !== b.rating) return a.rating === "sfw" ? -1 : 1;
     return a.filePath.localeCompare(b.filePath, "zh-Hans-CN");
   });
 
-  const sfwOnly = files.filter(({ rating }) => rating === "sfw");
+  const sfwEntries = files.filter(({ rating }) => rating === "sfw");
   const cover =
-    sfwOnly.find(({ filePath }) => path.basename(filePath, path.extname(filePath)).toLowerCase() === "cover") ||
-    sfwOnly[0] ||
+    sfwEntries.find(({ filePath }) => path.basename(filePath, path.extname(filePath)).toLowerCase() === "cover") ||
+    sfwEntries[0] ||
     null;
 
   const samples = files.filter(({ filePath }) => filePath !== cover?.filePath);

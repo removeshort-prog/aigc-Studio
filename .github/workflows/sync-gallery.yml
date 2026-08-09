@@ -1,71 +1,20 @@
 name: Sync Gallery Data
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "assets/images/**"
-      - "assets/profile/**"
-      - "portfolio-data.js"
-      - "scripts/generate-gallery.js"
   schedule:
     - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: sync-gallery-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  HF_SPACE: removeshort/removeshort-AIGC-Studio
-  HF_PUBLIC_BASE_URL: https://huggingface.co/spaces/removeshort/removeshort-AIGC-Studio/resolve/main
-
 jobs:
   sync:
-    if: github.actor != 'github-actions[bot]' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Clone Hugging Face Assets
-        run: |
-          set -euo pipefail
-          rm -rf ../hf-assets
-          git clone "https://huggingface.co/spaces/${HF_SPACE}" ../hf-assets
-          git -C ../hf-assets lfs install --local || true
-          git -C ../hf-assets lfs pull || true
-
-      - name: Generate Gallery Data
-        run: |
-          set -euo pipefail
-          if find ../hf-assets/assets/images -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' \) 2>/dev/null | grep -q .; then
-            echo "Using Hugging Face assets."
-            GALLERY_ASSET_ROOT=../hf-assets GALLERY_PUBLIC_BASE_URL="${HF_PUBLIC_BASE_URL}" node scripts/generate-gallery.js
-          else
-            echo "Hugging Face assets not found; using local assets."
-            node scripts/generate-gallery.js
-          fi
-
-      - name: Commit Gallery Data
-        run: |
-          if git diff --quiet -- generated-gallery.js; then
-            echo "generated-gallery.js is already up to date."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add generated-gallery.js
-          git commit -m "Sync generated gallery data"
-          git push
+      - name: Trigger gallery index build
+        run: echo "The Pages workflow will refresh the Hugging Face gallery index."
