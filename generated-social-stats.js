@@ -1,6 +1,6 @@
 window.GENERATED_SOCIAL_STATS = {
   "bilibili": {
-    "followers": 20105,
+    "followers": 20106,
     "live": true
   },
   "pixiv": {
