@@ -28,12 +28,12 @@ jobs:
         run: node scripts/generate-social-stats.js
 
       - name: Refresh shop products
-        run: node scripts/sync-shop.js
+        run: node scripts/sync-shop.js --strict
 
-      - name: Commit updated counts
+      - name: Commit updated counts and products
         run: |
           if git diff --quiet -- generated-social-stats.js generated-shop.js; then
-            echo "Social stats are already up to date."
+            echo "Social stats and shop products are already up to date."
             exit 0
           fi
 

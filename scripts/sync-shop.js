@@ -23,11 +23,13 @@ async function request(endpoint, body) {
   return result.data;
 }
 
-async function fetchItems(sortType) {
+async function fetchItems(sortType, requestFeed = request) {
   const items = new Map();
   let searchAfter = 0;
+  let expectedTotal = null;
+  const cursors = new Set([String(searchAfter)]);
   for (let page = 0; page < 30; page += 1) {
-    const result = await request("feed/item", {
+    const result = await requestFeed("feed/item", {
       upMid: shopMid,
       msource: `cps_showcase_${shopMid}`,
       sortType,
@@ -41,14 +43,30 @@ async function fetchItems(sortType) {
       clickHideButton: false,
     });
     const rows = result.data || [];
-    rows.forEach((item) => items.set(String(item.contentId), item));
-    if (!result.haveNextPage) return [...items.values()];
-    if (!rows.length || result.nextSearchAfter == null || result.nextSearchAfter === searchAfter) {
+    if (!Array.isArray(rows)) throw new Error(`Invalid ${sortType} feed`);
+    if (Number.isInteger(result.totalNum) && result.totalNum >= 0) {
+      if (sortType === "sale" && expectedTotal !== null && expectedTotal !== result.totalNum) {
+        throw new Error("Shop changed during pagination; keeping the previous snapshot");
+      }
+      expectedTotal = result.totalNum;
+    }
+    rows.forEach((item) => {
+      if (item.contentId == null || !String(item.contentId).trim()) throw new Error("Missing product ID");
+      items.set(String(item.contentId), item);
+    });
+    if (!result.haveNextPage) {
+      if (sortType === "sale" && expectedTotal !== null && items.size !== expectedTotal) {
+        throw new Error(`Incomplete shop feed: received ${items.size} of ${expectedTotal} products`);
+      }
+      return [...items.values()];
+    }
+    if (!rows.length || result.nextSearchAfter == null || cursors.has(String(result.nextSearchAfter))) {
       // Bilibili's recommendation feed can be empty outside its app.
       if (sortType === "total_rank" && !items.size) return [];
       throw new Error(`Incomplete ${sortType} feed; keeping the previous snapshot`);
     }
     searchAfter = result.nextSearchAfter;
+    cursors.add(String(searchAfter));
   }
   throw new Error("Shop pagination exceeded its limit");
 }
@@ -64,31 +82,40 @@ function cleanLink(value) {
 }
 
 function normalizeItem(item) {
+  const title = String(item.title || "").trim();
+  const cover = item.cover?.url || "";
+  if (!title || !/^https:\/\//.test(cover)) throw new Error(`Incomplete product ${item.contentId}`);
   return {
     id: String(item.contentId),
-    title: String(item.title || "").trim(),
-    cover: item.cover?.url || "",
+    title,
+    cover,
     url: cleanLink(item.cardUrl),
   };
 }
 
-async function main() {
-  const [sales, recommendations] = await Promise.all([
-    fetchItems("sale"),
-    fetchItems("total_rank"),
+async function syncShop({ outputFile = output, requestFeed = request } = {}) {
+  const [salesResult, recommendationResult] = await Promise.allSettled([
+    fetchItems("sale", requestFeed),
+    fetchItems("total_rank", requestFeed),
   ]);
-  if (!sales.length) throw new Error("No shop products returned");
-  // Match the owner's featured row when the public recommendation feed is empty.
-  const featuredIds = ["41271430", "41803388", "41678379", "41362324"];
+  if (salesResult.status === "rejected") throw salesResult.reason;
+  const sales = salesResult.value;
+  const recommendations = recommendationResult.status === "fulfilled" ? recommendationResult.value : [];
+  if (!recommendations.length) console.warn("Recommendation feed unavailable; using Bilibili sales order");
+  if (!sales.length) {
+    // Confirm an empty shop separately before removing the last cached products.
+    const info = await requestFeed("home/info", { smallShopMid: shopMid, msource: `cps_showcase_${shopMid}` });
+    if (String(info.smallShopItems) !== "0") throw new Error("Empty feed not confirmed by shop info");
+  }
   const products = sales.map(normalizeItem);
   const ids = new Set(products.map((item) => item.id));
-  const order = recommendations.length ? recommendations.map((item) => String(item.contentId)) : featuredIds;
+  const order = recommendations.map((item) => String(item.contentId));
   const snapshot = {
     featured: [...new Set([...order, ...products.map((item) => item.id)])].filter((id) => ids.has(id)),
     products,
   };
-  if (fs.existsSync(output)) {
-    const previous = JSON.parse(fs.readFileSync(output, "utf8").replace(/^window\.GENERATED_SHOP\s*=\s*/, "").replace(/;\s*$/, ""));
+  if (fs.existsSync(outputFile)) {
+    const previous = JSON.parse(fs.readFileSync(outputFile, "utf8").replace(/^window\.GENERATED_SHOP\s*=\s*/, "").replace(/;\s*$/, ""));
     delete previous.updatedAt;
     if (JSON.stringify(previous) === JSON.stringify(snapshot)) {
       console.log(`Shop unchanged: ${products.length} products`);
@@ -96,15 +123,15 @@ async function main() {
     }
   }
   snapshot.updatedAt = new Date().toISOString();
-  fs.writeFileSync(output, `window.GENERATED_SHOP = ${JSON.stringify(snapshot, null, 2)};\n`, "utf8");
+  fs.writeFileSync(outputFile, `window.GENERATED_SHOP = ${JSON.stringify(snapshot, null, 2)};\n`, "utf8");
   console.log(`Shop saved: ${products.length} product previews`);
 }
 
-main().catch((error) => {
-  if (fs.existsSync(output)) {
-    console.warn(`Shop sync skipped; using the existing snapshot: ${error.message}`);
-  } else {
-    console.error(error);
-    process.exitCode = 1;
-  }
-});
+if (require.main === module) {
+  syncShop().catch((error) => {
+    console.error(`Shop sync failed; keeping the existing snapshot: ${error.message}`);
+    if (process.argv.includes("--strict") || !fs.existsSync(output)) process.exitCode = 1;
+  });
+}
+
+module.exports = { fetchItems, syncShop };

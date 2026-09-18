@@ -4,7 +4,8 @@ on:
   push:
     branches: ["main"]
   workflow_run:
-    workflows: ["Sync Gallery Data"]
+    # Commits made with GITHUB_TOKEN do not trigger a push workflow.
+    workflows: ["Sync Gallery Data", "Sync Social Stats"]
     types: [completed]
   workflow_dispatch:
 
