@@ -9,7 +9,7 @@
       content="removeshort AIGC studio for anime visual works, style references, original files, and private commissions."
     />
     <link rel="icon" href="./assets/profile/avatar.webp" type="image/webp" />
-    <link rel="stylesheet" href="./styles.css?v=20260809-nsfw-gate" />
+    <link rel="stylesheet" href="./styles.css?v=20260918-products-pink" />
   </head>
   <body class="is-entry-locked">
     <div
@@ -148,17 +148,17 @@
             <h2>赞助原图</h2>
           </div>
           <p class="section-note">
-            原图和赞助内容会同步更新，点击入口跳转到 B 站小店。
+            在这里挑选喜欢的原图与合集，前往 B 站小店查看详情。
           </p>
         </div>
-        <a class="shop-card" id="shopCard" href="https://b23.tv/f1rIVkT" target="_blank" rel="noreferrer">
-          <div class="shop-card-top">
-            <span class="shop-badge">B 站小店</span>
-            <span class="shop-live-count"><i class="platform-live-dot" aria-hidden="true"></i><b id="shopItemCount">00</b><em>件商品 · 自动同步</em></span>
+        <div class="studio-shop" id="studioShop" aria-label="小店商品">
+          <div class="shop-product-grid" id="shopProducts"></div>
+          <div class="shop-empty" id="shopEmpty" hidden>
+            <p>商品暂未加载，可前往 B 站小店查看。</p>
+            <a id="shopEmptyLink" href="https://b23.tv/BSEW8Cw" target="_blank" rel="noopener noreferrer">前往小店 ↗</a>
           </div>
-          <strong>赞助原图 / 原尺寸内容</strong>
-          <small>https://b23.tv/f1rIVkT</small>
-        </a>
+          <button class="shop-load-more" id="shopLoadMore" type="button" aria-controls="shopProducts" hidden>展开更多商品 <span aria-hidden="true">↓</span></button>
+        </div>
       </section>
 
       <section class="section custom-section" id="custom">
@@ -193,21 +193,22 @@
       <div class="info-dialog-body" id="infoDialogBody"></div>
     </dialog>
 
-    <dialog class="nsfw-warning-dialog" id="nsfwWarningDialog" aria-labelledby="nsfwWarningTitle">
+    <dialog class="nsfw-warning-dialog" id="nsfwWarningDialog" aria-labelledby="nsfwWarningTitle" aria-describedby="nsfwWarningDescription nsfwWarningHint">
       <div class="nsfw-warning-mark" aria-hidden="true">!</div>
       <p class="eyebrow">Content notice</p>
-      <h2 id="nsfwWarningTitle">成人内容提醒</h2>
-      <p>即将查看可能包含裸露或性暗示的作品。请确认你已年满 18 岁，并在合适的环境中继续。</p>
-      <p class="nsfw-warning-countdown" id="nsfwWarningCountdown" aria-live="polite">警告确认将在 3 秒后可用</p>
+      <h2 id="nsfwWarningTitle">NSFW 预览警告</h2>
+      <p id="nsfwWarningDescription">即将查看可能包含裸露或性暗示的作品。请确认你已年满 18 岁，并在合适的环境中继续。</p>
+      <p class="nsfw-warning-hint" id="nsfwWarningHint">确认后将开启 NSFW 内容浏览，可随时通过开关关闭。</p>
       <div class="nsfw-warning-actions">
-        <button class="nsfw-warning-cancel" id="nsfwWarningCancel" type="button">取消</button>
-        <button class="nsfw-warning-confirm" id="nsfwWarningConfirm" type="button" disabled>请等待 3 秒</button>
+        <button class="nsfw-warning-cancel" id="nsfwWarningCancel" type="button" autofocus>取消</button>
+        <button class="nsfw-warning-confirm" id="nsfwWarningConfirm" type="button">我已满 18 岁，开启浏览</button>
       </div>
     </dialog>
 
-    <script src="./portfolio-data.js?v=20260806-cleanup"></script>
+    <script src="./portfolio-data.js?v=20260918-products-pink"></script>
     <script src="./generated-gallery.js?v=20260809-nsfw-gate"></script>
     <script src="./generated-social-stats.js?v=20260806-cleanup"></script>
-    <script src="./app.js?v=20260809-entry-probe"></script>
+    <script src="./generated-shop.js?v=20260918-products-pink"></script>
+    <script src="./app.js?v=20260918-products-pink"></script>
   </body>
 </html>

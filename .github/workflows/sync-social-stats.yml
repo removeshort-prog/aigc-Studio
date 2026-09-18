@@ -27,15 +27,18 @@ jobs:
       - name: Refresh follower counts
         run: node scripts/generate-social-stats.js
 
+      - name: Refresh shop products
+        run: node scripts/sync-shop.js
+
       - name: Commit updated counts
         run: |
-          if git diff --quiet -- generated-social-stats.js; then
+          if git diff --quiet -- generated-social-stats.js generated-shop.js; then
             echo "Social stats are already up to date."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add generated-social-stats.js
-          git commit -m "Sync social stats"
+          git add generated-social-stats.js generated-shop.js
+          git commit -m "Sync social stats and shop products"
           git push

@@ -1,8 +1,9 @@
 const data = window.PORTFOLIO_DATA;
 const generatedGallery = window.GENERATED_GALLERY || {};
 const generatedSocialStats = window.GENERATED_SOCIAL_STATS || {};
+const generatedShop = window.GENERATED_SHOP || {};
 
-// Local-only preview: append one masked card without changing gallery data.
+// Preview the NSFW switch with a regular image without changing gallery data.
 function initNsfwDemo() {
   if (!new URLSearchParams(window.location.search).has("demo-nsfw")) return;
   const demo = {
@@ -44,110 +45,51 @@ function isNsfwEntry(entry) {
   return asEntry(entry)?.rating === "nsfw";
 }
 
-function hasNsfwWarningAcknowledgement() {
+function readNsfwBrowsingPreference() {
   try {
-    return sessionStorage.getItem("aigc-nsfw-warning-ack") === "true";
+    return sessionStorage.getItem("aigc-nsfw-enabled") === "true";
   } catch {
     return false;
   }
 }
 
-function setNsfwWarningAcknowledgement() {
+let nsfwBrowsingEnabled = readNsfwBrowsingPreference();
+let nsfwWarningPromise = null;
+
+function setNsfwBrowsingEnabled(enabled) {
+  nsfwBrowsingEnabled = enabled;
   try {
-    sessionStorage.setItem("aigc-nsfw-warning-ack", "true");
+    if (enabled) sessionStorage.setItem("aigc-nsfw-enabled", "true");
+    else sessionStorage.removeItem("aigc-nsfw-enabled");
   } catch {}
+
+  const dialog = qs("#workDialog");
+  if (!enabled && dialog?.dataset.nsfw === "true") {
+    dialog.close();
+    qs("#dialogBody").replaceChildren();
+  }
 }
 
 function showNsfwWarning() {
+  if (nsfwWarningPromise) return nsfwWarningPromise;
   const dialog = qs("#nsfwWarningDialog");
   if (!dialog) return Promise.resolve(false);
   const confirm = qs("#nsfwWarningConfirm");
   const cancel = qs("#nsfwWarningCancel");
-  const countdown = qs("#nsfwWarningCountdown");
-  if (!confirm || !cancel || !countdown) return Promise.resolve(false);
+  if (!confirm || !cancel) return Promise.resolve(false);
 
-  return new Promise((resolve) => {
-    let remaining = 3;
-    let settled = false;
-    let timer = 0;
-    const finish = (accepted) => {
-      if (settled) return;
-      settled = true;
-      window.clearInterval(timer);
-      dialog.removeEventListener("close", onClose);
-      if (accepted) setNsfwWarningAcknowledgement();
-      resolve(accepted);
-    };
-    const onClose = () => finish(dialog.returnValue === "confirm");
-
-    confirm.disabled = true;
-    confirm.textContent = "请等待 3 秒";
-    countdown.textContent = "警告确认将在 3 秒后可用";
-    dialog.addEventListener("close", onClose, { once: false });
-    cancel.onclick = () => {
-      dialog.returnValue = "cancel";
-      dialog.close();
-    };
-    confirm.onclick = () => {
-      if (confirm.disabled) return;
-      dialog.returnValue = "confirm";
-      dialog.close();
-    };
-    timer = window.setInterval(() => {
-      remaining -= 1;
-      if (remaining > 0) {
-        confirm.textContent = `请等待 ${remaining} 秒`;
-        countdown.textContent = `警告确认将在 ${remaining} 秒后可用`;
-        return;
-      }
-      window.clearInterval(timer);
-      confirm.disabled = false;
-      confirm.textContent = "我已了解，继续";
-      countdown.textContent = "可以确认后按住按钮查看";
-    }, 1000);
+  nsfwWarningPromise = new Promise((resolve) => {
+    // Reset the previous result so Escape cannot reuse an earlier confirmation.
+    dialog.returnValue = "";
+    dialog.addEventListener("close", () => {
+      nsfwWarningPromise = null;
+      resolve(dialog.returnValue === "confirm");
+    }, { once: true });
+    cancel.onclick = () => dialog.close("cancel");
+    confirm.onclick = () => dialog.close("confirm");
     dialog.showModal();
   });
-}
-
-async function beginNsfwReveal(card, button) {
-  if (!hasNsfwWarningAcknowledgement()) {
-    const accepted = await showNsfwWarning();
-    if (!accepted || button.dataset.nsfwHolding !== "true") return;
-  }
-  card.classList.add("is-nsfw-revealed");
-}
-
-function endNsfwReveal(card) {
-  card.classList.remove("is-nsfw-revealed");
-}
-
-function bindNsfwReveal(card, button) {
-  const start = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    button.dataset.nsfwHolding = "true";
-    if (event.pointerId !== undefined) {
-      try { button.setPointerCapture(event.pointerId); } catch {}
-    }
-    beginNsfwReveal(card, button);
-  };
-  const end = (event) => {
-    event?.stopPropagation();
-    delete button.dataset.nsfwHolding;
-    endNsfwReveal(card);
-  };
-  button.addEventListener("pointerdown", start);
-  ["pointerup", "pointercancel", "pointerleave", "lostpointercapture", "blur"].forEach((name) => {
-    button.addEventListener(name, end);
-  });
-  button.addEventListener("keydown", (event) => {
-    if (!["Enter", " "].includes(event.key) || event.repeat) return;
-    start(event);
-  });
-  button.addEventListener("keyup", (event) => {
-    if (["Enter", " "].includes(event.key)) end(event);
-  });
-  window.addEventListener("blur", () => end());
+  return nsfwWarningPromise;
 }
 
 function imageFrame(input, fallback, className) {
@@ -661,12 +603,59 @@ function renderDirectGallery() {
 
   const sfwGallery = el("div", "masonry-gallery-sfw");
   const nsfwSection = el("section", "nsfw-gallery-section");
+  nsfwSection.setAttribute("aria-labelledby", "nsfwSectionTitle");
   const nsfwHeading = el("div", "nsfw-gallery-heading");
-  nsfwHeading.appendChild(el("strong", "", "NSFW 内容"));
-  nsfwHeading.appendChild(el("span", "", "按住显示，松开隐藏"));
+  const nsfwHeadingCopy = el("div", "nsfw-gallery-copy");
+  const nsfwTitle = el("strong", "", "NSFW 内容");
+  nsfwTitle.id = "nsfwSectionTitle";
+  const nsfwStatus = el("p", "nsfw-gallery-status");
+  nsfwStatus.id = "nsfwStatus";
+  nsfwStatus.setAttribute("aria-live", "polite");
+  nsfwHeadingCopy.append(nsfwTitle, nsfwStatus);
+  const nsfwToggle = el("button", "nsfw-toggle");
+  nsfwToggle.id = "nsfwToggle";
+  nsfwToggle.type = "button";
+  nsfwToggle.setAttribute("role", "switch");
+  nsfwToggle.setAttribute("aria-labelledby", "nsfwSectionTitle");
+  nsfwToggle.setAttribute("aria-describedby", "nsfwStatus");
+  nsfwToggle.setAttribute("aria-controls", "nsfwGallery");
+  const toggleState = el("span", "nsfw-toggle-state");
+  const toggleTrack = el("span", "nsfw-toggle-track");
+  toggleState.setAttribute("aria-hidden", "true");
+  toggleTrack.setAttribute("aria-hidden", "true");
+  nsfwToggle.append(toggleState, toggleTrack);
+  nsfwHeading.append(nsfwHeadingCopy, nsfwToggle);
   const nsfwGallery = el("div", "nsfw-gallery-list");
+  nsfwGallery.id = "nsfwGallery";
+  nsfwGallery.hidden = !nsfwBrowsingEnabled;
   nsfwSection.append(nsfwHeading, nsfwGallery);
   gallery.append(sfwGallery, nsfwSection);
+  const deferredNsfwImages = [];
+
+  const syncNsfwSection = () => {
+    nsfwToggle.setAttribute("aria-checked", String(nsfwBrowsingEnabled));
+    toggleState.textContent = nsfwBrowsingEnabled ? "已开启" : "已关闭";
+    nsfwStatus.textContent = nsfwBrowsingEnabled
+      ? "已允许浏览，可点击作品查看大图。"
+      : "仅限 18 岁以上，开启并确认预览警告后可浏览。";
+    if (nsfwBrowsingEnabled) deferredNsfwImages.splice(0).forEach((load) => load());
+    nsfwGallery.hidden = !nsfwBrowsingEnabled;
+  };
+  nsfwToggle.addEventListener("click", async () => {
+    if (nsfwBrowsingEnabled) {
+      setNsfwBrowsingEnabled(false);
+      syncNsfwSection();
+      return;
+    }
+    nsfwToggle.disabled = true;
+    try {
+      if (await showNsfwWarning()) setNsfwBrowsingEnabled(true);
+    } finally {
+      nsfwToggle.disabled = false;
+      syncNsfwSection();
+      nsfwToggle.focus({ preventScroll: true });
+    }
+  });
 
   entries.forEach(({ entry, group, index, isCover }) => {
     const title = `${group.title} #${index + 1}`;
@@ -676,20 +665,9 @@ function renderDirectGallery() {
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", `查看 ${title}`);
-    const frame = imageFrame(entry, `${group.title} ${index + 1}`, `masonry-frame${nsfw ? " nsfw-frame" : ""}`);
+    const frame = nsfw ? el("div", "masonry-frame") : imageFrame(entry, title, "masonry-frame");
     if (nsfw) {
-      const shield = el("div", "nsfw-shield");
-      shield.appendChild(el("strong", "nsfw-mark", "!"));
-      const shieldCopy = el("span", "nsfw-shield-copy");
-      shieldCopy.appendChild(el("b", "", "NSFW 内容"));
-      shieldCopy.appendChild(el("small", "", "按住显示，松开隐藏"));
-      shield.appendChild(shieldCopy);
-      const revealButton = el("button", "nsfw-reveal-button", "按住显示");
-      revealButton.type = "button";
-      revealButton.setAttribute("aria-label", `${title}：按住显示成人内容`);
-      bindNsfwReveal(card, revealButton);
-      shield.appendChild(revealButton);
-      frame.appendChild(shield);
+      deferredNsfwImages.push(() => frame.replaceWith(imageFrame(entry, title, "masonry-frame")));
     }
     card.appendChild(frame);
 
@@ -716,15 +694,16 @@ function renderDirectGallery() {
     });
     card.appendChild(favorite);
     card.addEventListener("click", () => {
-      if (!nsfw) openImage(entry, title);
+      openImage(entry, title);
     });
     card.addEventListener("keydown", (event) => {
       if (event.target !== card || !["Enter", " "].includes(event.key)) return;
       event.preventDefault();
-      if (!nsfw) openImage(entry, title);
+      openImage(entry, title);
     });
     (nsfw ? nsfwGallery : sfwGallery).appendChild(card);
   });
+  syncNsfwSection();
   if (!nsfwGallery.children.length) nsfwSection.remove();
 
   const applyGalleryFilter = (filterId) => {
@@ -756,9 +735,10 @@ function renderDirectGallery() {
 }
 
 function openImage(input, title) {
-  if (isNsfwEntry(input)) return;
+  if (isNsfwEntry(input) && !nsfwBrowsingEnabled) return;
   const dialog = qs("#workDialog");
   const body = qs("#dialogBody");
+  dialog.dataset.nsfw = String(isNsfwEntry(input));
   body.innerHTML = "";
   body.appendChild(imageFrame(input, title, "dialog-media"));
   dialog.showModal();
@@ -766,23 +746,46 @@ function openImage(input, title) {
 
 function renderSponsor() {
   const sponsor = data.sponsor;
-  const card = qs("#shopCard");
-  if (!sponsor || !card) return;
-  const itemCount = Number(generatedSocialStats.bilibiliShop?.items);
-  if (Number.isFinite(itemCount) && itemCount >= 0) {
-    [qs("#featureShopCount"), qs("#shopItemCount")].filter(Boolean).forEach((node) => {
-      node.dataset.countTarget = String(itemCount);
-      node.textContent = "0";
+  const shop = qs("#studioShop");
+  if (!sponsor || !shop) return;
+  const ranks = new Map((generatedShop.featured || []).map((id, index) => [id, index]));
+  const products = [...(generatedShop.products || [])].sort(
+    (a, b) => (ranks.get(a.id) ?? Infinity) - (ranks.get(b.id) ?? Infinity)
+  );
+  const grid = qs("#shopProducts");
+  const more = qs("#shopLoadMore");
+  const empty = qs("#shopEmpty");
+  const pageSize = 8;
+  let visibleCount = 0;
+
+  qs("#shopEmptyLink").href = sponsor.url;
+  grid.replaceChildren();
+  empty.hidden = products.length > 0;
+
+  const appendProducts = () => {
+    const next = products.slice(visibleCount, visibleCount + pageSize);
+    next.forEach((product) => {
+      const link = el("a", "shop-product");
+      link.href = product.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.dataset.productId = product.id;
+      link.setAttribute("aria-label", `${product.title}，前往 B 站商品详情页`);
+      const cover = imageFrame({ src: product.cover }, product.title, "shop-product-cover");
+      link.append(cover, el("h3", "shop-product-title", product.title));
+      grid.appendChild(link);
     });
-  }
-  card.href = sponsor.url;
-  card.querySelector("strong").textContent = sponsor.title;
-  card.querySelector("small").textContent = sponsor.url;
-  const summary = el("p", "", sponsor.summary);
-  const tags = renderTags(sponsor.tags || []);
-  card.appendChild(summary);
-  card.appendChild(tags);
+    visibleCount += next.length;
+    more.hidden = visibleCount >= products.length;
+  };
+  more.addEventListener("click", () => {
+    const firstNewIndex = visibleCount;
+    appendProducts();
+    grid.children[firstNewIndex]?.focus({ preventScroll: true });
+  });
+  appendProducts();
 }
+
 
 function renderCustom() {
   const grid = qs("#customGrid");

@@ -49,7 +49,7 @@ window.PORTFOLIO_DATA = {
   sponsor: {
     title: "赞助原图 / 原尺寸内容",
     summary: "原图与赞助内容会在 B 站小店同步更新，适合需要收藏原图或支持本站的人。",
-    url: "https://b23.tv/f1rIVkT",
+    url: "https://b23.tv/BSEW8Cw",
     tags: ["B站小店", "原图", "同步更新"],
   },
 
@@ -73,7 +73,7 @@ window.PORTFOLIO_DATA = {
       {
         title: "B 站小店",
         note: "赞助原图与原尺寸内容",
-        url: "https://b23.tv/f1rIVkT",
+        url: "https://b23.tv/BSEW8Cw",
       },
     ],
     notes: [

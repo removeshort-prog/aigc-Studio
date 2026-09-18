@@ -49,6 +49,7 @@ jobs:
       - name: Build Optimized Site
         run: |
           set -euo pipefail
+          node scripts/sync-shop.js
           SKIP_LOCAL_GALLERY_ASSETS=1 python scripts/build-publish.py
 
       - name: Configure Pages
