@@ -91,6 +91,8 @@ window.PORTFOLIO_DATA = {
     pricing: {
       label: "报价依据",
       title: "制作难度与最终耗时",
+      factorsNote: "【画风】、【用途】、【数量】不同，所需要的【模型】和【算力】也不同。",
+      budgetPrompt: "请根据你的预期，先思考一个价格。",
     },
     estimate: {
       types: [

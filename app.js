@@ -790,6 +790,18 @@ function renderCustom() {
 
   grid.replaceChildren();
 
+  const notice = qs("#customNotice");
+  const noticePause = qs("#customNoticePause");
+  if (notice && noticePause) {
+    noticePause.onclick = () => {
+      const paused = notice.classList.toggle("is-paused");
+      noticePause.setAttribute("aria-pressed", String(paused));
+      noticePause.setAttribute("aria-label", paused ? "继续滚动" : "暂停滚动");
+      noticePause.title = paused ? "继续滚动" : "暂停滚动";
+      noticePause.textContent = paused ? "▶" : "Ⅱ";
+    };
+  }
+
   const estimate = custom.estimate || {};
   const typeOptions = estimate.types || [];
   const popularityOptions = estimate.popularity || [];
@@ -1072,6 +1084,13 @@ function renderCustom() {
   budgetValue.className = "custom-budget-value";
   budgetStat.appendChild(budgetValue);
   result.appendChild(budgetStat);
+  const budgetGuidance = el("div", "custom-budget-guidance");
+  const costFactors = el("p", "custom-budget-factors");
+  (custom.pricing.factorsNote || "").split(/(【[^】]+】)/).forEach((part) => {
+    costFactors.appendChild(el(part.startsWith("【") ? "strong" : "span", "", part));
+  });
+  budgetGuidance.append(costFactors, el("p", "custom-budget-prompt", custom.pricing.budgetPrompt));
+  result.appendChild(budgetGuidance);
   const makeScoreMeter = (label) => {
     const block = el("div", "custom-score-meter");
     const head = el("div", "custom-score-head");

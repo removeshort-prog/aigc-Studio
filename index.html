@@ -9,7 +9,7 @@
       content="removeshort AIGC studio for anime visual works, style references, original files, and private commissions."
     />
     <link rel="icon" href="./assets/profile/avatar.webp" type="image/webp" />
-    <link rel="stylesheet" href="./styles.css?v=20260918-nsfw-blur" />
+    <link rel="stylesheet" href="./styles.css?v=20260918-custom-notice" />
   </head>
   <body class="is-entry-locked">
     <div
@@ -171,6 +171,22 @@
             先用估算表梳理需求，看看难度、耗时和最终估算费用，再发送定制请求。
           </p>
         </div>
+        <div class="custom-notice" id="customNotice" role="region" aria-label="定制前提醒">
+          <strong class="custom-notice-label">定制前必看</strong>
+          <div class="custom-notice-window">
+            <div class="custom-notice-track" id="customNoticeTrack">
+              <div class="custom-notice-message">
+                <span>请优先寻找已有的相似资源，再考虑定制。</span>
+                <span class="custom-notice-repeat" aria-hidden="true">请优先寻找已有的相似资源，再考虑定制。</span>
+              </div>
+              <div class="custom-notice-message custom-notice-repeat" aria-hidden="true">
+                <span>请优先寻找已有的相似资源，再考虑定制。</span>
+                <span>请优先寻找已有的相似资源，再考虑定制。</span>
+              </div>
+            </div>
+          </div>
+          <button class="custom-notice-pause" id="customNoticePause" type="button" aria-label="暂停滚动" aria-controls="customNoticeTrack" aria-pressed="false" title="暂停滚动">Ⅱ</button>
+        </div>
         <div class="custom-grid" id="customGrid"></div>
       </section>
 
@@ -205,10 +221,10 @@
       </div>
     </dialog>
 
-    <script src="./portfolio-data.js?v=20260918-products-pink"></script>
+    <script src="./portfolio-data.js?v=20260918-custom-notice"></script>
     <script src="./generated-gallery.js?v=20260809-nsfw-gate"></script>
     <script src="./generated-social-stats.js?v=20260806-cleanup"></script>
     <script src="./generated-shop.js?v=20260918-products-pink"></script>
-    <script src="./app.js?v=20260918-nsfw-blur"></script>
+    <script src="./app.js?v=20260918-custom-notice"></script>
   </body>
 </html>
