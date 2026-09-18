@@ -627,19 +627,18 @@ function renderDirectGallery() {
   nsfwHeading.append(nsfwHeadingCopy, nsfwToggle);
   const nsfwGallery = el("div", "nsfw-gallery-list");
   nsfwGallery.id = "nsfwGallery";
-  nsfwGallery.hidden = !nsfwBrowsingEnabled;
+  nsfwGallery.inert = !nsfwBrowsingEnabled;
   nsfwSection.append(nsfwHeading, nsfwGallery);
   gallery.append(sfwGallery, nsfwSection);
-  const deferredNsfwImages = [];
 
   const syncNsfwSection = () => {
     nsfwToggle.setAttribute("aria-checked", String(nsfwBrowsingEnabled));
     toggleState.textContent = nsfwBrowsingEnabled ? "已开启" : "已关闭";
     nsfwStatus.textContent = nsfwBrowsingEnabled
       ? "已允许浏览，可点击作品查看大图。"
-      : "仅限 18 岁以上，开启并确认预览警告后可浏览。";
-    if (nsfwBrowsingEnabled) deferredNsfwImages.splice(0).forEach((load) => load());
-    nsfwGallery.hidden = !nsfwBrowsingEnabled;
+      : "当前为模糊预览，年满 18 岁可开启并确认警告后浏览。";
+    nsfwGallery.classList.toggle("is-nsfw-enabled", nsfwBrowsingEnabled);
+    nsfwGallery.inert = !nsfwBrowsingEnabled;
   };
   nsfwToggle.addEventListener("click", async () => {
     if (nsfwBrowsingEnabled) {
@@ -665,10 +664,7 @@ function renderDirectGallery() {
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", `查看 ${title}`);
-    const frame = nsfw ? el("div", "masonry-frame") : imageFrame(entry, title, "masonry-frame");
-    if (nsfw) {
-      deferredNsfwImages.push(() => frame.replaceWith(imageFrame(entry, title, "masonry-frame")));
-    }
+    const frame = imageFrame(entry, title, `masonry-frame${nsfw ? " nsfw-frame" : ""}`);
     card.appendChild(frame);
 
     const meta = el("span", "masonry-meta");

@@ -390,8 +390,7 @@ h3 {
   border-top: 1px solid rgba(217, 47, 73, 0.24);
 }
 
-.nsfw-gallery-section[hidden],
-.nsfw-gallery-list[hidden] {
+.nsfw-gallery-section[hidden] {
   display: none;
 }
 
@@ -491,6 +490,38 @@ h3 {
 
 .nsfw-gallery-list .masonry-card {
   margin-bottom: 18px;
+}
+
+.nsfw-frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nsfw-frame img {
+  filter: grayscale(1) blur(50px);
+  transform: scale(1.28);
+}
+
+.nsfw-frame::after {
+  position: absolute;
+  inset: 0;
+  background: rgba(84, 86, 94, 0.28);
+  pointer-events: none;
+  content: "";
+}
+
+.nsfw-gallery-list.is-nsfw-enabled .nsfw-frame img {
+  filter: none;
+  transform: none;
+}
+
+.nsfw-gallery-list.is-nsfw-enabled .nsfw-frame::after {
+  display: none;
+}
+
+.nsfw-gallery-list:not(.is-nsfw-enabled) .masonry-card {
+  cursor: default;
 }
 
 .masonry-card {
