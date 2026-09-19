@@ -18,10 +18,10 @@ window.GENERATED_SHOP = {
     "40426737",
     "13309058",
     "40426722",
+    "41803388",
     "13334111",
     "13463488",
     "13529405",
-    "41803388",
     "40222721",
     "13508626",
     "40708444",
@@ -145,6 +145,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40426722&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "41803388",
+      "title": "单角色26年1-7集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "13334111",
       "title": "25年10月爱莉图集合02【54张】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/89/f4/85b57bcc26f83774be72e968dd489390.png",
@@ -161,12 +167,6 @@ window.GENERATED_SHOP = {
       "title": "25年11月虫虫集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/0a/9c/7f8af59cf6cf6eeebb9f4b30e35d81a3.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13529405&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "41803388",
-      "title": "单角色26年1-7集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40222721",
@@ -241,5 +241,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-09-18T12:39:48.874Z"
+  "updatedAt": "2026-09-19T17:54:05.735Z"
 };
