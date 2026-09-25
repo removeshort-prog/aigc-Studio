@@ -1,8 +1,8 @@
 window.GENERATED_SHOP = {
   "featured": [
     "12649806",
-    "41362324",
     "41678379",
+    "41362324",
     "41141864",
     "40931105",
     "12517138",
@@ -43,16 +43,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12649806&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "41362324",
-      "title": "26年7月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/7a/f7/1d385976e4c2e5feb0d040fac79c31fc.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41362324&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41678379",
       "title": "26年8月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/7e/50/a890f0705542187e4b9d6a64af2b1541.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41678379&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "41362324",
+      "title": "26年7月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/7a/f7/1d385976e4c2e5feb0d040fac79c31fc.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41362324&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "41141864",
@@ -241,5 +241,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-09-25T13:00:30.454Z"
+  "updatedAt": "2026-09-25T21:28:05.307Z"
 };
