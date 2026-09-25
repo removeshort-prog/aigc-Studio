@@ -7,8 +7,8 @@ window.GENERATED_SHOP = {
     "40931105",
     "12517138",
     "40070064",
-    "12852155",
     "41935537",
+    "12852155",
     "40222148",
     "13037374",
     "40538932",
@@ -16,8 +16,8 @@ window.GENERATED_SHOP = {
     "13273668",
     "13508657",
     "40426737",
-    "13309058",
     "41803388",
+    "13309058",
     "40426722",
     "13334111",
     "13463488",
@@ -79,16 +79,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40070064&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "12852155",
-      "title": "25年8月图集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/ac/01/286c57283d784281732d30e029754081.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12852155&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41935537",
       "title": "26年9月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/5a/7b/11d3af161b23a02b930fa15d20bfb56a.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41935537&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "12852155",
+      "title": "25年8月图集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/ac/01/286c57283d784281732d30e029754081.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12852155&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40222148",
@@ -133,16 +133,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40426737&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13309058",
-      "title": "25年10月虫虫合集【49张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/2f/a1/105876c77dc4851091f10b0dd5ea66dd.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13309058&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41803388",
       "title": "单角色26年1-7集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13309058",
+      "title": "25年10月虫虫合集【49张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/2f/a1/105876c77dc4851091f10b0dd5ea66dd.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13309058&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40426722",
@@ -241,5 +241,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-09-24T23:21:21.815Z"
+  "updatedAt": "2026-09-25T13:00:30.454Z"
 };
