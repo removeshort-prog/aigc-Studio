@@ -30,9 +30,9 @@ window.GENERATED_SHOP = {
     "41141980",
     "13336811",
     "40253485",
+    "42229983",
     "41372980",
     "41271430",
-    "42229983",
     "106654165",
     "106654164"
   ],
@@ -218,6 +218,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40253485&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42229983",
+      "title": "26年10月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "41372980",
       "title": "26年4月蓝P赞助（清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/1c/66/f4d0d66d3b09cb360aea61267888281f.png",
@@ -228,12 +234,6 @@ window.GENERATED_SHOP = {
       "title": "定制（图片类）教学（生图，工作流，炼丹，炼模型等）找我私聊",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/f4/b5/751580f91d7b7ca2019ed4ea7cb63d83.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41271430&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42229983",
-      "title": "26年10月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "106654165",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-02T05:43:31.074Z"
+  "updatedAt": "2026-10-07T21:53:23.257Z"
 };
