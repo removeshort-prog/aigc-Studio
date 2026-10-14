@@ -23,8 +23,8 @@ window.GENERATED_SHOP = {
     "13463488",
     "13529405",
     "40222721",
-    "13508626",
     "42229983",
+    "13508626",
     "40708444",
     "40931162",
     "12847622",
@@ -176,16 +176,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222721&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13508626",
-      "title": "25年11月散图【68+16张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/ea/b7/22ddfba605931752a96fc1cbfaf18ca0.jpg",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42229983",
       "title": "26年10月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13508626",
+      "title": "25年11月散图【68+16张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/ea/b7/22ddfba605931752a96fc1cbfaf18ca0.jpg",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40708444",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-14T18:01:32.737Z"
+  "updatedAt": "2026-10-14T21:44:07.067Z"
 };
