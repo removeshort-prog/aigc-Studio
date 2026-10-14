@@ -26,10 +26,10 @@ window.GENERATED_SHOP = {
     "13508626",
     "40708444",
     "40931162",
+    "42229983",
     "12847622",
     "41141980",
     "13336811",
-    "42229983",
     "40253485",
     "41372980",
     "41271430",
@@ -194,6 +194,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40931162&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42229983",
+      "title": "26年10月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "12847622",
       "title": "25年3月-5月图",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/b1/0d/a2a90dee96bafc2cae87e21c3410e369.png",
@@ -210,12 +216,6 @@ window.GENERATED_SHOP = {
       "title": "25年10月其余角色集合【69张】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/81/6b/734ad61e56dd0efdc0ae9fbd10598af7.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13336811&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42229983",
-      "title": "26年10月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40253485",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-12T22:52:27.041Z"
+  "updatedAt": "2026-10-14T07:24:36.478Z"
 };
