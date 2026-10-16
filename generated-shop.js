@@ -19,8 +19,8 @@ window.GENERATED_SHOP = {
     "40426737",
     "40426722",
     "13309058",
-    "13334111",
     "42229983",
+    "13334111",
     "13463488",
     "13529405",
     "40222721",
@@ -152,16 +152,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13309058&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13334111",
-      "title": "25年10月爱莉图集合02【54张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/89/f4/85b57bcc26f83774be72e968dd489390.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13334111&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42229983",
       "title": "26年10月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13334111",
+      "title": "25年10月爱莉图集合02【54张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/89/f4/85b57bcc26f83774be72e968dd489390.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13334111&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13463488",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-16T18:05:41.784Z"
+  "updatedAt": "2026-10-16T21:14:10.592Z"
 };
