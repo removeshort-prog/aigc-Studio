@@ -20,10 +20,10 @@ window.GENERATED_SHOP = {
     "40426722",
     "13309058",
     "13334111",
+    "42229983",
     "13463488",
     "13529405",
     "40222721",
-    "42229983",
     "13508626",
     "40708444",
     "40931162",
@@ -158,6 +158,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13334111&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42229983",
+      "title": "26年10月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "13463488",
       "title": "25年11月大鸭图集合上",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/35/13/59c8c7a9f11d3fa0e5e4d6cdb895f775.jpg",
@@ -174,12 +180,6 @@ window.GENERATED_SHOP = {
       "title": "26年1月蓝P赞助（非常清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/b5/4f/c3017c48fcfb82f70e64950d97c3ee5b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222721&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42229983",
-      "title": "26年10月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13508626",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-14T21:44:07.067Z"
+  "updatedAt": "2026-10-16T18:05:41.784Z"
 };
