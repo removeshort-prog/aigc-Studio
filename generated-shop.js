@@ -11,9 +11,9 @@ window.GENERATED_SHOP = {
     "12852155",
     "40222148",
     "13037374",
+    "42229983",
     "40538932",
     "40538952",
-    "42229983",
     "13273668",
     "13508657",
     "41803388",
@@ -104,6 +104,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42229983",
+      "title": "26年10月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "40538932",
       "title": "26年3月图集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/9d/84/a13ffeda7f76f50e9b6d7a779c362919.png",
@@ -114,12 +120,6 @@ window.GENERATED_SHOP = {
       "title": "26年3月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/d1/72/a2f2de7de5be931b082fbf28bd8f2191.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40538952&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42229983",
-      "title": "26年10月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13273668",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-22T00:56:39.986Z"
+  "updatedAt": "2026-10-22T20:10:17.246Z"
 };
