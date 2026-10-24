@@ -9,8 +9,8 @@ window.GENERATED_SHOP = {
     "12517138",
     "40070064",
     "12852155",
-    "40222148",
     "42229983",
+    "40222148",
     "13037374",
     "40538932",
     "40538952",
@@ -92,16 +92,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12852155&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "40222148",
-      "title": "26年1月崩三图集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/98/fd/1120e9a64896694d7df8ded09f2e8132.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222148&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42229983",
       "title": "26年10月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/60/87/cd083787e173a3e126367b2233120190.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42229983&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "40222148",
+      "title": "26年1月崩三图集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/98/fd/1120e9a64896694d7df8ded09f2e8132.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222148&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13037374",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-23T07:18:21.227Z"
+  "updatedAt": "2026-10-24T19:22:07.011Z"
 };
