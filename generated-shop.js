@@ -1,7 +1,7 @@
 window.GENERATED_SHOP = {
   "featured": [
-    "12649806",
     "41678379",
+    "12649806",
     "41362324",
     "41141864",
     "41935537",
@@ -38,16 +38,16 @@ window.GENERATED_SHOP = {
   ],
   "products": [
     {
-      "id": "12649806",
-      "title": "25年7月集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/68/52d8fedd4bb0985ad2d64028cca26195.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12649806&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41678379",
       "title": "26年8月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/7e/50/a890f0705542187e4b9d6a64af2b1541.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41678379&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "12649806",
+      "title": "25年7月集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/68/52d8fedd4bb0985ad2d64028cca26195.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=12649806&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "41362324",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-24T19:22:07.011Z"
+  "updatedAt": "2026-10-25T09:41:20.954Z"
 };
