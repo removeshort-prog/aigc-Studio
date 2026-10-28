@@ -25,8 +25,8 @@ window.GENERATED_SHOP = {
     "13529405",
     "40222721",
     "13508626",
-    "40708444",
     "40931162",
+    "40708444",
     "12847622",
     "41141980",
     "13336811",
@@ -188,16 +188,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "40708444",
-      "title": "26年4月图常规集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/02/05/c8b9ae9cf6050c3adea6abca521220e9.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40708444&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "40931162",
       "title": "26年5月图常规集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4a/5f/13816bb3ea7a89f8a7210f2caaa7a412.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40931162&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "40708444",
+      "title": "26年4月图常规集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/02/05/c8b9ae9cf6050c3adea6abca521220e9.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40708444&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "12847622",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-10-27T06:44:46.114Z"
+  "updatedAt": "2026-10-28T08:12:33.580Z"
 };
