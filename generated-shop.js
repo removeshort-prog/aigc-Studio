@@ -14,8 +14,8 @@ window.GENERATED_SHOP = {
     "13037374",
     "40538932",
     "40538952",
-    "13273668",
     "41803388",
+    "13273668",
     "13508657",
     "40426737",
     "13309058",
@@ -122,16 +122,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40538952&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13273668",
-      "title": "25年10月爱莉图集合01【50张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/c9/3e2e38abd87fb48ae3f9cfa87be4de1a.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13273668&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41803388",
       "title": "单角色26年1-7集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13273668",
+      "title": "25年10月爱莉图集合01【50张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/c9/3e2e38abd87fb48ae3f9cfa87be4de1a.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13273668&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13508657",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-01T06:42:03.956Z"
+  "updatedAt": "2026-11-01T13:49:56.799Z"
 };
