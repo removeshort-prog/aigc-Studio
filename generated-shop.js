@@ -12,9 +12,9 @@ window.GENERATED_SHOP = {
     "12852155",
     "40222148",
     "13037374",
+    "41803388",
     "40538932",
     "40538952",
-    "41803388",
     "13273668",
     "13508657",
     "40426737",
@@ -25,8 +25,8 @@ window.GENERATED_SHOP = {
     "13529405",
     "40222721",
     "13508626",
-    "40708444",
     "40931162",
+    "40708444",
     "12847622",
     "41141980",
     "13336811",
@@ -110,6 +110,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "41803388",
+      "title": "单角色26年1-7集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "40538932",
       "title": "26年3月图集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/9d/84/a13ffeda7f76f50e9b6d7a779c362919.png",
@@ -120,12 +126,6 @@ window.GENERATED_SHOP = {
       "title": "26年3月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/d1/72/a2f2de7de5be931b082fbf28bd8f2191.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40538952&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "41803388",
-      "title": "单角色26年1-7集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13273668",
@@ -188,16 +188,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "40708444",
-      "title": "26年4月图常规集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/02/05/c8b9ae9cf6050c3adea6abca521220e9.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40708444&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "40931162",
       "title": "26年5月图常规集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4a/5f/13816bb3ea7a89f8a7210f2caaa7a412.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40931162&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "40708444",
+      "title": "26年4月图常规集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/02/05/c8b9ae9cf6050c3adea6abca521220e9.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40708444&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "12847622",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-01T13:49:56.799Z"
+  "updatedAt": "2026-11-03T17:15:34.674Z"
 };
