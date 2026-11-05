@@ -11,8 +11,8 @@ window.GENERATED_SHOP = {
     "40070064",
     "12852155",
     "40222148",
-    "13037374",
     "41803388",
+    "13037374",
     "40538932",
     "40538952",
     "13273668",
@@ -104,16 +104,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222148&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13037374",
-      "title": "赞助：25年9月图集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/ba/0b/fccba1c2e7e179cd947bef78f58bf6fe.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "41803388",
       "title": "单角色26年1-7集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/cd/06/9561c55df9ce2a255fd5a24c94b83b6b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13037374",
+      "title": "赞助：25年9月图集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/ba/0b/fccba1c2e7e179cd947bef78f58bf6fe.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40538932",
@@ -248,5 +248,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-03T17:15:34.674Z"
+  "updatedAt": "2026-11-05T19:01:45.743Z"
 };
