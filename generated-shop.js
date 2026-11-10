@@ -33,6 +33,7 @@ window.GENERATED_SHOP = {
     "40253485",
     "41372980",
     "41271430",
+    "42697144",
     "106654165",
     "106654164"
   ],
@@ -236,6 +237,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41271430&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42697144",
+      "title": "26年11月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "106654165",
       "title": "高档充电-我思故汝永存",
       "cover": "https://i0.hdslb.com/bfs/active/23d603c93d07db85239cb02c3b757b82922e1fe3.png",
@@ -248,5 +255,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-08T19:54:19.235Z"
+  "updatedAt": "2026-11-10T19:56:45.514Z"
 };
