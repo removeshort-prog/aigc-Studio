@@ -17,14 +17,14 @@ window.GENERATED_SHOP = {
     "40538952",
     "13273668",
     "13508657",
-    "40426737",
     "40426722",
+    "40426737",
     "13309058",
+    "42697144",
     "13334111",
     "13463488",
     "13529405",
     "40222721",
-    "42697144",
     "13508626",
     "40931162",
     "40708444",
@@ -141,22 +141,28 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508657&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "40426737",
-      "title": "26年2月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/5d/86/e5bf92d7a5f7c551a84d8bfa06d18d36.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40426737&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "40426722",
       "title": "26年2月崩三图集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/0d/96/035bbe232ee5deae4b1d17c11964c18f.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40426722&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "40426737",
+      "title": "26年2月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/5d/86/e5bf92d7a5f7c551a84d8bfa06d18d36.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40426737&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "13309058",
       "title": "25年10月虫虫合集【49张】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/2f/a1/105876c77dc4851091f10b0dd5ea66dd.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13309058&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "42697144",
+      "title": "26年11月蓝P赞助（超级清凉版）",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13334111",
@@ -181,12 +187,6 @@ window.GENERATED_SHOP = {
       "title": "26年1月蓝P赞助（非常清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/b5/4f/c3017c48fcfb82f70e64950d97c3ee5b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222721&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42697144",
-      "title": "26年11月蓝P赞助（超级清凉版）",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13508626",
@@ -255,5 +255,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-13T15:28:01.483Z"
+  "updatedAt": "2026-11-14T08:50:18.299Z"
 };
