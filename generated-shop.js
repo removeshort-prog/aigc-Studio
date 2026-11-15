@@ -15,8 +15,8 @@ window.GENERATED_SHOP = {
     "13037374",
     "40538932",
     "40538952",
-    "13273668",
     "42697144",
+    "13273668",
     "13508657",
     "40426722",
     "40426737",
@@ -30,6 +30,7 @@ window.GENERATED_SHOP = {
     "40708444",
     "12847622",
     "41141980",
+    "42735607",
     "13336811",
     "40253485",
     "41372980",
@@ -129,16 +130,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40538952&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13273668",
-      "title": "25年10月爱莉图集合01【50张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/c9/3e2e38abd87fb48ae3f9cfa87be4de1a.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13273668&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42697144",
       "title": "26年11月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13273668",
+      "title": "25年10月爱莉图集合01【50张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/08/c9/3e2e38abd87fb48ae3f9cfa87be4de1a.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13273668&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13508657",
@@ -219,6 +220,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41141980&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42735607",
+      "title": "单角色图集蓝p赞助",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "13336811",
       "title": "25年10月其余角色集合【69张】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/81/6b/734ad61e56dd0efdc0ae9fbd10598af7.jpg",
@@ -255,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-14T20:08:16.365Z"
+  "updatedAt": "2026-11-15T06:11:06.149Z"
 };
