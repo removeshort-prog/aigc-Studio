@@ -28,9 +28,9 @@ window.GENERATED_SHOP = {
     "13508626",
     "40931162",
     "40708444",
+    "42735607",
     "12847622",
     "41141980",
-    "42735607",
     "13336811",
     "40253485",
     "41372980",
@@ -208,6 +208,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40708444&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
+      "id": "42735607",
+      "title": "单角色图集蓝p赞助",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
       "id": "12847622",
       "title": "25年3月-5月图",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/b1/0d/a2a90dee96bafc2cae87e21c3410e369.png",
@@ -218,12 +224,6 @@ window.GENERATED_SHOP = {
       "title": "26年6-8月常规图集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/88/08/cf80ea60aa13479e6a2dcb496d2867f8.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41141980&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
-      "id": "42735607",
-      "title": "单角色图集蓝p赞助",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "13336811",
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-15T06:11:06.149Z"
+  "updatedAt": "2026-11-15T14:00:53.023Z"
 };
