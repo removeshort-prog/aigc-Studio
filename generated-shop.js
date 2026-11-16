@@ -25,8 +25,8 @@ window.GENERATED_SHOP = {
     "13463488",
     "13529405",
     "40222721",
-    "13508626",
     "42735607",
+    "13508626",
     "40931162",
     "40708444",
     "12847622",
@@ -190,16 +190,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222721&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13508626",
-      "title": "25年11月散图【68+16张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/ea/b7/22ddfba605931752a96fc1cbfaf18ca0.jpg",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42735607",
       "title": "单角色图集蓝p赞助",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13508626",
+      "title": "25年11月散图【68+16张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/ea/b7/22ddfba605931752a96fc1cbfaf18ca0.jpg",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13508626&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40931162",
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-16T15:33:03.649Z"
+  "updatedAt": "2026-11-16T23:51:08.509Z"
 };
