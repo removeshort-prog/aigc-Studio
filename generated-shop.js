@@ -12,8 +12,8 @@ window.GENERATED_SHOP = {
     "12852155",
     "40222148",
     "41803388",
-    "13037374",
     "42697144",
+    "13037374",
     "40538932",
     "40538952",
     "13273668",
@@ -112,16 +112,16 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=41803388&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
-      "id": "13037374",
-      "title": "赞助：25年9月图集合",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/ba/0b/fccba1c2e7e179cd947bef78f58bf6fe.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
-    },
-    {
       "id": "42697144",
       "title": "26年11月蓝P赞助（超级清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
+    },
+    {
+      "id": "13037374",
+      "title": "赞助：25年9月图集合",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/ba/0b/fccba1c2e7e179cd947bef78f58bf6fe.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13037374&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
     {
       "id": "40538932",
@@ -191,7 +191,7 @@ window.GENERATED_SHOP = {
     },
     {
       "id": "42735607",
-      "title": "单角色图集蓝p赞助",
+      "title": "单角色100张图集蓝p赞助",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1#noReffer=true&msource=cps_showcase_651921014"
     },
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-16T23:51:08.509Z"
+  "updatedAt": "2026-11-18T16:21:57.471Z"
 };
