@@ -23,9 +23,9 @@ window.GENERATED_SHOP = {
     "13309058",
     "13334111",
     "13463488",
+    "42735607",
     "13529405",
     "40222721",
-    "42735607",
     "13508626",
     "40931162",
     "40708444",
@@ -113,7 +113,7 @@ window.GENERATED_SHOP = {
     },
     {
       "id": "42697144",
-      "title": "26年11月蓝P赞助（超级清凉版）",
+      "title": "26年11月清凉赞助【大希儿 观星 图集】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
@@ -178,6 +178,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13463488&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
+      "id": "42735607",
+      "title": "单角色100张图集蓝p赞助【爱莉 虫虫 塞西莉亚 德莉莎】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
+    },
+    {
       "id": "13529405",
       "title": "25年11月虫虫集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/0a/9c/7f8af59cf6cf6eeebb9f4b30e35d81a3.png",
@@ -188,12 +194,6 @@ window.GENERATED_SHOP = {
       "title": "26年1月蓝P赞助（非常清凉版）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/b5/4f/c3017c48fcfb82f70e64950d97c3ee5b.jpg",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40222721&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
-    },
-    {
-      "id": "42735607",
-      "title": "单角色100张图集蓝p赞助",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
       "id": "13508626",
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-19T13:28:55.192Z"
+  "updatedAt": "2026-11-20T10:34:35.123Z"
 };
