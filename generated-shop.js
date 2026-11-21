@@ -21,10 +21,10 @@ window.GENERATED_SHOP = {
     "40426722",
     "40426737",
     "13309058",
-    "13334111",
     "42735607",
-    "13463488",
+    "13334111",
     "13529405",
+    "13463488",
     "40222721",
     "13508626",
     "40931162",
@@ -166,28 +166,28 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13309058&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
-      "id": "13334111",
-      "title": "25年10月爱莉图集合02【54张】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/89/f4/85b57bcc26f83774be72e968dd489390.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13334111&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
-    },
-    {
       "id": "42735607",
       "title": "单角色100张图集蓝p赞助【爱莉 虫虫 塞西莉亚 德莉莎】",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/4c/45/159938358f58c50a823d4b2ca46a2d6c.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42735607&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
-      "id": "13463488",
-      "title": "25年11月大鸭图集合上",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/35/13/59c8c7a9f11d3fa0e5e4d6cdb895f775.jpg",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13463488&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
+      "id": "13334111",
+      "title": "25年10月爱莉图集合02【54张】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/89/f4/85b57bcc26f83774be72e968dd489390.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13334111&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
       "id": "13529405",
       "title": "25年11月虫虫集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/0a/9c/7f8af59cf6cf6eeebb9f4b30e35d81a3.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13529405&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
+    },
+    {
+      "id": "13463488",
+      "title": "25年11月大鸭图集合上",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/35/13/59c8c7a9f11d3fa0e5e4d6cdb895f775.jpg",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=13463488&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
       "id": "40222721",
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-21T00:43:04.235Z"
+  "updatedAt": "2026-11-21T21:40:37.710Z"
 };
