@@ -7,9 +7,9 @@ window.GENERATED_SHOP = {
     "12649806",
     "41141864",
     "40931105",
+    "42697144",
     "12517138",
     "40070064",
-    "42697144",
     "12852155",
     "40222148",
     "41803388",
@@ -82,6 +82,12 @@ window.GENERATED_SHOP = {
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40931105&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
+      "id": "42697144",
+      "title": "26年11月清凉赞助【大希儿 观星 图集】",
+      "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
+      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
+    },
+    {
       "id": "12517138",
       "title": "25年6月（不含全装甲）",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/2d/51/e8d96bf7db047ebfae75527748a0cb17.png",
@@ -92,12 +98,6 @@ window.GENERATED_SHOP = {
       "title": "25年12月崩三图集合",
       "cover": "https://i0.hdslb.com/bfs/mall/mall/71/31/30535c05fb089347709fc4c6c3f81ab2.png",
       "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=40070064&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
-    },
-    {
-      "id": "42697144",
-      "title": "26年11月清凉赞助【大希儿 观星 图集】",
-      "cover": "https://i0.hdslb.com/bfs/mall/mall/4b/a5/6bc76150d1bdca6b24bc58b5eb4f0c55.png",
-      "url": "https://mall.bilibili.com/neul-next/detailuniversal/detail.html?page=detailuniversal_detail&itemsId=42697144&loadingShow=1&noTitleBar=1&msource=cps_showcase_651921014#noReffer=true"
     },
     {
       "id": "12852155",
@@ -262,5 +262,5 @@ window.GENERATED_SHOP = {
       "url": "https://www.bilibili.com/cheese/upower/cashier?navhide=1&mid=651921014&otype=up&oid=651921014&levels=10&prePage=cps&msource=cps_showcase_651921014"
     }
   ],
-  "updatedAt": "2026-11-28T01:30:03.965Z"
+  "updatedAt": "2026-11-28T09:24:09.905Z"
 };
